@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,8 @@ import com.web.blog.model.service.UserService;
 @RequestMapping("/user")
 public class UserController {
 	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+	
 	private static final String FAIL = "fail";
 	private static final String SUCCESS = "success";
 	
@@ -40,90 +44,86 @@ public class UserController {
 	
 	@PostMapping("/login")
 	public Object login(@RequestBody User user, HttpServletResponse response) {
-		System.out.println("[-- login --");
-		System.out.println(user);
+		logger.trace("login");
 		try {
-			User loginUser = userServ.login(user);
-			String token = loginServ.generate(user);
-			System.out.println(token);
-			response.setHeader("authorizationToken", token);
-			Map<String, Object> result = new HashMap<String, Object>(){{
-				put("authorizationToken", token);
-				put("email", loginUser.getEmail());
-				put("name", loginUser.getName());
-				put("createDate", loginUser.getCreateDate());
-			}};
-			System.out.println("-- login --]");
+			logger.info(user.toString());
+			Map<String, Object> result = (Map<String, Object>) userServ.login(user);
+			response.setHeader("authorizationToken", (String)result.get("token"));
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("-- login --] fail");
-			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			logger.error(e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(new HashMap<String, Object>(){{
+				put("errorMsg", e.getMessage());
+				put("msg", FAIL);
+			}}, HttpStatus.NO_CONTENT);
 		}
 	}
 
 	@GetMapping("/info")
 	public Object getInfo(HttpServletRequest request) {
-		System.out.println("[-- getInfo --");
+		logger.trace("getInfo");
 		try {
-			Map<String, Object> result = new HashMap<String, Object>();
 			String email = (String) loginServ.getData(request.getHeader("auth-token")).get("email");
-			System.out.println(email);
-			result.put("user", userServ.getInfo(email));
-			System.out.println(result.get("user"));
-			System.out.println("-- getInfo --]");
+			logger.info(email);
+			Map<String, Object> result = (Map<String, Object>) userServ.getInfo(email);
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("-- getInfo --] fail");
-			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			logger.error(e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(new HashMap<String, Object>(){{
+				put("errorMsg", e.getMessage());
+				put("msg", FAIL);
+			}}, HttpStatus.NO_CONTENT);
 		}
 	}
 	
 	@PostMapping("/join")
 	public Object join(@RequestBody User user) {
-		System.out.println("[-- join --");
-		System.out.println(user);
+		logger.trace("join");
 		try {
-			userServ.join(user);
-			System.out.println("-- join --]");
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			logger.info(user.toString());
+			Map<String, Object> result = (Map<String, Object>) userServ.join(user);
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("-- join --] fail");
-			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			logger.error(e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(new HashMap<String, Object>(){{
+				put("errorMsg", e.getMessage());
+				put("msg", FAIL);
+			}}, HttpStatus.NO_CONTENT);
 		}
 	}
 	
 	@PutMapping("/modify")
-	public Object modify(@RequestBody User user) {
-		System.out.println("[-- modify --");
-		System.out.println(user);
+	public Object modify(@RequestBody User user, HttpServletRequest request) {
+		logger.trace("modify");
 		try {
-			userServ.modify(user);
-			System.out.println("-- modify --]");
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			String email = (String) loginServ.getData(request.getHeader("auth-token")).get("email");
+			user.setEmail(email);
+			logger.info(user.toString());
+			Map<String, Object> result = (Map<String, Object>) userServ.modify(user);
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("-- modify --] fail");
-			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			logger.error(e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(new HashMap<String, Object>(){{
+				put("errorMsg", e.getMessage());
+				put("msg", FAIL);
+			}}, HttpStatus.NO_CONTENT);
 		}
 	}
 	
 	@DeleteMapping("/withdraw")
 	public Object withdraw(HttpServletRequest request) {
-		System.out.println("[-- withdraw --");
+		logger.trace("withdraw");
 		try {
-			Map result = new HashMap<String, Object>();
 			String email = (String) loginServ.getData(request.getHeader("auth-token")).get("email");
-			System.out.println(email);
-			userServ.withdraw(email);
-			System.out.println("-- withdraw --]");
+			logger.info(email);
+			Map<String, Object> result = (Map<String, Object>)userServ.withdraw(email);
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("-- withdraw --] fail");
-			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			logger.error(e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(new HashMap<String, Object>(){{
+				put("errorMsg", e.getMessage());
+				put("msg", FAIL);
+			}}, HttpStatus.NO_CONTENT);
 		}
 	}
 	

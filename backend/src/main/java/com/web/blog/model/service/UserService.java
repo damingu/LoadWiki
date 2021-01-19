@@ -1,15 +1,13 @@
 package com.web.blog.model.service;
 
-import java.sql.SQLException;
-
 import com.web.blog.model.dto.User;
 
 public interface UserService {
 	
-	public User getInfo(String email);
-	public int join(User user);
-	public int modify(User user);
-	public int withdraw(String email);
-	public User login(User user);
+	public Object getInfo(String email);
+	public Object join(User user);
+	public Object modify(User user);
+	public Object withdraw(String email);
+	public Object login(User user);
 	
 }

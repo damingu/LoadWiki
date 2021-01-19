@@ -1,0 +1,162 @@
+2021-01-19 03:02:08.923  INFO 12416 --- [restartedMain] com.web.blog.BackendsubApplication       : Starting BackendsubApplication using Java 1.8.0_275 on DESKTOP-NR6R5CA with PID 12416 (D:\sfy\pjt1\sub2\s04p12c106\backend\target\classes started by KS in D:\sfy\pjt1\sub2\s04p12c106\backend)
+2021-01-19 03:02:08.924  INFO 12416 --- [restartedMain] com.web.blog.BackendsubApplication       : No active profile set, falling back to default profiles: default
+2021-01-19 03:02:08.955  INFO 12416 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-01-19 03:02:08.955  INFO 12416 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-01-19 03:02:09.567  INFO 12416 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-01-19 03:02:09.571  INFO 12416 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-01-19 03:02:09.571  INFO 12416 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-19 03:02:09.612  INFO 12416 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-01-19 03:02:09.613  INFO 12416 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 657 ms
+2021-01-19 03:02:09.652  WARN 12416 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'emailController': Unsatisfied dependency expressed through field 'emailServ'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.web.blog.model.service.EmailService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2021-01-19 03:02:09.653  INFO 12416 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2021-01-19 03:02:09.663  INFO 12416 --- [restartedMain] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2021-01-19 03:02:09.676 ERROR 12416 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field emailServ in com.web.blog.controller.EmailController required a bean of type 'com.web.blog.model.service.EmailService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.web.blog.model.service.EmailService' in your configuration.
+
+2021-01-19 03:02:32.473  INFO 7548 --- [restartedMain] com.web.blog.BackendsubApplication       : Starting BackendsubApplication using Java 1.8.0_275 on DESKTOP-NR6R5CA with PID 7548 (D:\sfy\pjt1\sub2\s04p12c106\backend\target\classes started by KS in D:\sfy\pjt1\sub2\s04p12c106\backend)
+2021-01-19 03:02:32.474  INFO 7548 --- [restartedMain] com.web.blog.BackendsubApplication       : No active profile set, falling back to default profiles: default
+2021-01-19 03:02:32.506  INFO 7548 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-01-19 03:02:32.506  INFO 7548 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-01-19 03:02:33.082  INFO 7548 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-01-19 03:02:33.087  INFO 7548 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-01-19 03:02:33.087  INFO 7548 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-19 03:02:33.123  INFO 7548 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-01-19 03:02:33.123  INFO 7548 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 617 ms
+2021-01-19 03:02:33.380  INFO 7548 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-01-19 03:02:33.487  INFO 7548 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-01-19 03:02:33.508  INFO 7548 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-01-19 03:02:33.517  INFO 7548 --- [restartedMain] com.web.blog.BackendsubApplication       : Started BackendsubApplication in 1.259 seconds (JVM running for 1.744)
+2021-01-19 03:02:38.862  INFO 7548 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2021-01-19 03:02:38.991  INFO 7548 --- [RMI TCP Connection(2)-127.0.0.1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-01-19 09:25:49.044  INFO 6132 --- [restartedMain] com.web.blog.BackendsubApplication       : Starting BackendsubApplication using Java 1.8.0_275 on DESKTOP-NR6R5CA with PID 6132 (D:\sfy\pjt1\sub2\s04p12c106\backend\target\classes started by KS in D:\sfy\pjt1\sub2\s04p12c106\backend)
+2021-01-19 09:25:49.073  INFO 6132 --- [restartedMain] com.web.blog.BackendsubApplication       : No active profile set, falling back to default profiles: default
+2021-01-19 09:25:49.103  INFO 6132 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-01-19 09:25:49.104  INFO 6132 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-01-19 09:25:49.740  INFO 6132 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-01-19 09:25:49.745  INFO 6132 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-01-19 09:25:49.745  INFO 6132 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-19 09:25:49.787  INFO 6132 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-01-19 09:25:49.787  INFO 6132 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 683 ms
+2021-01-19 09:25:50.061  INFO 6132 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-01-19 09:25:50.176  INFO 6132 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-01-19 09:25:50.197  INFO 6132 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-01-19 09:25:50.206  INFO 6132 --- [restartedMain] com.web.blog.BackendsubApplication       : Started BackendsubApplication in 1.377 seconds (JVM running for 1.917)
+2021-01-19 09:27:11.202  INFO 6132 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-01-19 09:27:11.202  INFO 6132 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-01-19 09:27:11.203  INFO 6132 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2021-01-19 09:27:11.303  INFO 6132 --- [http-nio-8080-exec-2] UserController                           : User [uid=null, password=asdf1234, email=kesay59@gmail.com, name=null, createDate=null]
+2021-01-19 09:27:11.319  INFO 6132 --- [http-nio-8080-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-01-19 09:27:11.597  INFO 6132 --- [http-nio-8080-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-01-19 09:27:17.123  INFO 6132 --- [http-nio-8080-exec-4] UserController                           : kesay59@gmail.com
+2021-01-19 09:28:29.244  INFO 6132 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2021-01-19 09:28:29.357  INFO 6132 --- [RMI TCP Connection(2)-127.0.0.1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-01-19 09:28:29.357  INFO 6132 --- [RMI TCP Connection(2)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-01-19 09:28:29.364  INFO 6132 --- [RMI TCP Connection(2)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-01-19 09:28:36.001  INFO 7388 --- [restartedMain] com.web.blog.BackendsubApplication       : Starting BackendsubApplication using Java 1.8.0_275 on DESKTOP-NR6R5CA with PID 7388 (D:\sfy\pjt1\sub2\s04p12c106\backend\target\classes started by KS in D:\sfy\pjt1\sub2\s04p12c106\backend)
+2021-01-19 09:28:36.003  INFO 7388 --- [restartedMain] com.web.blog.BackendsubApplication       : No active profile set, falling back to default profiles: default
+2021-01-19 09:28:36.035  INFO 7388 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-01-19 09:28:36.036  INFO 7388 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-01-19 09:28:36.649  INFO 7388 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-01-19 09:28:36.655  INFO 7388 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-01-19 09:28:36.655  INFO 7388 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-19 09:28:36.692  INFO 7388 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-01-19 09:28:36.692  INFO 7388 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 656 ms
+2021-01-19 09:28:36.955  INFO 7388 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-01-19 09:28:37.066  INFO 7388 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-01-19 09:28:37.087  INFO 7388 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-01-19 09:28:37.096  INFO 7388 --- [restartedMain] com.web.blog.BackendsubApplication       : Started BackendsubApplication in 1.318 seconds (JVM running for 1.829)
+2021-01-19 09:28:39.682  INFO 7388 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-01-19 09:28:39.682  INFO 7388 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-01-19 09:28:39.683  INFO 7388 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2021-01-19 09:28:39.732  INFO 7388 --- [http-nio-8080-exec-1] UserController                           : User [uid=null, password=asdf1234, email=kesay59@gmail.com, name=null, createDate=null]
+2021-01-19 09:28:39.745  INFO 7388 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-01-19 09:28:39.931  INFO 7388 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-01-19 09:28:45.288  INFO 7388 --- [http-nio-8080-exec-2] UserController                           : kesay59@gmail.com
+2021-01-19 09:31:39.098  INFO 7388 --- [Thread-6] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-01-19 09:31:39.098  INFO 7388 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-01-19 09:31:39.105  INFO 7388 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-01-19 09:31:39.241  INFO 7388 --- [restartedMain] com.web.blog.BackendsubApplication       : Starting BackendsubApplication using Java 1.8.0_275 on DESKTOP-NR6R5CA with PID 7388 (D:\sfy\pjt1\sub2\s04p12c106\backend\target\classes started by KS in D:\sfy\pjt1\sub2\s04p12c106\backend)
+2021-01-19 09:31:39.242  INFO 7388 --- [restartedMain] com.web.blog.BackendsubApplication       : No active profile set, falling back to default profiles: default
+2021-01-19 09:31:39.399  INFO 7388 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-01-19 09:31:39.399  INFO 7388 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-01-19 09:31:39.399  INFO 7388 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-19 09:31:39.407  INFO 7388 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-01-19 09:31:39.407  INFO 7388 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 163 ms
+2021-01-19 09:31:39.471  INFO 7388 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-01-19 09:31:39.504  INFO 7388 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-01-19 09:31:39.511  INFO 7388 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-01-19 09:31:39.514  INFO 7388 --- [restartedMain] com.web.blog.BackendsubApplication       : Started BackendsubApplication in 0.29 seconds (JVM running for 184.247)
+2021-01-19 09:31:39.516  INFO 7388 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2021-01-19 09:31:48.089  INFO 7388 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-01-19 09:31:48.089  INFO 7388 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-01-19 09:31:48.090  INFO 7388 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2021-01-19 09:31:48.092  INFO 7388 --- [http-nio-8080-exec-1] UserController                           : User [uid=null, password=asdf1234, email=kesay59@gmail.com, name=null, createDate=null]
+2021-01-19 09:31:48.096  INFO 7388 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2021-01-19 09:31:48.109  INFO 7388 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2021-01-19 09:32:03.385  INFO 7388 --- [http-nio-8080-exec-2] UserController                           : kesay59@gmail.com
+2021-01-19 09:34:25.944  INFO 7388 --- [http-nio-8080-exec-4] UserController                           : User [uid=null, password=asdf1234, email=kesay59@gmail.com, name=null, createDate=null]
+2021-01-19 09:34:28.858  INFO 7388 --- [http-nio-8080-exec-5] UserController                           : kesay59@gmail.com
+2021-01-19 10:11:02.212  INFO 7388 --- [http-nio-8080-exec-8] UserController                           : User [uid=null, password=asdf1234, email=kesay59@gmail.com, name=null, createDate=null]
+2021-01-19 10:11:03.485  INFO 7388 --- [http-nio-8080-exec-10] UserController                           : kesay59@gmail.com
+2021-01-19 10:11:54.647  INFO 7388 --- [http-nio-8080-exec-1] UserController                           : User [uid=null, password=asdf1234, email=kesay59@gmail.com, name=null, createDate=null]
+2021-01-19 10:11:55.741  INFO 7388 --- [http-nio-8080-exec-2] UserController                           : kesay59@gmail.com
+2021-01-19 10:12:10.770  INFO 7388 --- [http-nio-8080-exec-4] UserController                           : User [uid=null, password=null, email=kesay59@gmail.com, name=ksss, createDate=2021-01-18 22:28:50]
+2021-01-19 10:12:10.796  INFO 7388 --- [http-nio-8080-exec-5] UserController                           : kesay59@gmail.com
+2021-01-19 10:19:30.399  INFO 7388 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2021-01-19 10:19:30.506  INFO 7388 --- [RMI TCP Connection(2)-127.0.0.1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-01-19 10:19:30.506  INFO 7388 --- [RMI TCP Connection(2)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2021-01-19 10:19:30.509  INFO 7388 --- [RMI TCP Connection(2)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2021-01-19 10:21:13.808  INFO 12948 --- [restartedMain] com.web.blog.BackendsubApplication       : Starting BackendsubApplication using Java 1.8.0_275 on DESKTOP-NR6R5CA with PID 12948 (D:\sfy\pjt1\sub2\s04p12c106\backend\target\classes started by KS in D:\sfy\pjt1\sub2\s04p12c106\backend)
+2021-01-19 10:21:13.810  INFO 12948 --- [restartedMain] com.web.blog.BackendsubApplication       : No active profile set, falling back to default profiles: default
+2021-01-19 10:21:13.843  INFO 12948 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-01-19 10:21:13.844  INFO 12948 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-01-19 10:21:14.462  INFO 12948 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-01-19 10:21:14.468  INFO 12948 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-01-19 10:21:14.468  INFO 12948 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-19 10:21:14.505  INFO 12948 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-01-19 10:21:14.505  INFO 12948 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 661 ms
+2021-01-19 10:21:14.782  INFO 12948 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-01-19 10:21:14.900  INFO 12948 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-01-19 10:21:14.922  INFO 12948 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-01-19 10:21:14.931  INFO 12948 --- [restartedMain] com.web.blog.BackendsubApplication       : Started BackendsubApplication in 1.35 seconds (JVM running for 1.856)
+2021-01-19 10:21:25.129  INFO 12948 --- [http-nio-8080-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-01-19 10:21:25.129  INFO 12948 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-01-19 10:21:25.130  INFO 12948 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2021-01-19 10:21:25.182  INFO 12948 --- [http-nio-8080-exec-3] UserController                           : User [uid=null, password=asdf1234, email=kesay59@gmail.com, name=null, createDate=null]
+2021-01-19 10:21:25.195  INFO 12948 --- [http-nio-8080-exec-3] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-01-19 10:21:25.395  INFO 12948 --- [http-nio-8080-exec-3] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-01-19 10:21:28.682  INFO 12948 --- [http-nio-8080-exec-2] UserController                           : kesay59@gmail.com
+2021-01-19 10:21:34.222  INFO 12948 --- [http-nio-8080-exec-1] UserController                           : User [uid=null, password=null, email=kesay59@gmail.com, name=ks, createDate=2021-01-18 22:28:50]
+2021-01-19 10:21:34.246  INFO 12948 --- [http-nio-8080-exec-4] UserController                           : kesay59@gmail.com
+2021-01-19 10:22:35.638  INFO 12948 --- [Thread-6] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-01-19 10:22:35.638  INFO 12948 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-01-19 10:22:35.645  INFO 12948 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-01-19 10:22:35.783  INFO 12948 --- [restartedMain] com.web.blog.BackendsubApplication       : Starting BackendsubApplication using Java 1.8.0_275 on DESKTOP-NR6R5CA with PID 12948 (D:\sfy\pjt1\sub2\s04p12c106\backend\target\classes started by KS in D:\sfy\pjt1\sub2\s04p12c106\backend)
+2021-01-19 10:22:35.783  INFO 12948 --- [restartedMain] com.web.blog.BackendsubApplication       : No active profile set, falling back to default profiles: default
+2021-01-19 10:22:35.940  INFO 12948 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-01-19 10:22:35.941  INFO 12948 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-01-19 10:22:35.941  INFO 12948 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-19 10:22:35.950  INFO 12948 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-01-19 10:22:35.950  INFO 12948 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 166 ms
+2021-01-19 10:22:36.017  INFO 12948 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-01-19 10:22:36.052  INFO 12948 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-01-19 10:22:36.060  INFO 12948 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-01-19 10:22:36.062  INFO 12948 --- [restartedMain] com.web.blog.BackendsubApplication       : Started BackendsubApplication in 0.297 seconds (JVM running for 82.988)
+2021-01-19 10:22:36.064  INFO 12948 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged

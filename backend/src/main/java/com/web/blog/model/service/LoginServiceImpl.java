@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.web.blog.model.dto.User;
@@ -15,8 +17,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-public class LoginServiceImpl {
-	private String signature = "ks's token";
+public class LoginServiceImpl implements LoginService{
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+	
+	private String signature = "original ks";
 	private Long expirationMin = 5L * 60 * 1000;
 	
 	public String generate(User user){
@@ -30,7 +35,6 @@ public class LoginServiceImpl {
 		jwtBuilder.setSubject("login token");
 		jwtBuilder.setExpiration(new Date(System.currentTimeMillis() + expirationMin));
 		jwtBuilder.addClaims(new HashMap<String, Object>(){{
-			put("user", user);
 			put("name", user.getName());
 			put("email", user.getEmail());
 		}});
