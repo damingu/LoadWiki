@@ -1,4 +1,4 @@
-package com.web.blog.controller;
+ package com.web.blog.controller;
 
 import java.util.HashMap;
 import java.util.Map;

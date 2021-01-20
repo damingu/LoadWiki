@@ -6,33 +6,30 @@ public class User {
 	private String email;
 	private String name;
 	private String createDate;
+	private String image;
+	private Keyword keyword;
 
 	
 	public User() {
 		super();
 	}
-	
-	public User(String uid, String email, String name, String createDate) {
-		super();
-		this.uid = uid;
-		this.email = email;
-		this.name = name;
-		this.createDate = createDate;
-	}
 
-	public User(String uid, String password, String email, String name, String createDate) {
+	public User(String uid, String password, String email, String name, String createDate, String image,
+			Keyword keyword) {
 		super();
 		this.uid = uid;
 		this.password = password;
 		this.email = email;
 		this.name = name;
 		this.createDate = createDate;
+		this.image = image;
+		this.keyword = keyword;
 	}
 
 	public String getUid() {
-		return this.uid;
+		return uid;
 	}
-	
+
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
@@ -48,7 +45,7 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -69,13 +66,26 @@ public class User {
 		this.createDate = createDate;
 	}
 
-	
-	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public Keyword getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(Keyword keyword) {
+		this.keyword = keyword;
+	}
+
 	@Override
 	public String toString() {
 		return "User [uid=" + uid + ", password=" + password + ", email=" + email + ", name=" + name + ", createDate="
-				+ createDate + "]";
+				+ createDate + ", image=" + image + ", keyword=" + keyword + "]";
 	}
-	
 	
 }
