@@ -20,13 +20,13 @@
         </svg>
       </div>
     </div>
-    <!-- 알람이가는지 확인11 -->
     <!-- Page content -->
     <b-container class="mt--8 pb-5">
       <!-- Table -->
       <b-row class="justify-content-center">
         <b-col lg="6" md="8" >
           <b-card no-body class="bg-secondary border-0">
+            <!-- 소셜 로그인 부분 -->
             <!-- <b-card-header class="bg-transparent pb-5">
               <div class="text-muted text-center mt-2 mb-4"><small>Sign up with</small></div>
               <div class="text-center">
@@ -46,11 +46,12 @@
               </div>
               <validation-observer v-slot="{handleSubmit}" ref="formValidator">
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
+                  <!-- required속성이 true이면 The Name field is required라는 창이 뜸 -->
                   <base-input alternative
                               class="mb-3"
                               prepend-icon="ni ni-hat-3"
-                              placeholder="Name"
-                              name="Name"
+                              placeholder="닉네임"
+                              name="닉네임"
                               :rules="{required: true}"
                               v-model="model.name">
                   </base-input>
@@ -60,8 +61,8 @@
                       <base-input alternative
                                   class="mb-3"
                                   prepend-icon="ni ni-email-83"
-                                  placeholder="Email"
-                                  name="Email"
+                                  placeholder="example123@ssafy.com"
+                                  name="이메일"
                                   :rules="{required: true, email: true}"
                                   v-model="model.email">
                       </base-input>
@@ -74,21 +75,21 @@
                   <base-input alternative
                               class="mb-3"
                               prepend-icon="ni ni-lock-circle-open"
-                              placeholder="password"
+                              placeholder="비밀번호"
                               type="password"
-                              name="Password"
-                              :rules="{required: true, min: 6}"
+                              name="비밀번호"
+                              :rules="{required: true, min: 8}"
                               v-model="model.password">
                   </base-input>
 
                   <base-input alternative
                               class="mb-3"
                               prepend-icon="ni ni-lock-circle-open"
-                              placeholder="password 확인"
+                              placeholder="비밀번호 확인"
                               type="password"
-                              name="Password"
-                              :rules="{required: true, min: 6}"
-                              v-model="model.password">
+                              name="비밀번호"
+                              :rules="{required: true, min: 8, passwordConfirmationRule}"
+                              v-model="model.rePassword">
                   </base-input>
                   <div class="text-muted font-italic"><small>password strength: <span
                     class="text-success font-weight-700">strong</span></small></div>
@@ -123,7 +124,8 @@
           name: '',
           email: '',
           password: '',
-          agree: false
+          agree: false,
+          // rePassword: '',
         }
       }
     },
@@ -131,8 +133,13 @@
       onSubmit() {
         // this will be called only after form is valid. You can do an api call here to register users
       }
-    }
-
+    },
+    // computed: {
+    //   passwordConfirmationRule() {
+    //     return () => (this.model.password === this.model.rePassword) || 'Password must match'
+    //   },
+    // },
+    
   };
 </script>
 <style></style>
