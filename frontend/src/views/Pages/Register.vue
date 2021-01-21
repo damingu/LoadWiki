@@ -20,7 +20,7 @@
         </svg>
       </div>
     </div>
-    <!-- 알람이가는지 확인 -->
+    <!-- 알람이가는지 확인11 -->
     <!-- Page content -->
     <b-container class="mt--8 pb-5">
       <!-- Table -->
