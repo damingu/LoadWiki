@@ -54,19 +54,36 @@
                               v-model="model.name">
                   </base-input>
 
-                  <base-input alternative
-                              class="mb-3"
-                              prepend-icon="ni ni-email-83"
-                              placeholder="Email"
-                              name="Email"
-                              :rules="{required: true, email: true}"
-                              v-model="model.email">
-                  </base-input>
+                  <div class="row">
+                    <div class="col-9">
+                      <base-input alternative
+                                  class="mb-3"
+                                  prepend-icon="ni ni-email-83"
+                                  placeholder="Email"
+                                  name="Email"
+                                  :rules="{required: true, email: true}"
+                                  v-model="model.email">
+                      </base-input>
+                    </div>
+                    <div class="col-3 pl-0">
+                      <b-button>인증하기</b-button>
+                    </div>
+                  </div>
 
                   <base-input alternative
                               class="mb-3"
                               prepend-icon="ni ni-lock-circle-open"
                               placeholder="password"
+                              type="password"
+                              name="Password"
+                              :rules="{required: true, min: 6}"
+                              v-model="model.password">
+                  </base-input>
+
+                  <base-input alternative
+                              class="mb-3"
+                              prepend-icon="ni ni-lock-circle-open"
+                              placeholder="password 확인"
                               type="password"
                               name="Password"
                               :rules="{required: true, min: 6}"
