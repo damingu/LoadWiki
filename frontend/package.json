@@ -2,6 +2,8 @@
   "name": "bootstrap-vue-argon-dashboard",
   "version": "1.0.0",
   "private": true,
+  "description": "BootstrapVue Argon Dashboard",
+  "author": "Creative Tim - https://www.creative-tim.com/",
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
@@ -31,7 +33,8 @@
     "vue-clipboard2": "^0.3.0",
     "vue-flatpickr-component": "^8.1.2",
     "vue-router": "^3.0.6",
-    "vue2-transitions": "^0.2.3"
+    "vue2-transitions": "^0.2.3",
+    "vuex": "^3.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
@@ -52,7 +55,5 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 10"
-  ],
-  "author": "Creative Tim - https://www.creative-tim.com/",
-  "description": "BootstrapVue Argon Dashboard"
+  ]
 }
