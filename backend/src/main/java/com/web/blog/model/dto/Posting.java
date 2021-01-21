@@ -1,11 +1,11 @@
 package com.web.blog.model.dto;
 
 public class Posting {
-	private String pid;
+	private int pid;
 	private String classifier;
 	private String tag;
 	private String title;
-	private String uid;
+	private int uid;
 	private String content;
 	private String createDate;
 	private String modifyDate;

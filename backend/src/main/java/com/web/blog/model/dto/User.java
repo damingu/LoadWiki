@@ -1,7 +1,7 @@
 package com.web.blog.model.dto;
 
 public class User {
-	private String uid;
+	private int uid;
 	private String password;
 	private String email;
 	private String name;
