@@ -17,11 +17,14 @@
 import Vue from 'vue';
 import DashboardPlugin from './plugins/dashboard-plugin';
 import App from './App.vue';
+import VueMindmap from 'vue-mindmap'
+import 'vue-mindmap/dist/vue-mindmap.css'
 
 // router setup
 import router from './routes/router';
 // plugin setup
 Vue.use(DashboardPlugin);
+Vue.use(VueMindmap)
 
 /* eslint-disable no-new */
 new Vue({
