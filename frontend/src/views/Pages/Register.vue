@@ -68,7 +68,11 @@
                       </base-input>
                     </div>
                     <div class="col-3 pl-0">
-                      <b-button>인증하기</b-button>
+                      <b-button v-b-modal.modal-email>인증하기</b-button>
+                      <ModalEmailValidation/>
+                      <!-- <b-modal id="modal-1" title="BootstrapVue">
+                        <p class="my-4">Hello from modal!</p>
+                      </b-modal> -->
                     </div>
                   </div>
 
@@ -97,7 +101,14 @@
                     <b-col cols="12">
                       <base-input :rules="{ required: { allowFalse: false } }" name=Privacy Policy>
                         <b-form-checkbox v-model="model.agree">
-                          <span class="text-muted">I agree with the <a href="#!">Privacy Policy</a></span>
+                          <span class="text-muted">
+                            I agree with the 
+                            <!-- b-button에 먹혀있는 hover효과 빼기 -->
+                            <b-button v-b-modal.modal-scrollable variant="link" class="m-0 p-0">
+                              Privacy Policy
+                            </b-button>
+                            <ModalPolicy/>
+                          </span>
                         </b-form-checkbox>
                       </base-input>
                     </b-col>
@@ -114,10 +125,17 @@
     </b-container>
   </div>
 </template>
+
 <script>
+  import ModalEmailValidation from "@/components/Validation/ModalEmailValidation.vue";
+  import ModalPolicy from '@/components/Validation/ModalPolicy.vue';
 
   export default {
     name: 'register',
+    components: {
+      ModalEmailValidation,
+      ModalPolicy,
+    },
     data() {
       return {
         model: {

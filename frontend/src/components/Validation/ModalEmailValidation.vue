@@ -1,40 +1,44 @@
 <template>
   <SlideYUpTransition :duration="animationDuration">
     <b-modal class="modal fade"
-        ref="app-modal"
-        :size="size"
-        :hide-header="!$slots.header"
-        :modal-class="[{'modal-mini': type === 'mini'}, ...modalClasses]"
-        @mousedown.self="closeModal"
-        tabindex="-1"
-        role="dialog"
-        centered
-        @close="closeModal"
-        @hide="closeModal"
-        :header-class="headerClasses"
-        :footer-class="footerClasses"
-        :content-class="[gradient ? `bg-gradient-${gradient}` : '', ...modalContentClasses]"
-        :body-class="bodyClasses"
-        :aria-hidden="!show">
+      id="modal-email"
+      ref="email-modal"
+      :size="size"
+      :modal-class="[{'modal-mini': type === 'mini'}, ...modalClasses]"
+      @mousedown.self="closeModal"
+      tabindex="-1"
+      role="dialog"
+      centered
+      @close="closeModal"
+      @hide="closeModal"
+      :header-class="headerClasses"
+      :footer-class="footerClasses"
+      :content-class="[gradient ? `bg-gradient-${gradient}` : '', ...modalContentClasses]"
+      :body-class="bodyClasses"
+      :aria-hidden="!show">
+        <!-- :hide-header="!$slots.header" -->
 
       <template v-slot:modal-header>
-        <slot name="header"></slot>
-            <slot name="close-button">
-              <button type="button"
-                      class="close"
-                      v-if="showClose"
-                      @click="closeModal"
-                      data-dismiss="modal"
-                      aria-label="Close">
-                <span :aria-hidden="!show">×1</span>
-              </button>
-            </slot>
+        <!-- <slot name="header"></slot> -->
+        <!-- <h5>모달 타이틀</h5> -->
+        <slot name="close-button">
+          <button type="button"
+                  class="close"
+                  v-if="showClose"
+                  @click="closeModal"
+                  data-dismiss="modal"
+                  aria-label="Close">
+            <span :aria-hidden="!show">×</span>
+          </button>
+        </slot>
       </template>
 
-      <slot />
+      <email-content />
 
       <template v-slot:modal-footer>
-        <slot name="footer"></slot> 
+        <!-- disabled속성이랑 인증확인되었는지 여부랑 v-bind해주기 -->
+        <base-button type="primary" @click="closeModal" disabled>인증완료</base-button>
+        <!-- <slot name="footer">여기는 푸터인가</slot>  -->
       </template>
 
     </b-modal>
@@ -42,11 +46,13 @@
 </template>
 <script>
   import { SlideYUpTransition } from "vue2-transitions";
+  import EmailContent from './EmailContent.vue';
 
   export default {
     name: "modal",
     components: {
-      SlideYUpTransition
+      SlideYUpTransition,
+      EmailContent,
     },
     props: {
       show: Boolean,
@@ -110,9 +116,9 @@
     watch: {
       show(val) {
         if (val) {
-          this.$refs['app-modal'].show();
+          this.$refs['email-modal'].show();
         } else {
-          this.$refs['app-modal'].hide();
+          this.$refs['email-modal'].hide();
         }
       }
     }
