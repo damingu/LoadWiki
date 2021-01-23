@@ -8,12 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoadmapController {
 	//insert roadmap
 	//select roadmap
-	//delete roadmap
-	//update roadmap
 	
-	//add curriculum
-	//remove curriculum
-	//modify curriculum
 	
 	
 }
