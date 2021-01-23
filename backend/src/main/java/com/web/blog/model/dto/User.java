@@ -8,13 +8,13 @@ public class User {
 	private String createDate;
 	private String image;
 	private Keyword keyword;
-
+	//다른 dto를 여기에 넣어도 문제가 없을까요??
 	
 	public User() {
 		super();
 	}
 
-	public User(String uid, String password, String email, String name, String createDate, String image,
+	public User(int uid, String password, String email, String name, String createDate, String image,
 			Keyword keyword) {
 		super();
 		this.uid = uid;
@@ -26,11 +26,11 @@ public class User {
 		this.keyword = keyword;
 	}
 
-	public String getUid() {
+	public int getUid() {
 		return uid;
 	}
 
-	public void setUid(String uid) {
+	public void setUid(int uid) {
 		this.uid = uid;
 	}
 

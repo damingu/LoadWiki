@@ -3,7 +3,7 @@ package com.web.blog.model.dto;
 import java.util.List;
 
 public class Keyword {
-	List<String> words;
+	private List<String> words;
 
 	public Keyword() {
 		super();
