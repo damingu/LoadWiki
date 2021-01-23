@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import rmap from "./rmap"
+import rmap from './rmap'
 
 export default {
   name: 'RoadMap',

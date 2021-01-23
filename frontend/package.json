@@ -20,6 +20,7 @@
     "es6-promise": "^4.1.1",
     "flatpickr": "^4.5.7",
     "fuse.js": "^3.2.0",
+    "gojs-vue": "^1.0.1",
     "google-maps": "^3.2.1",
     "i": "^0.3.6",
     "nouislider": "^12.1.0",

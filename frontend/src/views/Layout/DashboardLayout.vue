@@ -23,8 +23,8 @@
 
         <sidebar-item
               :link="{
-                name: 'Roadmap',
-                path: '/roadmap',
+                name: 'godiagram',
+                path: '/godiagram',
                 icon: 'ni ni-pin-3 text-orange'
               }">
         </sidebar-item>
