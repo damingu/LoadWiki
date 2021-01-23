@@ -1,15 +1,85 @@
 <template>
-<div style="width: 60%;text-align: left;">
-    <diagram ref='diag' :model-data='diagramData' @model-changed='modelChanged' @changed-selection='changedSelection' @text-edited="textEdited" @modified="modified" style='width:100%; height:220px'></diagram>
-    <button @click='addNode'>Add Child to Gamma</button>
-    <button @click='modifyStuff'>Modify view model data without undo</button>
-    <br/>Current Node:
-    <input v-model.lazy='currentNodeText' :disabled='currentNode === null'/>
-    <br/>The saved GoJS Model:
-    <!--<textarea style='width:100%;height:250px'>{{ savedModelText }}</textarea>-->
-    <textarea style='width:100%;height:200px' v-model="savedModelText"></textarea>
-</div>
+  <div>
+    <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
+      <!-- Card stats -->
+      <b-row>
+        <b-col xl="3" md="6">
+          <stats-card title="Total traffic"
+                      type="gradient-red"
+                      sub-title="350,897"
+                      icon="ni ni-active-40"
+                      class="mb-4">
+
+            <template slot="footer">
+              <span class="text-success mr-2">3.48%</span>
+              <span class="text-nowrap">Since last month</span>
+            </template>
+          </stats-card>
+        </b-col>
+        <b-col xl="3" md="6">
+          <stats-card title="Total traffic"
+                      type="gradient-orange"
+                      sub-title="2,356"
+                      icon="ni ni-chart-pie-35"
+                      class="mb-4">
+
+            <template slot="footer">
+              <span class="text-success mr-2">12.18%</span>
+              <span class="text-nowrap">Since last month</span>
+            </template>
+          </stats-card>
+        </b-col>
+        <b-col xl="3" md="6">
+          <stats-card title="Sales"
+                      type="gradient-green"
+                      sub-title="924"
+                      icon="ni ni-money-coins"
+                      class="mb-4">
+
+            <template slot="footer">
+              <span class="text-danger mr-2">5.72%</span>
+              <span class="text-nowrap">Since last month</span>
+            </template>
+          </stats-card>
+
+        </b-col>
+        <b-col xl="3" md="6">
+          <stats-card title="Performance"
+                      type="gradient-info"
+                      sub-title="49,65%"
+                      icon="ni ni-chart-bar-32"
+                      class="mb-4">
+
+            <template slot="footer">
+              <span class="text-success mr-2">54.8%</span>
+              <span class="text-nowrap">Since last month</span>
+            </template>
+          </stats-card>
+        </b-col>
+      </b-row>
+    </base-header>
+
+    <b-container fluid class="mt--7">
+      <b-row>
+        <b-col>
+          <b-card no-body class="border-0">
+            <div style="width: 150%; text-align: left;">
+              <diagram ref='diag' :model-data='diagramData' @model-changed='modelChanged' @changed-selection='changedSelection' @text-edited="textEdited" @modified="modified" style='width:100%; height:500px'></diagram>
+              <button @click='addNode'>Add Child to Gamma</button>
+              <button @click='modifyStuff'>Modify view model data without undo</button>
+              <br/>Current Node:
+              <input v-model.lazy='currentNodeText' :disabled='currentNode === null'/>
+              <br/>The saved GoJS Model:
+              <textarea v-model="saveModelText" style='width:100%;height:250px'></textarea>
+              <textarea style='width:100%;height:200px' v-model="savedModelText"></textarea>
+            </div>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
 </template>
+
 
 <script>
 import diagram from '../components/GoDiagramWorkflow'
@@ -154,8 +224,8 @@ export default {
             data.linkDataArray.push({ from: 2, to: this.counter2 })
             this.updateDiagramFromData()
         }
+      }
     }
-}
 </script>
 
 <style>

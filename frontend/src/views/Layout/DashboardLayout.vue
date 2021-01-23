@@ -39,8 +39,8 @@
 
         <sidebar-item
                 :link="{
-                  name: 'Tables',
-                  path: '/tables',
+                  name: 'roadmap',
+                  path: '/roadmap',
                   icon: 'ni ni-bullet-list-67 text-red'
                 }">
         </sidebar-item>

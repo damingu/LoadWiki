@@ -1,7 +1,7 @@
 <template>
     <div style='width:100%; white-space:nowrap;'>
-        <span style='border: 1px solid gray;display: inline-block; vertical-align: top; width:120px;'>
-            <div ref='myPaletteDiv' style='height: 210px;'>1111</div>
+        <span style='border: 1px solid gray;display: inline-block; vertical-align: top; width:200px;'>
+            <div ref='myPaletteDiv' style='height: 100px'>1111</div>
         </span>
         <span style='border: 1px solid gray;display: inline-block; vertical-align: top; width:40%;'>
             <div ref='myDiagramDiv' style='height: 210px'></div>
@@ -44,8 +44,8 @@ export default {
                     'TextEdited': function (e) {
                         self.$emit('text-edited', e)
                     },
-                    allowDrop: true
                 })
+        // define the Node templates for regular nodes
         myDiagram.nodeTemplateMap.add('',
             $(go.Node, 'Spot', this.nodeStyle(),
                 $(go.Panel, 'Auto',

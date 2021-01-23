@@ -42,7 +42,11 @@ const routes = [
         name: 'godiagram',
         component: () => import(/* webpackChunkName: "demo" */ '../views/useGoDiagramWorkflow.vue')
       },
-
+      {
+        path: '/roadmap',
+        name: 'roadmap',
+        component: () => import('../views/Roadmap/RoadMap.vue')
+      },
     ]
   },
   {

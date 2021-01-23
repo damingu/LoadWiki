@@ -20,6 +20,7 @@ import App from './App.vue';
 import VueMindmap from 'vue-mindmap'
 import 'vue-mindmap/dist/vue-mindmap.css'
 
+
 // router setup
 import router from './routes/router';
 // plugin setup
