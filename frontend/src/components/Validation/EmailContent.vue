@@ -15,7 +15,8 @@
       <div>
         <base-input 
           type="text" 
-          placeholder="인증번호를 입력해주세요.">
+          placeholder="인증번호를 입력해주세요."
+          v-model="inputNum">
         </base-input>
         <!-- 인증하기 누르면 
             사용자가 입력한 인증번호와 발송된 인증번호가 같은지 확인
@@ -23,7 +24,7 @@
               -> 인증완료 버튼 활성화
             2. 다르면 인증번호가 잘못되었다. 
               -> 재발송하기 버튼 활성화 & 리셋-->
-        <base-button v-show="!timeOut" class="col-4">인증하기</base-button>
+        <base-button v-show="!timeOut" class="col-4" @click="isCorrect">인증하기</base-button>
         <base-button v-show="timeOut">재발송하기</base-button>
       </div>
     </b-container>
@@ -38,14 +39,22 @@ export default {
       timeCounter: 180, // 단위는 초[sec]
       resTimeData: '03 : 00',
       timeOut: false,
-      isCorrespond: false,
+      mailNum: '123456',
+      inputNum: '',
     }
   },
   created() {
     // 3분 유효 타이머 시작
     this.start()
   },
+  watch: {
+  },
   methods: {
+    isCorrect() {
+      if (this.mailNum === this.inputNum) {
+        this.$emit('confirmSuccess')
+      } else {this.$emit('confirmFail')}
+    },
     start() {
       this.timeOut = false
       // 1초에 한 번씩 start 호출

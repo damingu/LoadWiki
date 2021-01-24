@@ -72,9 +72,9 @@
                       <!-- 만약 기존에 계정이 존재하는 이메일이라면 this email is already taken 보여주기 -->
                     </div>
                     <div class="col-3 pl-0">
-                      <!-- 인증하고 나왔을 때랑 인증하지 않고 나왔을 때 각각 다르게 emit -->
-                      <b-button v-b-modal.modal-email @click="isEmailModal = true">인증하기</b-button>
-                      <ModalEmailValidation v-if="isEmailModal" @close="isEmailModal = false"/>
+                      <ModalEmailValidation v-if="isEmailModal" @close="closeModal"/>
+                      <b-button v-b-modal.modal-email v-if="!confirmEmail" @click="isEmailModal = true">인증하기</b-button>
+                      <b-button v-if="confirmEmail" disabled>인증완료</b-button>
                     </div>
                   </div>
 
@@ -103,14 +103,17 @@
                     class="text-success font-weight-700">strong</span></small></div> -->
                   <b-row class=" my-4">
                     <b-col cols="12">
-                      <base-input :rules="{ required: { allowFalse: false } }" name=Privacy Policy>
+                      <base-input :rules="{ required: { allowFalse: false } }" name="회원약관" Policy>
                         <b-form-checkbox v-model="agree">
                           <span class="text-muted">
-                            I agree with the 
-                            <!-- b-button에 먹혀있는 hover효과 빼기 -->
-                            <b-button v-b-modal.modal-scrollable variant="link" class="m-0 p-0" @click="isPolicyModal = true">
-                              Privacy Policy
+                            <b-button 
+                              v-b-modal.modal-scrollable 
+                              variant="link" 
+                              class="m-0 p-0" 
+                              @click="isPolicyModal = true">
+                              회원 약관
                             </b-button>
+                            에 동의합니다. 
                             <ModalPolicy v-if="isPolicyModal" @close="isPolicyModal = false"/>
                           </span>
                         </b-form-checkbox>
@@ -133,7 +136,7 @@
 <script>
   import ModalEmailValidation from "@/components/Validation/ModalEmailValidation.vue";
   import ModalPolicy from '@/components/Validation/ModalPolicy.vue';
-  
+
   import { extend } from 'vee-validate';
 
   extend('password', {
@@ -159,6 +162,7 @@
         rePassword: '',
         isEmailModal: false,
         isPolicyModal: false,
+        confirmEmail: false,
         // isRepasswordEqual: false,
       }
     },
@@ -166,13 +170,12 @@
       onSubmit() {
         // this will be called only after form is valid. You can do an api call here to register users
       },
-      // isPasswordEqual() {
-      //   if (this.password.length > 0 && this.rePassword.length > 0) {
-      //     if (this.password !== this.rePassword) {
-      //       return this.isRepasswordEqual = false
-      //     } else { return this.isRepasswordEqual = true }
-      //   }
-      // },
+      closeModal(e) {
+        this.isEmailModal = false
+        if (e === true) {
+          this.confirmEmail = true
+        } else { this.confirmEmail = false}
+      },
     },
     watch: {
       password() {

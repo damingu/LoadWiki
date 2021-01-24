@@ -33,11 +33,11 @@
         </slot>
       </template>
 
-      <email-content />
+      <email-content @confirmSuccess="confirmSuccess" @confirmFail="confirmFail"/>
 
       <template v-slot:modal-footer>
         <!-- disabled속성이랑 인증확인되었는지 여부랑 v-bind해주기 -->
-        <base-button type="primary" @click="closeModal" disabled>인증완료</base-button>
+        <base-button type="primary" @click="closeModal" :disabled="!isConfirm">인증완료</base-button>
         <!-- <slot name="footer">여기는 푸터인가</slot>  -->
       </template>
 
@@ -53,6 +53,11 @@
     components: {
       SlideYUpTransition,
       EmailContent,
+    },
+    data: () => {
+      return {
+        isConfirm: false,
+      }
     },
     props: {
       show: Boolean,
@@ -110,8 +115,14 @@
     methods: {
       closeModal() {
         this.$emit("update:show", false);
-        this.$emit("close");
-      }
+        this.$emit("close", this.isConfirm);
+      },
+      confirmSuccess() {
+        this.isConfirm = true
+      },
+      confirmFail() {
+        this.isConfirm = false
+      },
     },
     watch: {
       show(val) {
