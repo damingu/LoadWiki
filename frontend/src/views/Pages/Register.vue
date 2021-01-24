@@ -133,6 +133,7 @@
 <script>
   import ModalEmailValidation from "@/components/Validation/ModalEmailValidation.vue";
   import ModalPolicy from '@/components/Validation/ModalPolicy.vue';
+  
   import { extend } from 'vee-validate';
 
   extend('password', {
