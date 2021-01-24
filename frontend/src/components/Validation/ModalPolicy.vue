@@ -159,7 +159,7 @@
       <template v-slot:modal-footer>
         <!-- disabled속성이랑 인증확인되었는지 여부랑 v-bind해주기 -->
         <!-- 동의함 누르면 체크박스 확인되게끔 -->
-        <base-button type="primary" @click="closeModal">동의함</base-button>
+        <base-button type="primary" @click="closeModal">확인</base-button>
         <!-- <slot name="footer">여기는 푸터인가</slot>  -->
       </template>
     </b-modal>

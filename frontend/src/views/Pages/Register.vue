@@ -42,7 +42,9 @@
             </b-card-header> -->
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <small>Or sign up with credentials</small>
+                <br>
+                <h1>회원가입</h1>
+                <!-- <small>Or sign up with credentials</small> -->
               </div>
               <validation-observer v-slot="{handleSubmit}" ref="formValidator">
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
@@ -53,7 +55,7 @@
                               placeholder="닉네임"
                               name="닉네임"
                               :rules="{required: true}"
-                              v-model="model.name">
+                              v-model="name">
                   </base-input>
 
                   <div class="row">
@@ -64,15 +66,15 @@
                                   placeholder="example123@ssafy.com"
                                   name="이메일"
                                   :rules="{required: true, email: true}"
-                                  v-model="model.email">
+                                  v-model="email"
+                                  >
                       </base-input>
+                      <!-- 만약 기존에 계정이 존재하는 이메일이라면 this email is already taken 보여주기 -->
                     </div>
                     <div class="col-3 pl-0">
-                      <b-button v-b-modal.modal-email>인증하기</b-button>
-                      <ModalEmailValidation/>
-                      <!-- <b-modal id="modal-1" title="BootstrapVue">
-                        <p class="my-4">Hello from modal!</p>
-                      </b-modal> -->
+                      <!-- 인증하고 나왔을 때랑 인증하지 않고 나왔을 때 각각 다르게 emit -->
+                      <b-button v-b-modal.modal-email @click="isEmailModal = true">인증하기</b-button>
+                      <ModalEmailValidation v-if="isEmailModal" @close="isEmailModal = false"/>
                     </div>
                   </div>
 
@@ -82,8 +84,9 @@
                               placeholder="비밀번호"
                               type="password"
                               name="비밀번호"
+                              vid="password"
                               :rules="{required: true, min: 8}"
-                              v-model="model.password">
+                              v-model="password">
                   </base-input>
 
                   <base-input alternative
@@ -91,30 +94,31 @@
                               prepend-icon="ni ni-lock-circle-open"
                               placeholder="비밀번호 확인"
                               type="password"
-                              name="비밀번호"
-                              :rules="{required: true, min: 8, passwordConfirmationRule}"
-                              v-model="model.rePassword">
+                              name="확인"
+                              :rules="{required: true, min: 8, password: password}"
+                              v-model="rePassword">
                   </base-input>
-                  <div class="text-muted font-italic"><small>password strength: <span
-                    class="text-success font-weight-700">strong</span></small></div>
+                  <!-- 비밀번호가 안전한가 -->
+                  <!-- <div class="text-muted font-italic"><small>password strength: <span
+                    class="text-success font-weight-700">strong</span></small></div> -->
                   <b-row class=" my-4">
                     <b-col cols="12">
                       <base-input :rules="{ required: { allowFalse: false } }" name=Privacy Policy>
-                        <b-form-checkbox v-model="model.agree">
+                        <b-form-checkbox v-model="agree">
                           <span class="text-muted">
                             I agree with the 
                             <!-- b-button에 먹혀있는 hover효과 빼기 -->
-                            <b-button v-b-modal.modal-scrollable variant="link" class="m-0 p-0">
+                            <b-button v-b-modal.modal-scrollable variant="link" class="m-0 p-0" @click="isPolicyModal = true">
                               Privacy Policy
                             </b-button>
-                            <ModalPolicy/>
+                            <ModalPolicy v-if="isPolicyModal" @close="isPolicyModal = false"/>
                           </span>
                         </b-form-checkbox>
                       </base-input>
                     </b-col>
                   </b-row>
                   <div class="text-center">
-                    <b-button type="submit" variant="primary" class="mt-4">Create account</b-button>
+                    <b-button type="submit" variant="primary" class="mt-4">회원가입하기</b-button>
                   </div>
                 </b-form>
               </validation-observer>
@@ -129,6 +133,15 @@
 <script>
   import ModalEmailValidation from "@/components/Validation/ModalEmailValidation.vue";
   import ModalPolicy from '@/components/Validation/ModalPolicy.vue';
+  import { extend } from 'vee-validate';
+
+  extend('password', {
+    params: ['target'],
+    validate(value, { target }) {
+      return value === target;
+    },
+    message: '비밀번호가 일치하지 않습니다.'
+  });
 
   export default {
     name: 'register',
@@ -138,19 +151,35 @@
     },
     data() {
       return {
-        model: {
-          name: '',
-          email: '',
-          password: '',
-          agree: false,
-          // rePassword: '',
-        }
+        name: '',
+        email: '',
+        password: '',
+        agree: false,
+        rePassword: '',
+        isEmailModal: false,
+        isPolicyModal: false,
+        // isRepasswordEqual: false,
       }
     },
     methods: {
       onSubmit() {
         // this will be called only after form is valid. You can do an api call here to register users
-      }
+      },
+      // isPasswordEqual() {
+      //   if (this.password.length > 0 && this.rePassword.length > 0) {
+      //     if (this.password !== this.rePassword) {
+      //       return this.isRepasswordEqual = false
+      //     } else { return this.isRepasswordEqual = true }
+      //   }
+      // },
+    },
+    watch: {
+      password() {
+        // isPasswordEqual()
+      },
+      rePassword() {
+        // isPasswordEqual()
+      },
     },
     // computed: {
     //   passwordConfirmationRule() {
