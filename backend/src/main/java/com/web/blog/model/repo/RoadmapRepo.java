@@ -9,5 +9,6 @@ public interface RoadmapRepo {
 	public int insert(Roadmap map);
 	public Roadmap[] selectRoadmapListByUid(int uid);
 	public Roadmap selectRoadmap(int rmid);
+	public Roadmap selectRoadmapListByRmorder(int rmorder);
 
 }

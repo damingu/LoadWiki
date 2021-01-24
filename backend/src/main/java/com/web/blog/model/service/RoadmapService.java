@@ -12,5 +12,6 @@ public interface RoadmapService {
 
 	public Object getRoadmapListByUid(String page,String uid);
 	public Object getRoadmap(String rmid);
+	public Object getRoadmapListByRmorder(String page,String rmorder);
 	
 }	

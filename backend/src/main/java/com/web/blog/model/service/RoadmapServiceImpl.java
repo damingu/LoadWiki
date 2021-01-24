@@ -55,6 +55,25 @@ public class RoadmapServiceImpl implements RoadmapService {
 		}
 		return result;
 	}
+	@Override
+	public Object getRoadmapListByRmorder(String page,String rmorder) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			int pageSt = Integer.parseInt(page) * PAGESIZE[0];
+			int pageFin = pageSt + PAGESIZE[0];
+			int rmordernum = Integer.parseInt(rmorder);
+			//페이징 적용 아직 안됨
+			result.put("roadmaps", roadmaprepo.selectRoadmapListByRmorder(rmordernum));
+			result.put("msg", "success");
+		} catch(NumberFormatException e){
+			logger.error("input data type error");
+			result.put("msg", "fail");
+		} catch(Exception e) {
+			logger.error("Something wrong");
+			result.put("msg", "fail");
+		}
+		return result;
+	}
 
 	@Override
 	public Object getRoadmap(String rmid) {
