@@ -7,15 +7,16 @@ public class User {
 	private String name;
 	private String createDate;
 	private String image;
+	private String bgImage;
+	private String address;
 	private Keyword keyword;
-	//다른 dto를 여기에 넣어도 문제가 없을까요??
 	
 	public User() {
 		super();
 	}
 
-	public User(int uid, String password, String email, String name, String createDate, String image,
-			Keyword keyword) {
+	public User(int uid, String password, String email, String name, String createDate, String image, String bgImage,
+			String address, Keyword keyword) {
 		super();
 		this.uid = uid;
 		this.password = password;
@@ -23,6 +24,8 @@ public class User {
 		this.name = name;
 		this.createDate = createDate;
 		this.image = image;
+		this.bgImage = bgImage;
+		this.address = address;
 		this.keyword = keyword;
 	}
 
@@ -74,6 +77,22 @@ public class User {
 		this.image = image;
 	}
 
+	public String getBgImage() {
+		return bgImage;
+	}
+
+	public void setBgImage(String bgImage) {
+		this.bgImage = bgImage;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public Keyword getKeyword() {
 		return keyword;
 	}
@@ -85,7 +104,8 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [uid=" + uid + ", password=" + password + ", email=" + email + ", name=" + name + ", createDate="
-				+ createDate + ", image=" + image + ", keyword=" + keyword + "]";
+				+ createDate + ", image=" + image + ", bgImage=" + bgImage + ", address=" + address + ", keyword="
+				+ keyword + "]";
 	}
 	
 }
