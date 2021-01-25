@@ -53,6 +53,8 @@ export default {
     isCorrect() {
       if (this.mailNum === this.inputNum) {
         this.$emit('confirmSuccess')
+        clearInterval(this.polling)
+        this.timeOut = true
       } else {this.$emit('confirmFail')}
     },
     start() {
