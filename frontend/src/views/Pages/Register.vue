@@ -98,7 +98,7 @@
                   <b-row class=" my-4">
                     <b-col cols="12">
                       <base-input :rules="{ required: { allowFalse: false } }" name="회원약관 동의" Policy>
-                        <b-form-checkbox>
+                        <b-form-checkbox v-model="agree">
                           <span class="text-muted">
                             <b-link 
                               v-b-modal.modal-scrollable 
@@ -108,7 +108,7 @@
                               회원 약관
                             </b-link>
                             에 동의합니다. 
-                            <ModalPolicy v-if="isPolicyModal" @close="isPolicyModal = false"/>
+                            <ModalPolicy v-if="isPolicyModal" @close="isPolicyModal = false" @accept="accept"/>
                           </span>
                         </b-form-checkbox>
                       </base-input>
@@ -158,6 +158,7 @@
         isEmailModal: false,
         isPolicyModal: false,
         confirmEmail: false,
+        agree: false,
       }
     },
     methods: {
@@ -170,6 +171,10 @@
           this.confirmEmail = true
         } else { this.confirmEmail = false}
       },
+      accept() {
+        this.isPolicyModal = false
+        this.agree = true
+      }
     },
     watch: {
       password() {
