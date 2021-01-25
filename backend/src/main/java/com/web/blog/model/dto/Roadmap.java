@@ -7,5 +7,5 @@ public class Roadmap {
 	private int rmorder;
 	private String createDate;
 	private String tmp;
-	//private List<int> 
+	//private List<Curriculum> 
 }

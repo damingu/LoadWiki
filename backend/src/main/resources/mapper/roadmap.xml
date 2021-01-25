@@ -4,17 +4,14 @@
 
 <mapper namespace="com.web.blog.model.repo.RoadmapRepo">
 
-	<select id="selectRoadmap" parameterType="int"
-		resultType="Roadmap">
+	<select id="selectRoadmap" parameterType="int" resultType="Roadmap">
 		select *
 		from roadmap
 		where rmid = #{rmid}
 	</select>
-	<select id="selectRoadmapListByUid" parameterType="int"
-		resultType="Roadmap">
-		select *
-		from roadmap
-		where uid = #{uid}
+	<select id="selectRoadmapListByUid" parameterType="map" resultType="Roadmap">
+		select * from roadmap
+		where uid = #{uid} and createDate in (select max(createDate) from roadmap group by rmorder)
 	</select>
 	<select id="selectRoadmapListByRmorder" parameterType="int"
 		resultType="Roadmap">
@@ -22,11 +19,15 @@
 		from roadmap
 		where rmorder = #{rmorder}
 	</select>
-	<insert id="insert" parameterType="Roadmap">
+	<insert id="update" parameterType="Roadmap">
 		insert
-		into roadmap(uid, name,
-		rmorder, tmp)
+		into roadmap(uid,name,rmorder, tmp)
 		values(#{uid}, #{name}, #{rmorder},#{tmp})
+	</insert>
+	<insert id="insert" parameterType="Roadmap">
+		insert into roadmap(uid,name,rmorder,tmp)
+		select #{uid},#{name}, if(isnull(max(rmorder)), 1, max(rmorder)+1) ,#{tmp}
+		from roadmap where uid = #{uid};
 	</insert>
 </mapper>
 	
