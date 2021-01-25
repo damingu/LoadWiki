@@ -26,25 +26,10 @@
       <b-row class="justify-content-center">
         <b-col lg="6" md="8" >
           <b-card no-body class="bg-secondary border-0">
-            <!-- 소셜 로그인 부분 -->
-            <!-- <b-card-header class="bg-transparent pb-5">
-              <div class="text-muted text-center mt-2 mb-4"><small>Sign up with</small></div>
-              <div class="text-center">
-                <a href="#" class="btn btn-neutral btn-icon mr-4">
-                  <span class="btn-inner--icon"><img src="img/icons/common/github.svg"></span>
-                  <span class="btn-inner--text">Github</span>
-                </a>
-                <a href="#" class="btn btn-neutral btn-icon">
-                  <span class="btn-inner--icon"><img src="img/icons/common/google.svg"></span>
-                  <span class="btn-inner--text">Google</span>
-                </a>
-              </div>
-            </b-card-header> -->
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
                 <br>
                 <h1>회원가입</h1>
-                <!-- <small>Or sign up with credentials</small> -->
               </div>
               <validation-observer v-slot="{handleSubmit}" ref="formValidator">
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
@@ -107,9 +92,9 @@
                               :rules="{required: true, min: 8, password: password}"
                               v-model="rePassword">
                   </base-input>
-                  <!-- 비밀번호가 안전한가 -->
-                  <!-- <div class="text-muted font-italic"><small>password strength: <span
-                    class="text-success font-weight-700">strong</span></small></div> -->
+                  <hr class="my-4">
+                  <part-checkboxes></part-checkboxes>
+                  <hr class="my-4">
                   <b-row class=" my-4">
                     <b-col cols="12">
                       <base-input :rules="{ required: { allowFalse: false } }" name="회원약관 동의" Policy>
@@ -145,6 +130,7 @@
 <script>
   import ModalEmailValidation from "@/components/Validation/ModalEmailValidation.vue";
   import ModalPolicy from '@/components/Validation/ModalPolicy.vue';
+  import PartCheckboxes from '@/views/Pages/Register/PartCheckboxes.vue';
 
   import { extend } from 'vee-validate';
 
@@ -161,6 +147,7 @@
     components: {
       ModalEmailValidation,
       ModalPolicy,
+      PartCheckboxes
     },
     data() {
       return {
@@ -171,7 +158,6 @@
         isEmailModal: false,
         isPolicyModal: false,
         confirmEmail: false,
-        // isRepasswordEqual: false,
       }
     },
     methods: {
