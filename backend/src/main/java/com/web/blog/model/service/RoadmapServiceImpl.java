@@ -44,7 +44,7 @@ public class RoadmapServiceImpl implements RoadmapService {
 			int pageFin = pageSt + PAGESIZE[0];
 			int uidnum = Integer.parseInt(uid);
 			//페이징 적용 아직 안됨
-			result.put("roadmaps", roadmaprepo.selectRoadmapListByUid(uidnum));
+			result.put("roadmaps", roadmaprepo.selectRoadmapListByUid(pageSt,pageFin,uidnum));
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
 			logger.error("input data type error");
@@ -63,7 +63,7 @@ public class RoadmapServiceImpl implements RoadmapService {
 			int pageFin = pageSt + PAGESIZE[0];
 			int rmordernum = Integer.parseInt(rmorder);
 			//페이징 적용 아직 안됨
-			result.put("roadmaps", roadmaprepo.selectRoadmapListByRmorder(rmordernum));
+			result.put("roadmaps", roadmaprepo.selectRoadmapListByRmorder(pageSt,pageFin,rmordernum));
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
 			logger.error("input data type error");
@@ -86,6 +86,43 @@ public class RoadmapServiceImpl implements RoadmapService {
 			logger.error("input data type error");
 			result.put("msg", "fail");
 		} catch(Exception e) {
+			logger.error("Something wrong");
+			result.put("msg", "fail");
+		}
+		return result;
+	}
+
+	@Override
+	public Object modify(Roadmap map) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			if (roadmaprepo.update(map) == 1)
+				result.put("msg", "success");
+			else
+				result.put("msg", "fail");
+		} catch (NumberFormatException e) {
+			logger.error("input data type error");
+			result.put("msg", "fail");
+		} catch (Exception e) {
+			logger.error("Something wrong");
+			result.put("msg", "fail");
+		}
+		return result;
+	}
+
+	@Override
+	public Object deleteRoadmap(String rmorder) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			int rmordernum = Integer.parseInt(rmorder);
+			if (roadmaprepo.delete(rmordernum) == 1)
+				result.put("msg", "success");
+			else
+				result.put("msg", "fail");
+		} catch (NumberFormatException e) {
+			logger.error("input data type error");
+			result.put("msg", "fail");
+		} catch (Exception e) {
 			logger.error("Something wrong");
 			result.put("msg", "fail");
 		}

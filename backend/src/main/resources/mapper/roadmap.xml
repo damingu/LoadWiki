@@ -12,12 +12,13 @@
 	<select id="selectRoadmapListByUid" parameterType="map" resultType="Roadmap">
 		select * from roadmap
 		where uid = #{uid} and createDate in (select max(createDate) from roadmap group by rmorder)
+		limit pageSt, pageFin
 	</select>
-	<select id="selectRoadmapListByRmorder" parameterType="int"
-		resultType="Roadmap">
+	<select id="selectRoadmapListByRmorder" parameterType="map" resultType="Roadmap">
 		select *
 		from roadmap
 		where rmorder = #{rmorder}
+		limit pageSt, pageFin
 	</select>
 	<insert id="update" parameterType="Roadmap">
 		insert
@@ -27,7 +28,10 @@
 	<insert id="insert" parameterType="Roadmap">
 		insert into roadmap(uid,name,rmorder,tmp)
 		select #{uid},#{name}, if(isnull(max(rmorder)), 1, max(rmorder)+1) ,#{tmp}
-		from roadmap where uid = #{uid};
+		from roadmap where uid = #{uid}
 	</insert>
+	<delete id ="delete" parameterType ="int">
+		delete from roadmap where rmorder = #{rmorder}
+	</delete>
 </mapper>
 	
