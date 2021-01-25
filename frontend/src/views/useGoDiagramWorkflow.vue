@@ -65,8 +65,10 @@
           <b-card no-body class="border-0">
             <div style="width: 100%;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
-                <div ref="myPaletteDiv" style="width: 150px; margin-right: 2px; background-color: #282c34;"></div>
-                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #282c34;"></div>
+                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #ffffff"></div>
+              </div>
+              <div class="col three" @click="updateRoadMap">				
+			          <a class="btn">로드맵 수정하기</a>			
               </div>
             </div>
           </b-card>
@@ -78,6 +80,8 @@
 
 
 <script>
+import RoadMap from '@/views/Roadmap/RoadMap'
+
 // 코드 변환 시작 
 let go = window.go
 let $ = go.GraphObject.make
@@ -91,10 +95,9 @@ export default {
           linkFromPortIdProperty: "fromPort",
           linkToPortIdProperty: "toPort",
           nodeDataArray: [
-            {"category":"Comment", "loc":"360 -10", "text":"Kookie Brittle", "key":-13},
-            {"key":-1, "category":"Start", "loc":"175 0", "text":"Start"},
-            {"key":0, "loc":"-5 75", "text":"Preheat oven to 375 F"},
-            {"key":1, "loc":"175 100", "text":"In a bowl, blend: 1 cup margarine, 1.5 teaspoon vanilla, 1 teaspoon salt"},
+            {"key":-1, "category":"Start", "loc":"175 0", "text":"웹 개발"},
+            {"key":0, "loc":"-5 75", "text":"front"},
+            {"key":1, "loc":"175 100", "text":"back"},
             {"key":2, "loc":"175 200", "text":"Gradually beat in 1 cup sugar and 2 cups sifted flour"},
             {"key":3, "loc":"175 290", "text":"Mix in 6 oz (1 cup) Nestle's Semi-Sweet Chocolate Morsels"},
             {"key":4, "loc":"175 380", "text":"Press evenly into ungreased 15x10x1 pan"},
@@ -126,8 +129,7 @@ export default {
     myDiagram = 
         $(go.Diagram, this.$refs.myDiagramDiv,
           {
-            initialContentAlignment: go.Spot.Center,      
-            "InitialAnimationStarting": this.animateFadeDown, 
+            initialContentAlignment: go.Spot.Center, 
         })
 
       // 페이지에 변화가 있을 때 title 및 save 버튼 활성화
@@ -143,7 +145,7 @@ export default {
         }
       });
 
-      // GUI 시작 
+      // GUI 시작 : node 모양 
       myDiagram.nodeTemplateMap.add("",  // the default category
         $(go.Node, "Table", this.nodeStyle(),
           // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
@@ -167,28 +169,6 @@ export default {
           this.makePort("B", go.Spot.Bottom, go.Spot.BottomSide, true, false)
         ));  
 
-      myDiagram.nodeTemplateMap.add("Conditional",
-        $(go.Node, "Table", this.nodeStyle(),
-          // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-          $(go.Panel, "Auto",
-            $(go.Shape, "Diamond",
-              { fill: "#282c34", stroke: "#00A9C9", strokeWidth: 3.5 },
-              new go.Binding("figure", "figure")),
-            $(go.TextBlock, this.textStyle(),
-              {
-                margin: 8,
-                maxSize: new go.Size(160, NaN),
-                wrap: go.TextBlock.WrapFit,
-                editable: true
-              },
-              new go.Binding("text").makeTwoWay())
-          ),
-          // four named ports, one on each side:
-          this.makePort("T", go.Spot.Top, go.Spot.Top, false, true),
-          this.makePort("L", go.Spot.Left, go.Spot.Left, true, true),
-          this.makePort("R", go.Spot.Right, go.Spot.Right, true, true),
-          this.makePort("B", go.Spot.Bottom, go.Spot.Bottom, true, false)
-        ));
 
       myDiagram.nodeTemplateMap.add("Start",
         $(go.Node, "Table", this.nodeStyle(),
@@ -298,27 +278,12 @@ export default {
       myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
       myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
 
-      console.log('309', myDiagram)
+      // 수정 없이 읽기 
+      myDiagram.isReadOnly = true ;
 
       this.load();
       
-      // 팔레트 설정 관련 코드
-      let myPalette =
-        $(go.Palette, this.$refs.myPaletteDiv, // must name or refer to the DIV HTML element
-          {
-            // Instead of the default animation, use a custom fade-down
-            "animationManager.initialAnimationStyle": go.AnimationManager.None,
-            "InitialAnimationStarting": this.animateFadeDown, // Instead, animate with this function
-  
-            nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
-            model: new go.GraphLinksModel([  // specify the contents of the Palette
-              { category: "Start", text: "Start" },
-              { text: "알고리즘 심화" },
-              { category: "Conditional", text: "???" },
-              { category: "End", text: "End" },
-              { category: "Comment", text: "Comment" }
-            ])
-          })
+
   },
   watch:{},
   computed: {},
@@ -389,6 +354,9 @@ export default {
     load() {
       // 외부 json파일 초기하면에 출력
       myDiagram.model = go.Model.fromJson(this.test);
+    },
+    updateRoadMap() {
+      this.$router.push({ name: 'roadmap' })
     }
   },
 }
