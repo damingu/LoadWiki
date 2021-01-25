@@ -8,8 +8,13 @@ import com.web.blog.model.dto.Roadmap;
 public interface RoadmapRepo {
 	public int insert(Roadmap map);
 	public int update(Roadmap map);
-	public Roadmap[] selectRoadmapListByUid(int pageSt,int pageFin,int uid);
-	public Roadmap selectRoadmap(int rmid);
-	public Roadmap selectRoadmapListByRmorder(int pageSt, int pageFin,int rmorder);
-	public int delete(int rmorder);
+
+	public int selectUidByRmid(int rmid);
+	
+	public Roadmap[] selectMyRoadmapListByUid(int page,int cnt,int uid);
+	public Roadmap[] selectOtherRoadmapListByUid(int page,int cnt,int uid);
+	public Roadmap selectMyRoadmap(int rmid);
+	public Roadmap selectOtherRoadmap(int rmid);
+	public Roadmap[] selectRoadmapListByRmorder(int page, int cnt,int rmorder,int uid);
+	public int delete(int uid,int rmorder);
 }
