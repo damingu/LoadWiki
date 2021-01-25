@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,7 +72,54 @@ public class RoadmapController {
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.NO_CONTENT);
 		}
 	}
+	@GetMapping("/log/{uid}/{page}/{rmorder}")
+	public Object listLog(@PathVariable String uid, @PathVariable String page,@PathVariable String rmorder, HttpServletRequest request) {
+		logger.trace("listLog");
+		Map<String, Object> result = new HashMap<>();
+		try {
 
+			logger.info(uid);
+			String nowuid = (String) loginServ.getData(request.getHeader("auth-token")).get("uid");
+			result = (Map<String, Object>) roadmapservice.getRoadmapListByRmorder(page, nowuid, uid, rmorder);
+			result.put("msg", SUCCESS);
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+		} catch (NumberFormatException e) {
+			logger.error("input data type error");
+			result.put("msg", FAIL);
+			result.put("errorMsg", e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.put("errorMsg", e.getMessage());
+			result.put("msg", FAIL);
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@GetMapping("/get/{rmid}/")
+	public Object getRoadmap(@PathVariable String rmid , HttpServletRequest request) {
+		logger.trace("getRoadmap");
+		Map<String, Object> result = new HashMap<>();
+		try {
+
+			logger.info(rmid);
+			String nowuid = (String) loginServ.getData(request.getHeader("auth-token")).get("uid");
+			result = (Map<String, Object>) roadmapservice.getRoadmap(nowuid, rmid);
+			result.put("msg", SUCCESS);
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+		} catch (NumberFormatException e) {
+			logger.error("input data type error");
+			result.put("msg", FAIL);
+			result.put("errorMsg", e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.put("errorMsg", e.getMessage());
+			result.put("msg", FAIL);
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.NO_CONTENT);
+		}
+	}
+			
 	@PostMapping("/create")
 	public Object createRoadmap(@RequestBody Roadmap roadmap, HttpServletRequest request) {
 		logger.trace("createRoadmap");
@@ -106,6 +154,29 @@ public class RoadmapController {
 			String nowuid = (String) loginServ.getData(request.getHeader("auth-token")).get("uid");
 			result = (Map<String, Object>) roadmapservice.modify(nowuid,roadmap);
 			
+			result.put("msg", SUCCESS);
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+		} catch (NumberFormatException e) {
+			logger.error("input data type error");
+			result.put("msg", FAIL);
+			result.put("errorMsg", e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.IM_USED);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.put("errorMsg", e.getMessage());
+			result.put("msg", FAIL);
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.NOT_FOUND);
+		}
+	}
+	@DeleteMapping("/delete/{uid}/{rmorder}")
+	public Object deleteRoadmap(@PathVariable String uid,@PathVariable String rmorder, HttpServletRequest request) {
+		logger.trace("delete");
+		Map<String, Object> result = new HashMap<>();
+		
+		try {
+			logger.info(uid + " " + rmorder);
+			String nowuid = (String) loginServ.getData(request.getHeader("auth-token")).get("uid");
+			result = (Map<String, Object>) roadmapservice.deleteRoadmap(nowuid,uid,rmorder);
 			result.put("msg", SUCCESS);
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 		} catch (NumberFormatException e) {

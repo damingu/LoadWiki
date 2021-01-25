@@ -66,6 +66,12 @@ public class Roadmap {
 	public void setPermission(int permission) {
 		this.permission = permission;
 	}
+
+	@Override
+	public String toString() {
+		return "Roadmap [rmid=" + rmid + ", uid=" + uid + ", name=" + name + ", rmorder=" + rmorder + ", createDate="
+				+ createDate + ", tmp=" + tmp + ", permission=" + permission + "]";
+	}
 	
 	
 }
