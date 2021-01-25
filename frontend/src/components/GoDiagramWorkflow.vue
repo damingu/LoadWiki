@@ -103,7 +103,7 @@ export default {
                     new go.Binding('visible', 'visible').makeTwoWay(),
                     $(go.Shape, // the label shape
                         {fill: $(go.Brush, 'Radial', { 0: 'rgb(240, 240, 240)', 0.3: 'rgb(240, 240, 240)', 1: 'rgba(240, 240, 240, 0)' }), stroke: null}),
-                    $(go.TextBlock, 'Yes', // the label
+                    $(go.TextBlock, // the label
                         {
                             textAlign: 'center',
                             font: '10pt helvetica, arial, sans-serif',
