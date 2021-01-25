@@ -67,6 +67,15 @@
                                   name="이메일"
                                   :rules="{required: true, email: true}"
                                   v-model="email"
+                                  v-if="!confirmEmail"
+                                  >
+                      </base-input>
+                      <base-input alternative
+                                  prepend-icon="ni ni-email-83"
+                                  v-if="confirmEmail"
+                                  v-model="email"
+                                  placeholder="email"
+                                  disabled
                                   >
                       </base-input>
                       <!-- 만약 기존에 계정이 존재하는 이메일이라면 this email is already taken 보여주기 -->
@@ -94,7 +103,7 @@
                               prepend-icon="ni ni-lock-circle-open"
                               placeholder="비밀번호 확인"
                               type="password"
-                              name="확인"
+                              name="비밀번호 확인"
                               :rules="{required: true, min: 8, password: password}"
                               v-model="rePassword">
                   </base-input>
@@ -103,16 +112,16 @@
                     class="text-success font-weight-700">strong</span></small></div> -->
                   <b-row class=" my-4">
                     <b-col cols="12">
-                      <base-input :rules="{ required: { allowFalse: false } }" name="회원약관" Policy>
-                        <b-form-checkbox v-model="agree">
+                      <base-input :rules="{ required: { allowFalse: false } }" name="회원약관 동의" Policy>
+                        <b-form-checkbox>
                           <span class="text-muted">
-                            <b-button 
+                            <b-link 
                               v-b-modal.modal-scrollable 
                               variant="link" 
                               class="m-0 p-0" 
                               @click="isPolicyModal = true">
                               회원 약관
-                            </b-button>
+                            </b-link>
                             에 동의합니다. 
                             <ModalPolicy v-if="isPolicyModal" @close="isPolicyModal = false"/>
                           </span>
@@ -158,7 +167,6 @@
         name: '',
         email: '',
         password: '',
-        agree: false,
         rePassword: '',
         isEmailModal: false,
         isPolicyModal: false,

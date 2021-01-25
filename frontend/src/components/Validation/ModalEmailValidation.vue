@@ -119,9 +119,11 @@
       },
       confirmSuccess() {
         this.isConfirm = true
+        alert('인증에 성공했습니다.')
       },
       confirmFail() {
         this.isConfirm = false
+        alert('인증에 실패했습니다.')
       },
     },
     watch: {

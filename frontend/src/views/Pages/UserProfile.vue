@@ -9,7 +9,9 @@
         <b-container fluid class="d-flex align-items-center">
           <b-row >
             <b-col lg="7" md="10">
+              <!-- 닉네임 들어갈 부분 -->
               <h1 class="display-2 text-white">Hello Jesse</h1>
+              <!-- 한줄 소개 들어갈 부분 -->
               <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your
                 work and manage your projects or assigned tasks</p>
               <a href="#!" class="btn btn-info">Edit profile</a>
