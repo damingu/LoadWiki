@@ -174,7 +174,10 @@
       accept() {
         this.isPolicyModal = false
         this.agree = true
-      }
+      },
+      signUp() {
+        // 인풋이 다 안채워지면 회원가입 버튼이 비활성화되게 로직 추가
+      },
     },
     watch: {
       password() {
