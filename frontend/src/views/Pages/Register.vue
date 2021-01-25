@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- register -->
     <!-- Header -->
     <div class="header bg-gradient-success py-7 py-lg-8 pt-lg-9">
       <b-container class="container">
