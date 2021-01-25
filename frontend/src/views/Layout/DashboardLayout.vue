@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <notifications></notifications>
-    <side-bar>
+    <side-bar v-if="isHeader">
       <template slot="links">
         <sidebar-item
           :link="{
@@ -128,17 +128,43 @@
       DashboardContent,
       FadeTransition
     },
+    created() {
+      let url = this.$route.name;
+      this.checkUrl(url)
+    },
+    data() {
+      return {
+        isHeader: true,
+      }
+    },
     methods: {
       initScrollbar() {
         let isWindows = navigator.platform.startsWith('Win');
         if (isWindows) {
           initScrollbar('sidenav');
         }
+      },
+      // 특정 컴포넌트에서 nav바 제거
+      checkUrl(url) {
+        let array = [
+          'roadmap'
+        ];
+
+        let isHeader = true;
+        array.map((path) => {
+          if (url === path) isHeader = false;
+        })
+        this.isHeader = isHeader
       }
     },
     mounted() {
       this.initScrollbar()
-    }
+    },
+    watch: {
+      $route(to) {
+        this.checkUrl(to.name)
+      },
+    },
   };
 </script>
 <style lang="scss">
