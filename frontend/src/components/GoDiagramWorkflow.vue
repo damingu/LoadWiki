@@ -11,7 +11,6 @@
 
 
 <script>
-
 let go = window.go
 let $ = go.GraphObject.make
 
@@ -24,10 +23,12 @@ export default {
         }
     },
     mounted () {
+        // 다이어그램 모델 정의
         let self = this
         let myDiagram =
             $(go.Diagram, this.$refs.myDiagramDiv,
                 {
+                    // 시작 정렬 option
                     initialContentAlignment: go.Spot.Center,
                     // layout: $(go.TreeLayout, {angle: 90, arrangement: go.TreeLayout.ArrangementHorizontal}),
                     'undoManager.isEnabled': true,
@@ -45,7 +46,9 @@ export default {
                         self.$emit('text-edited', e)
                     },
                 })
+
         // define the Node templates for regular nodes
+        // 노드 정의
         myDiagram.nodeTemplateMap.add('',
             $(go.Node, 'Spot', this.nodeStyle(),
                 $(go.Panel, 'Auto',
@@ -69,6 +72,8 @@ export default {
                 this.makePort('R', go.Spot.Right, true, true),
                 this.makePort('B', go.Spot.Bottom, true, false)
             ))
+
+        // 링크 정의
         myDiagram.linkTemplate =
             $(go.Link,
                 $(go.TextBlock, // this is a Link label
@@ -113,6 +118,8 @@ export default {
                         new go.Binding('text').makeTwoWay())
                 )
             )
+
+        // 팔레트 정의
         let myPalette =
             $(go.Palette, this.$refs.myPaletteDiv, // must name or refer to the DIV HTML element
                 {
@@ -125,6 +132,8 @@ export default {
                         {category: 'End', text: 'End'}
                     ])
                 })
+
+        // data에 myDiagram 객체 저장
         console.log(myPalette)
         this.diagram = myDiagram
         this.updateModel(this.modelData)
@@ -138,6 +147,8 @@ export default {
     },
     computed: {},
     methods: {
+
+        // 링크만들기 함수
         makePort (name, spot, output, input) {
             return $(go.Shape, 'Circle',
                 {
@@ -154,6 +165,7 @@ export default {
                     cursor: 'pointer' // show a different cursor to indicate potential link point
                 })
         },
+        // 노드 스타일 주는 함수
         nodeStyle () {
             return [
                 new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
@@ -168,6 +180,7 @@ export default {
                 }
             ]
         },
+        // 포트 보여주기 함수
         showPorts (node, show) {
             let diagram = node.diagram
             if (!diagram || diagram.isReadOnly || !diagram.allowLink) return

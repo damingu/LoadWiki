@@ -64,6 +64,7 @@
         <b-col>
           <b-card no-body class="border-0">
             <div style="width: 150%; text-align: left;">
+              <!-- 로드맵 다이어 그램 -->
               <diagram ref='diag' :model-data='diagramData' @model-changed='modelChanged' @changed-selection='changedSelection' @text-edited="textEdited" @modified="modified" style='width:100%; height:500px'></diagram>
               <button @click='addNode'>Add Child to Gamma</button>
               <button @click='modifyStuff'>Modify view model data without undo</button>

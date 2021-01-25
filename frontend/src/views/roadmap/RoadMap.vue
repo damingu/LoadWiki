@@ -2,61 +2,7 @@
   <div>
     <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
       <!-- Card stats -->
-      <b-row>
-        <b-col xl="3" md="6">
-          <stats-card title="Total traffic"
-                      type="gradient-red"
-                      sub-title="350,897"
-                      icon="ni ni-active-40"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">3.48%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Total traffic"
-                      type="gradient-orange"
-                      sub-title="2,356"
-                      icon="ni ni-chart-pie-35"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">12.18%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Sales"
-                      type="gradient-green"
-                      sub-title="924"
-                      icon="ni ni-money-coins"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-danger mr-2">5.72%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Performance"
-                      type="gradient-info"
-                      sub-title="49,65%"
-                      icon="ni ni-chart-bar-32"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">54.8%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
-      </b-row>
+      
     </base-header>
 
     <b-container fluid class="mt--7">
@@ -79,10 +25,52 @@
 <script>
 export default {
   name: '',
-  mounted: {
-    init() {
-      
+  data() {
+    return {
+      nodeDataArray: [
+        { key: "Alpha", color: "lime", size: 10 },
+        { key: "Beta", color: "cyan" },
+        { key: "Zeta", isGroup: true },
+        { key: "Delta", color: "pick", group: "Zeta" },
+        { key: "Gamma", color: "marron", group: "Zeta" }
+      ],
+      linkDataArray: [
+        { to: "Beta", from: "Alpha", color: "red" },
+        { from: "Alpha", to: "Zeta" }
+      ]
     }
+  },
+  mounted() {
+    this.init()  
+  },
+  created: {
+  },
+  methods: {
+    init () {
+      const $ = go.GraphObject.make;
+      const myDiagram = $(go.Diagram, "myDiagramDiv");
+      myDiagram.model = new go.GraphLinksModel(this.nodeDataArray, this.linkDataArray)
+      myDiagram.nodeTemplate = 
+        $(go.Node, "Auto",
+          $(go.Shape, "RoundedRectangle", { fill: "white"},
+            new go.Binding("fill", "color")
+          ),
+          $(go.TextBlock, "text", { margin: 20 },
+            new go.Binding("text", "key"),
+            new go.Binding("margin", "size")
+          )  
+        )
+      console.log('hi')
+      myDiagram.linkTemplate = 
+        $(go.Link,
+          $(go.Shape, { strokeWidth: 3 },
+            new go.Binding("stroke", "color")  
+          ),
+          $(go.Shape, { toArrow: "Standard", stroke: null},
+            new go.Binding("fill", "color")
+          ),
+      )
+    } 
   }
 }
 </script>
