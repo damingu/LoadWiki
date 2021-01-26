@@ -24,12 +24,12 @@
 	
 	<select id="selectMyRoadmapListByUid" parameterType="map" resultType="Roadmap">
 		select * from roadmap
-		where uid = #{uid} and createDate in (select max(createDate) from roadmap group by uid,rmorder)
+		where uid = #{uid} and createDate in (select max(createDate) from roadmap group by rmorder)
 		limit #{pageSt}, #{cnt}
 	</select>
 	<select id="selectOtherRoadmapListByUid" parameterType="map" resultType="Roadmap">
 		select * from roadmap
-		where uid = #{uid} and permission = 1 and createDate in (select max(createDate) from roadmap group by uid,rmorder)
+		where uid = #{uid} and permission = 1 and createDate in (select max(createDate) from roadmap group by rmorder)
 		limit #{pageSt}, #{cnt}
 	</select>
 	

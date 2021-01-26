@@ -150,7 +150,7 @@ export default {
           // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
           $(go.Panel, "Auto",
             $(go.Shape, "Rectangle",
-              { fill: "#282c34", stroke: "#00A9C9", strokeWidth: 3.5 },
+              { fill: "#87B0C4", stroke: "#AA8A71", strokeWidth: 2.8 },
               new go.Binding("figure", "figure")),
             $(go.TextBlock, this.textStyle(),
               {
@@ -245,8 +245,8 @@ export default {
           reshapable: true,
           resegmentable: true,
           // mouse-overs subtly highlight links:
-          mouseEnter: function(e, link) { link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)"; },
-          mouseLeave: function(e, link) { link.findObject("HIGHLIGHT").stroke = "transparent"; },
+          // mouseEnter: function(e, link) { link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)"; },
+          // mouseLeave: function(e, link) { link.findObject("HIGHLIGHT").stroke = "transparent"; },
           selectionAdorned: false
         },
         new go.Binding("points").makeTwoWay(),
@@ -281,7 +281,12 @@ export default {
       myDiagram.isReadOnly = true ;
 
       this.load();
-      
+
+      // canvas 내의 node 요소 잡기 
+      myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
+      console.log(e.subject.part.data.key);
+      console.log(e.subject.part.data.text);
+});
 
   },
   watch:{},
@@ -334,7 +339,7 @@ export default {
       if (label !== null) label.visible = (e.subject.fromNode.data.category === "Conditional");
     },
     
-    //이것은 위쪽이 아닌 아래쪽에서 페이드 인 된다는 점을 제외하면 기본 애니메이션을 다시 구현 한 것입니다.
+    // 로드될때 위에서 아래로 올라오는 애니메이션 
     animateFadeDown(e) {
       var diagram = e.diagram; 
       var animation = new go.Animation();
@@ -347,16 +352,15 @@ export default {
       animation.start();
     },
 
-    save(e) {
-      console.log(e)
-    },
+    // 외부 json파일 초기하면에 출력
     load() {
-      // 외부 json파일 초기하면에 출력
       myDiagram.model = go.Model.fromJson(this.test);
     },
+    // 로드맵 수정버튼 
     updateRoadMap() {
       this.$router.push({ name: 'roadmap' })
-    }
+    },
+    
   },
 }
 </script>
