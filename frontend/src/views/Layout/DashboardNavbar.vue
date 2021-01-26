@@ -3,6 +3,7 @@
     container-classes="container-fluid"
     class="navbar-top navbar-expand"
     :class="{'navbar-dark': type === 'default'}"
+    v-if="isHeader"
   >
     <a href="#" aria-current="page" class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block active router-link-active"> {{$route.name}} </a>
     <!-- Navbar links -->
@@ -93,19 +94,29 @@ export default {
       description: 'Look of the dashboard navbar. Default (Green) or light (gray)'
     }
   },
-  computed: {
-    routeName() {
-      const { name } = this.$route;
-      return this.capitalizeFirstLetter(name);
-    }
+  created() {
+    let url = this.$route.name
+    this.checkUrl(url)
   },
   data() {
     return {
       activeNotifications: false,
       showMenu: false,
       searchModalVisible: false,
-      searchQuery: ''
+      searchQuery: '',
+      isHeader: true,
     };
+  },
+  computed: {
+    routeName() {
+      const { name } = this.$route;
+      return this.capitalizeFirstLetter(name);
+    }
+  },
+  watch: {
+    $route(to) {
+      this.checkUrl(to.name)
+    },
   },
   methods: {
     capitalizeFirstLetter(string) {
@@ -116,6 +127,17 @@ export default {
     },
     closeDropDown() {
       this.activeNotifications = false;
+    },
+    checkUrl(url) {
+        let array = [
+          'roadmap'
+        ];
+
+        let isHeader = true;
+        array.map((path) => {
+          if (url === path) isHeader = false;
+        })
+        this.isHeader = isHeader
     }
   }
 };

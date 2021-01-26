@@ -3,21 +3,41 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.web.blog.model.repo.RoadmapRepo">
+	
+	<select id="selectUidByRmid" parameterType="int" resultType="int">
+		select uid
+		from roadmap
+		where rmid = #{rmid}
+	</select>
 
-	<select id="selectRoadmap" parameterType="int" resultType="Roadmap">
+	<!-- 	permission  0:private 1 : public -->
+	<select id="selectMyRoadmap" parameterType="int" resultType="Roadmap">
 		select *
 		from roadmap
 		where rmid = #{rmid}
 	</select>
-	<select id="selectRoadmapListByUid" parameterType="map" resultType="Roadmap">
-		select * from roadmap
-		where uid = #{uid} and createDate in (select max(createDate) from roadmap group by rmorder)
-	</select>
-	<select id="selectRoadmapListByRmorder" parameterType="int"
-		resultType="Roadmap">
+	<select id="selectOtherRoadmap" parameterType="int" resultType="Roadmap">
 		select *
 		from roadmap
-		where rmorder = #{rmorder}
+		where rmid = #{rmid} and permission = 1
+	</select>
+	
+	<select id="selectMyRoadmapListByUid" parameterType="map" resultType="Roadmap">
+		select * from roadmap
+		where uid = #{uid} and createDate in (select max(createDate) from roadmap group by rmorder)
+		limit #{pageSt}, #{cnt}
+	</select>
+	<select id="selectOtherRoadmapListByUid" parameterType="map" resultType="Roadmap">
+		select * from roadmap
+		where uid = #{uid} and permission = 1 and createDate in (select max(createDate) from roadmap group by rmorder)
+		limit #{pageSt}, #{cnt}
+	</select>
+	
+	<select id="selectRoadmapListByRmorder" parameterType="map" resultType="Roadmap">
+		select *
+		from roadmap
+		where uid = #{uid} and rmorder = #{rmorder}
+		limit #{pageSt}, #{cnt}
 	</select>
 	<insert id="update" parameterType="Roadmap">
 		insert
@@ -27,7 +47,10 @@
 	<insert id="insert" parameterType="Roadmap">
 		insert into roadmap(uid,name,rmorder,tmp)
 		select #{uid},#{name}, if(isnull(max(rmorder)), 1, max(rmorder)+1) ,#{tmp}
-		from roadmap where uid = #{uid};
+		from roadmap where uid = #{uid}
 	</insert>
+	<delete id ="delete" parameterType ="map">
+		delete from roadmap where rmorder = #{rmorder} and uid = #{uid}
+	</delete>
 </mapper>
 	

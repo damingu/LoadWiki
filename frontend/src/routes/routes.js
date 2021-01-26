@@ -36,7 +36,17 @@ const routes = [
         path: '/tables',
         name: 'tables',
         component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue')
-      }
+      },
+      {
+        path: '/godiagram',
+        name: 'godiagram',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/useGoDiagramWorkflow.vue')
+      },
+      {
+        path: '/roadmap',
+        name: 'roadmap',
+        component: () => import('../views/Roadmap/RoadMap.vue')
+      },
     ]
   },
   {
