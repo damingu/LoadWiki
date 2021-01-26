@@ -5,6 +5,7 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL;
+// console.log(SERVER_URL)
 
 export default new Vuex.Store({
   state: {

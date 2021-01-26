@@ -85,7 +85,7 @@ public class RoadmapController {
 		return new ResponseEntity<Map<String, Object>>(result, status);
 	}
 	
-	@GetMapping("/get/{rmid}/")
+	@GetMapping("/get/{rmid}")
 	public Object getRoadmap(@PathVariable String rmid , HttpServletRequest request) {
 		logger.trace("getRoadmap start");
 		Map<String, Object> result = new HashMap<>();
