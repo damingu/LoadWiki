@@ -45,7 +45,7 @@ public class RoadmapServiceImpl implements RoadmapService {
 	public Object getRoadmapListByUid(String page, String nowuid, String uid) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			int pageSt = Integer.parseInt(page) * PAGESIZE[0];
+			int pageSt = (Integer.parseInt(page)-1) * PAGESIZE[0];
 			int uidnum = Integer.parseInt(uid);
 			int nowuidnum = Integer.parseInt(nowuid);
 			
@@ -59,6 +59,7 @@ public class RoadmapServiceImpl implements RoadmapService {
 			result.put("msg", "fail");
 		} catch (Exception e) {
 			logger.error("Something wrong");
+			logger.error(e.getMessage());
 			result.put("msg", "fail");
 		}
 		return result;
@@ -70,7 +71,7 @@ public class RoadmapServiceImpl implements RoadmapService {
 		try {
 			int uidnum = Integer.parseInt(uid);
 			int nowuidnum = Integer.parseInt(nowuid);
-			int pageSt = Integer.parseInt(page) * PAGESIZE[0];
+			int pageSt = (Integer.parseInt(page)-1) * PAGESIZE[0];
 			int rmordernum = Integer.parseInt(rmorder);
 			
 			if (uidnum != nowuidnum) 

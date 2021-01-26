@@ -36,25 +36,11 @@ public class RoadmapController {
 	@Autowired
 	LoginServiceImpl loginServ;
 
-	// 로드맵 리스트 가져오기 uid, rmorder,
-	// 로드맵 하나 가져오기 rmid
-	// 로드맵 최초 생성
-	// 로드맵 업데이트 생성
-	// 로드맵 삭제
-
-//	@GetMapping("/roadmapuid")
-//	public Object getroadmapuid() {
-//		logger.trace("getInfo");
-//		String email = (String) loginServ.getData(request.getHeader("auth-token")).get("email");
-//		return null;
-//	}
-//	공개 비공개 문제
 	@GetMapping("/list/{uid}/{page}")
 	public Object listRoadmap(@PathVariable String uid, @PathVariable String page, HttpServletRequest request) {
 		logger.trace("listRoadmap");
 		Map<String, Object> result = new HashMap<>();
 		try {
-
 			logger.info(uid);
 			String nowuid = (String) loginServ.getData(request.getHeader("auth-token")).get("uid");
 			result = (Map<String, Object>) roadmapservice.getRoadmapListByUid(page, nowuid, uid);
@@ -77,7 +63,6 @@ public class RoadmapController {
 		logger.trace("listLog");
 		Map<String, Object> result = new HashMap<>();
 		try {
-
 			logger.info(uid);
 			String nowuid = (String) loginServ.getData(request.getHeader("auth-token")).get("uid");
 			result = (Map<String, Object>) roadmapservice.getRoadmapListByRmorder(page, nowuid, uid, rmorder);
