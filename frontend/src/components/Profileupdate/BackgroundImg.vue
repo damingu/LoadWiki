@@ -4,7 +4,7 @@
 
     <b-modal v-model="modalShow" hide-footer>
       <template #modal-title>
-        <h1>프로필 업로드</h1>
+        <h1>배경화면 업로드</h1>
       </template>
       <div>
         <b-form-file
