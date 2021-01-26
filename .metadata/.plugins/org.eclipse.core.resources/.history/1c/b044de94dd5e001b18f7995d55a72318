@@ -35,7 +35,6 @@ public class LoginServiceImpl implements LoginService{
 		jwtBuilder.setSubject("login token");
 		jwtBuilder.setExpiration(new Date(System.currentTimeMillis() + expirationMin));
 		jwtBuilder.addClaims(new HashMap<String, Object>(){{
-			put("uid", user.getUid());
 			put("name", user.getName());
 			put("email", user.getEmail());
 		}});
