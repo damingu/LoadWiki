@@ -45,7 +45,8 @@ const routes = [
       {
         path: '/roadmap',
         name: 'roadmap',
-        component: () => import('../views/Roadmap/RoadMap.vue')
+        component: () => import('../views/Roadmap/RoadMap.vue'),
+        props: true
       },
       {
         path: '/tmp_board',

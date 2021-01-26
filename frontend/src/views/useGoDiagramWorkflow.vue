@@ -2,60 +2,19 @@
   <div>
     <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
       <!-- Card stats -->
-      <b-row>
-        <b-col xl="3" md="6">
-          <stats-card title="Total traffic"
-                      type="gradient-red"
-                      sub-title="350,897"
-                      icon="ni ni-active-40"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">3.48%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Total traffic"
-                      type="gradient-orange"
-                      sub-title="2,356"
-                      icon="ni ni-chart-pie-35"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">12.18%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Sales"
-                      type="gradient-green"
-                      sub-title="924"
-                      icon="ni ni-money-coins"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-danger mr-2">5.72%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Performance"
-                      type="gradient-info"
-                      sub-title="49,65%"
-                      icon="ni ni-chart-bar-32"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">54.8%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
+      <b-row >
+          <b-col xl="3" md="6" v-for="(item, index) in curriculumData" :key="index" @click="previewRoadmap(item.rmid)">  
+            <stats-card type="gradient-red"
+                        :sub-title="item.name"
+                        icon="ni ni-active-40"
+                        class="mb-4 btn" 
+                        :rmid="item.rmid">
+              <template slot="footer">
+                <span class="text-success mr-2">{{ item.createDate }}</span>
+              </template>
+            </stats-card>
+            
+          </b-col>
       </b-row>
     </base-header>
 
@@ -65,11 +24,9 @@
           <b-card no-body class="border-0">
             <div style="width: 100%;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
-                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #ffffff"></div>
+                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #2565AB"></div>
               </div>
-              <div class="col three" @click="updateRoadMap">				
-			          <a class="btn">로드맵 수정하기</a>			
-              </div>
+              <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid }}">수정하기</router-link> 
             </div>
           </b-card>
         </b-col>
@@ -77,51 +34,42 @@
     </b-container>
   </div>
 </template>
-
-
 <script>
 import RoadMap from '@/views/Roadmap/RoadMap'
+import router from '@/routes/router'
+import Dashboard from '@/views/Dashboard'
+
 
 // 코드 변환 시작 
 let go = window.go
 let $ = go.GraphObject.make
 let myDiagram;
 export default {
+  router,
   name: '',
+  componenets: {
+    RoadMap,
+    Dashboard,
+  },
   data() {
     return {
-      test: {
-          class: "go.GraphLinksModel",
-          linkFromPortIdProperty: "fromPort",
-          linkToPortIdProperty: "toPort",
-          nodeDataArray: [
-            {"key":-1, "category":"Start", "loc":"175 0", "text":"웹 개발"},
-            {"key":0, "loc":"-5 75", "text":"front"},
-            {"key":1, "loc":"175 100", "text":"back"},
-            {"key":2, "loc":"175 200", "text":"Gradually beat in 1 cup sugar and 2 cups sifted flour"},
-            {"key":3, "loc":"175 290", "text":"Mix in 6 oz (1 cup) Nestle's Semi-Sweet Chocolate Morsels"},
-            {"key":4, "loc":"175 380", "text":"Press evenly into ungreased 15x10x1 pan"},
-            {"key":5, "loc":"355 85", "text":"Finely chop 1/2 cup of your choice of nuts"},
-            {"key":6, "loc":"175 450", "text":"Sprinkle nuts on top"},
-            {"key":7, "loc":"175 515", "text":"Bake for 25 minutes and let cool"},
-            {"key":8, "loc":"175 585", "text":"Cut into rectangular grid"},
-            {"key":-2, "category":"End", "loc":"175 660", "text":"Enjoy!"}
-            ],
-          linkDataArray: [
-            {"from":1, "to":2, "fromPort":"B", "toPort":"T"},
-            {"from":2, "to":3, "fromPort":"B", "toPort":"T"},
-            {"from":3, "to":4, "fromPort":"B", "toPort":"T"},
-            {"from":4, "to":6, "fromPort":"B", "toPort":"T"},
-            {"from":6, "to":7, "fromPort":"B", "toPort":"T"},
-            {"from":7, "to":8, "fromPort":"B", "toPort":"T"},
-            {"from":8, "to":-2, "fromPort":"B", "toPort":"T"},
-            {"from":-1, "to":0, "fromPort":"B", "toPort":"T"},
-            {"from":-1, "to":1, "fromPort":"B", "toPort":"T"},
-            {"from":-1, "to":5, "fromPort":"B", "toPort":"T"},
-            {"from":5, "to":4, "fromPort":"B", "toPort":"T"},
-            {"from":0, "to":4, "fromPort":"B", "toPort":"T"}
-      ]},
+      test: '',  
+      curriculumData: [],
+      rmid: 0
     }
+  },
+  created() {
+      console.log(this.$store.getters.getServer)
+      const uid = this.$store.getters.getUid
+      // page => 차후 수정해야됨
+      const page = '1'
+      axios.get(`${this.$store.getters.getServer}/roadmap/list/${uid}/${page}`)
+        .then((res) => {
+          console.log('data', res.data)
+          this.curriculumData = res.data['roadmaps'];
+          console.log(this.curriculumData)
+        });
+    
   },
   mounted() {
     let self = this
@@ -149,8 +97,8 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
           $(go.Panel, "Auto",
-            $(go.Shape, "Rectangle",
-              { fill: "#87B0C4", stroke: "#AA8A71", strokeWidth: 2.8 },
+            $(go.Shape, "RoundedRectangle",
+              { fill: "#F0DC45", stroke: "#E6E9F0", strokeWidth:  7, strokeJoin: "round", strokeCap: "square" },
               new go.Binding("figure", "figure")),
             $(go.TextBlock, this.textStyle(),
               {
@@ -173,7 +121,7 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           $(go.Panel, "Spot",
             $(go.Shape, "Circle",
-              { desiredSize: new go.Size(70, 70), fill: "#282c34", stroke: "#09d3ac", strokeWidth: 3.5 }),
+              { desiredSize: new go.Size(70, 70), fill: "#ffffff", stroke: "#5F7044", strokeWidth: 3.5 }),
             $(go.TextBlock, "Start", this.textStyle(),
               new go.Binding("text"))
           ),
@@ -187,7 +135,7 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           $(go.Panel, "Spot",
             $(go.Shape, "Circle",
-              { desiredSize: new go.Size(60, 60), fill: "#282c34", stroke: "#DC3C00", strokeWidth: 3.5 }),
+              { desiredSize: new go.Size(60, 60), fill: "#ffffff", stroke: "#E17E23", strokeWidth: 3.5 }),
             $(go.TextBlock, "End", this.textStyle(),
               new go.Binding("text"))
           ),
@@ -215,7 +163,7 @@ export default {
         geo.spot2 = go.Spot.BottomRight;
         return geo;
       });
-
+    // 메모 GUI
     myDiagram.nodeTemplateMap.add("Comment",
       $(go.Node, "Auto", this.nodeStyle(),
         $(go.Shape, "File",
@@ -253,15 +201,15 @@ export default {
         $(go.Shape,  // the highlight shape, normally transparent
           { isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT" }),
         $(go.Shape,  // the link path shape
-          { isPanelMain: true, stroke: "gray", strokeWidth: 2 },
-          new go.Binding("stroke", "isSelected", function(sel) { return sel ? "dodgerblue" : "gray"; }).ofObject()),
+          { isPanelMain: true, stroke: "#112812", strokeWidth: 2.5 },
+          new go.Binding("stroke", "isSelected", function(sel) { return sel ? "#112812" : "#112812"; }).ofObject()),
         $(go.Shape,  // the arrowhead
-          { toArrow: "standard", strokeWidth: 0, fill: "gray" }),
+          { toArrow: "Triangle", strokeWidth: 1.5, stroke: "#002942", fill: "#002942"}),
         $(go.Panel, "Auto",  // the link label, normally not visible
           { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5 },
           new go.Binding("visible", "visible").makeTwoWay(),
           $(go.Shape, "RoundedRectangle",  // the label shape
-            { fill: "#F8F8F8", strokeWidth: 0 }),
+            { fill: "#F8F8F8", strokeWidth: 0}),
           $(go.TextBlock, "Yes",  // the label
             {
               textAlign: "center",
@@ -279,7 +227,7 @@ export default {
 
       // 수정 없이 읽기 
       myDiagram.isReadOnly = true ;
-
+      
       this.load();
 
       // canvas 내의 node 요소 잡기 
@@ -305,6 +253,7 @@ export default {
         }
       ];
     },
+    
 
     makePort(name, align, spot, output, input) {
       var horizontal = align.equals(go.Spot.Top) || align.equals(go.Spot.Bottom);
@@ -330,7 +279,7 @@ export default {
     textStyle() {
       return {
         font: "bold 11pt Lato, Helvetica, Arial, sans-serif",
-        stroke: "#F8F8F8"
+        stroke: "#000000"
       }
     },
     
@@ -351,16 +300,23 @@ export default {
       animation.add(diagram, 'opacity', 0, 1);
       animation.start();
     },
-
-    // 외부 json파일 초기하면에 출력
+    // 리스트
+    previewRoadmap(clickrmid) {
+      this.rmid = clickrmid;
+        axios.get(`${this.$store.getters.getServer}/roadmap/get/${clickrmid}`)
+        .then((res) => {
+          this.test =  JSON.parse(res.data['roadmaps'].tmp);
+          this.load();
+        });
+    },
+    // 외부 json파일 초기화면에 출력
     load() {
-      myDiagram.model = go.Model.fromJson(this.test);
+      myDiagram.model = go.Model.fromJson(this.roadmapData);
     },
     // 로드맵 수정버튼 
     updateRoadMap() {
       this.$router.push({ name: 'roadmap' })
     },
-    
   },
 }
 </script>

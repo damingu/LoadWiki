@@ -15,28 +15,61 @@ import com.web.blog.model.repo.RoadmapRepo;
 public class RoadmapServiceImpl implements RoadmapService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	final static int[] PAGESIZE = new int[] { 10 };
+
 	@Autowired
 	RoadmapRepo roadmaprepo;
 
 	@Override
-	public Object create(String nowuid,Roadmap map) {
+	public Object create(String nowuid, Roadmap map) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			int nowuidnum = Integer.parseInt(nowuid);
 			int uidnum = map.getUid();
-			if(nowuidnum != uidnum)
+			if (nowuidnum != uidnum)
 				throw new RuntimeException("wrong user");
-			
-			if (roadmaprepo.insert(map) == 1)
-				result.put("msg", "success");
-			else
-				result.put("msg", "fail");
-		} catch (NumberFormatException e) {
-			logger.error("input data type error");
-			result.put("msg", "fail");
+
+			if (roadmaprepo.insert(map) != 1)
+				throw new RuntimeException("Query wrong");
+
 		} catch (Exception e) {
-			logger.error("Something wrong");
-			result.put("msg", "fail");
+			logger.error("Service create : Something wrong");
+			throw e;
+		}
+		return result;
+	}
+
+	@Override
+	public Object modify(String nowuid, Roadmap map) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			int nowuidnum = Integer.parseInt(nowuid); 
+			if (nowuidnum != map.getUid())
+				throw new RuntimeException("wrong user");
+
+			if (roadmaprepo.update(map) != 1)
+				throw new RuntimeException("Query wrong");
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			logger.error("Service modify : Something wrong");
+		}
+		return result;
+	}
+
+	@Override
+	public Object deleteRoadmap(String nowuid, String uid, String rmorder) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			int nowuidnum = Integer.parseInt(nowuid);
+			int uidnum = Integer.parseInt(uid);
+			if (nowuidnum != uidnum)
+				throw new RuntimeException("wrong user");
+
+			int rmordernum = Integer.parseInt(rmorder);
+			if (roadmaprepo.delete(rmordernum, uidnum) != 1)
+				throw new RuntimeException("Query wrong");
+
+		} catch (Exception e) {
+			logger.error("Service deleteRoadmap : Something wrong");
 		}
 		return result;
 	}
@@ -45,22 +78,17 @@ public class RoadmapServiceImpl implements RoadmapService {
 	public Object getRoadmapListByUid(String page, String nowuid, String uid) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			int pageSt = (Integer.parseInt(page)-1) * PAGESIZE[0];
+			int pageSt = (Integer.parseInt(page) - 1) * PAGESIZE[0];
 			int uidnum = Integer.parseInt(uid);
 			int nowuidnum = Integer.parseInt(nowuid);
-			
+
 			if (nowuidnum == uidnum)
 				result.put("roadmaps", roadmaprepo.selectMyRoadmapListByUid(pageSt, PAGESIZE[0], uidnum));
 			else
 				result.put("roadmaps", roadmaprepo.selectOtherRoadmapListByUid(pageSt, PAGESIZE[0], uidnum));
 
-		} catch (NumberFormatException e) {
-			logger.error("input data type error");
-			result.put("msg", "fail");
 		} catch (Exception e) {
-			logger.error("Something wrong");
-			logger.error(e.getMessage());
-			result.put("msg", "fail");
+			logger.error("Service getRoadmapListByUid : Something wrong");
 		}
 		return result;
 	}
@@ -71,21 +99,15 @@ public class RoadmapServiceImpl implements RoadmapService {
 		try {
 			int uidnum = Integer.parseInt(uid);
 			int nowuidnum = Integer.parseInt(nowuid);
-			int pageSt = (Integer.parseInt(page)-1) * PAGESIZE[0];
+			int pageSt = (Integer.parseInt(page) - 1) * PAGESIZE[0];
 			int rmordernum = Integer.parseInt(rmorder);
-			
-			if (uidnum != nowuidnum) 
+
+			if (uidnum != nowuidnum)
 				throw new RuntimeException("wrong user");
+
 			result.put("roadmaps", roadmaprepo.selectRoadmapListByRmorder(pageSt, PAGESIZE[0], rmordernum, uidnum));
-			result.put("msg", "success");
-
-		} catch (NumberFormatException e) {
-			logger.error("input data type error");
-			result.put("msg", "fail");
 		} catch (Exception e) {
-			logger.error("Something wrong");
-			result.put("msg", "fail");
-
+			logger.error("Service getRoadmapListByRmorder : Something wrong");
 		}
 		return result;
 	}
@@ -98,68 +120,17 @@ public class RoadmapServiceImpl implements RoadmapService {
 			int uidnum = roadmaprepo.selectUidByRmid(rmidnum);
 			int nowuidnum = Integer.parseInt(nowuid);
 			Object roadmap = null;
-			
+
 			if (nowuidnum == uidnum)
 				roadmap = roadmaprepo.selectMyRoadmap(rmidnum);
 			else
 				roadmap = roadmaprepo.selectOtherRoadmap(rmidnum);
-			
-			if (roadmap != null) {
-				result.put("roadmaps", roadmap);
-				result.put("msg", "success");
-			}else
+
+			if (roadmap == null)
 				new RuntimeException("access denied");
-		} catch (NumberFormatException e) {
-			logger.error("input data type error");
-			result.put("msg", "fail");
+			result.put("roadmaps", roadmap);
 		} catch (Exception e) {
-			logger.error("Something wrong");
-			result.put("msg", "fail");
-		}
-		return result;
-	}
-
-	@Override
-	public Object modify(String nowuid,Roadmap map) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			if(Integer.parseInt(nowuid) != map.getUid())
-				throw new RuntimeException("wrong user");
-			
-			if (roadmaprepo.update(map) == 1)
-				result.put("msg", "success");
-			else
-				result.put("msg", "fail");
-		} catch (NumberFormatException e) {
-			logger.error("input data type error");
-			result.put("msg", "fail");
-		} catch (Exception e) {
-			logger.error("Something wrong");
-			result.put("msg", "fail");
-		}
-		return result;
-	}
-
-	@Override
-	public Object deleteRoadmap(String nowuid, String uid, String rmorder) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			int nowuidnum = Integer.parseInt(nowuid);
-			int uidnum = Integer.parseInt(uid);
-			if(nowuidnum != uidnum)
-				throw new RuntimeException("wrong user");
-			
-			int rmordernum = Integer.parseInt(rmorder);
-			if (roadmaprepo.delete(rmordernum,uidnum) == 1)
-				result.put("msg", "success");
-			else
-				result.put("msg", "fail");
-		} catch (NumberFormatException e) {
-			logger.error("input data type error");
-			result.put("msg", "fail");
-		} catch (Exception e) {
-			logger.error("Something wrong");
-			result.put("msg", "fail");
+			logger.error("Service getRoadmap : Something wrong");
 		}
 		return result;
 	}
