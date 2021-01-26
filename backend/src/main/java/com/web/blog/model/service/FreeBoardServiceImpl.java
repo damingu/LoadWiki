@@ -28,15 +28,15 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	final static String[] TAG = new String[] {"tag"};
 	final static int[] PAGESIZE = new int[]{10};
 	
-	public Object getPostingListAll(String page_s, String...tags) {
+	public Object getPostingListAll(String page_s, String classifier, String...tags) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			int cnt = PAGESIZE[0];
-			int page = Integer.parseInt(page_s) * cnt;
+			int page = 1 + (Integer.parseInt(page_s) - 1) * cnt;
 			if(tags.length == 0) {
-				result.put("postings", postingRepo.selectListAll(page, cnt));
+				result.put("postings", postingRepo.selectListAll(page, cnt, classifier));
 			} else {
-				result.put("postings", postingRepo.selectListAllTag(page, cnt, tags[0]));
+				result.put("postings", postingRepo.selectListAllTag(page, cnt, classifier, tags[0]));
 			}
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
@@ -49,15 +49,15 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return result;
 	}
 	
-	public Object getPostingListByName(String page_s, String name, String...tags) {
+	public Object getPostingListByName(String page_s, String classifier, String word, String...tags) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			int cnt = PAGESIZE[0];
-			int page = Integer.parseInt(page_s) * cnt;
+			int page = 1 + (Integer.parseInt(page_s) - 1) * cnt;
 			if(tags.length == 0) {
-				result.put("postings", postingRepo.selectListName(page, cnt, name));
+				result.put("postings", postingRepo.selectListName(page, cnt, classifier, word));
 			} else {
-				result.put("postings", postingRepo.selectListNameTag(page, cnt, name, tags[0]));
+				result.put("postings", postingRepo.selectListNameTag(page, cnt, classifier, word, tags[0]));
 			}
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
@@ -70,15 +70,15 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return result;
 	}
 	
-	public Object getPostingListByTitle(String page_s, String title, String...tags) {
+	public Object getPostingListByTitle(String page_s, String classifier, String word, String...tags) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			int cnt = PAGESIZE[0];
-			int page = Integer.parseInt(page_s) * cnt;
+			int page = 1 + (Integer.parseInt(page_s) - 1) * cnt;
 			if(tags.length == 0) {
-				result.put("postings", postingRepo.selectListTitle(page, cnt, title));
+				result.put("postings", postingRepo.selectListTitle(page, cnt, classifier, word));
 			} else {
-				result.put("postings", postingRepo.selectListTitleTag(page, cnt, title, tags[0]));
+				result.put("postings", postingRepo.selectListTitleTag(page, cnt, classifier, word, tags[0]));
 			}
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
@@ -91,15 +91,15 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return result;
 	}
 	
-	public Object getPostingListByContent(String page_s, String content, String...tags) {
+	public Object getPostingListByContent(String page_s, String classifier, String word, String...tags) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			int cnt = PAGESIZE[0];
-			int page = Integer.parseInt(page_s) * cnt;
+			int page = 1 + (Integer.parseInt(page_s) - 1) * cnt;
 			if(tags.length == 0) {
-				result.put("postings", postingRepo.selectListContent(page, cnt, content));
+				result.put("postings", postingRepo.selectListContent(page, cnt, classifier, word));
 			} else {
-				result.put("postings", postingRepo.selectListContentTag(page, cnt, content, tags[0]));
+				result.put("postings", postingRepo.selectListContentTag(page, cnt, classifier, word, tags[0]));
 			}
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
