@@ -46,18 +46,30 @@
         </sidebar-item>
 
         <sidebar-item
+                :link="{
+                  name: 'Tables',
+                  path: '/tables',
+                  icon: 'ni ni-bullet-list-67 text-red'
+                }">
+        </sidebar-item>
+
+        <sidebar-item
                   :link="{
                     name: 'Login',
                     path: '/login',
                     icon: 'ni ni-key-25 text-info'
-                  }">
+                  }"
+                  v-if="!getAccessToken"
+                  >
         </sidebar-item>
         <sidebar-item
                   :link="{
                     name: 'Register',
                     path: '/register',
                     icon: 'ni ni-circle-08 text-pink'
-                  }">
+                  }"
+                  v-if="!getAccessToken"
+                  >
         </sidebar-item>
       </template>
 
@@ -120,6 +132,8 @@
   import ContentFooter from './ContentFooter.vue';
   import DashboardContent from './Content.vue';
   import { FadeTransition } from 'vue2-transitions';
+  import { mapGetters } from 'vuex'
+
 
   export default {
     components: {
@@ -164,6 +178,10 @@
       $route(to) {
         this.checkUrl(to.name)
       },
+    },
+    computed: {
+      ...mapGetters(['getAccessToken'])
+
     },
   };
 </script>

@@ -3,7 +3,7 @@
         <b-card-header class="bg-transparent border-0">
             <h3 class="mb-0 text-white">Dark table</h3>
         </b-card-header>
-
+<!-- 
         <el-table class="table-responsive table table-dark"
                   header-row-class-name="thead-dark"
                   :data="projects">
@@ -70,7 +70,7 @@
                     </div>
                 </template>
             </el-table-column>
-        </el-table>
+        </el-table> -->
 
     </b-card>
 </template>
