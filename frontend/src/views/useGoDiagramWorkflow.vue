@@ -311,7 +311,7 @@ export default {
     },
     // 외부 json파일 초기화면에 출력
     load() {
-      myDiagram.model = go.Model.fromJson(this.test);
+      myDiagram.model = go.Model.fromJson(this.roadmapData);
     },
     // 로드맵 수정버튼 
     updateRoadMap() {
