@@ -53,7 +53,7 @@
                 }">
         </sidebar-item>
 
-        <sidebar-item
+        <!-- <sidebar-item
                   :link="{
                     name: 'Login',
                     path: '/login',
@@ -61,7 +61,15 @@
                   }"
                   v-if="!getAccessToken"
                   >
-        </sidebar-item>
+        </sidebar-item> -->
+        <div class="ml-5">
+          <LoginContent v-if="!getAccessToken"/>
+        </div>
+
+        <div class="ml-5">
+          <LogoutContent v-if="getAccessToken"/>
+        </div>
+
         <sidebar-item
                   :link="{
                     name: 'Register',
@@ -112,6 +120,9 @@
   /* eslint-disable no-new */
   import PerfectScrollbar from 'perfect-scrollbar';
   import 'perfect-scrollbar/css/perfect-scrollbar.css';
+  import LoginContent from '@/components/Login/LoginContent.vue';
+  import LogoutContent from '@/components/Logout/LogoutContent.vue';
+
 
   function hasElement(className) {
     return document.getElementsByClassName(className).length > 0;
@@ -140,7 +151,10 @@
       DashboardNavbar,
       ContentFooter,
       DashboardContent,
-      FadeTransition
+      FadeTransition,
+      LoginContent,
+      LogoutContent,
+
     },
     created() {
       let url = this.$route.name;
