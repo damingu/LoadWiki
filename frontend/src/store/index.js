@@ -71,7 +71,8 @@ export default new Vuex.Store({
       return axios
         .post(`${SERVER_URL}/user/login`, user)
         .then((response) => {
-            context.commit("LOGIN", response.data);
+          console.log(response.data)
+          context.commit("LOGIN", response.data);
           if(`${response.data["authorizationToken"]}` == "undefined") reject();
           axios.defaults.headers.common["auth-token"] = `${response.data["authorizationToken"]}`;
           sessionStorage.setItem('auth-token', `${response.data["authorizationToken"]}`)

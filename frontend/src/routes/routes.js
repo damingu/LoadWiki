@@ -48,6 +48,11 @@ const routes = [
         component: () => import('../views/Roadmap/RoadMap.vue'),
         props: true
       },
+      {
+        path: '/tmp_board',
+        name: 'tmp_board',
+        component: () => import('../views/Board/Board.vue')
+      },
     ]
   },
   {
