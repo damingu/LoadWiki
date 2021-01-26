@@ -65,7 +65,7 @@
           <b-card no-body class="border-0">
             <div style="width: 100%;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
-                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #ffffff"></div>
+                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #2565AB"></div>
               </div>
               <div class="col three" @click="updateRoadMap">				
 			          <a class="btn">로드맵 수정하기</a>			
@@ -149,8 +149,8 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
           $(go.Panel, "Auto",
-            $(go.Shape, "Rectangle",
-              { fill: "#87B0C4", stroke: "#AA8A71", strokeWidth: 2.8 },
+            $(go.Shape, "RoundedRectangle",
+              { fill: "#F0DC45", stroke: "#E6E9F0", strokeWidth:  7, strokeJoin: "round", strokeCap: "square" },
               new go.Binding("figure", "figure")),
             $(go.TextBlock, this.textStyle(),
               {
@@ -173,7 +173,7 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           $(go.Panel, "Spot",
             $(go.Shape, "Circle",
-              { desiredSize: new go.Size(70, 70), fill: "#282c34", stroke: "#09d3ac", strokeWidth: 3.5 }),
+              { desiredSize: new go.Size(70, 70), fill: "#ffffff", stroke: "#5F7044", strokeWidth: 3.5 }),
             $(go.TextBlock, "Start", this.textStyle(),
               new go.Binding("text"))
           ),
@@ -187,7 +187,7 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           $(go.Panel, "Spot",
             $(go.Shape, "Circle",
-              { desiredSize: new go.Size(60, 60), fill: "#282c34", stroke: "#DC3C00", strokeWidth: 3.5 }),
+              { desiredSize: new go.Size(60, 60), fill: "#ffffff", stroke: "#E17E23", strokeWidth: 3.5 }),
             $(go.TextBlock, "End", this.textStyle(),
               new go.Binding("text"))
           ),
@@ -215,7 +215,7 @@ export default {
         geo.spot2 = go.Spot.BottomRight;
         return geo;
       });
-
+    // 메모 GUI
     myDiagram.nodeTemplateMap.add("Comment",
       $(go.Node, "Auto", this.nodeStyle(),
         $(go.Shape, "File",
@@ -253,15 +253,15 @@ export default {
         $(go.Shape,  // the highlight shape, normally transparent
           { isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT" }),
         $(go.Shape,  // the link path shape
-          { isPanelMain: true, stroke: "gray", strokeWidth: 2 },
-          new go.Binding("stroke", "isSelected", function(sel) { return sel ? "dodgerblue" : "gray"; }).ofObject()),
+          { isPanelMain: true, stroke: "#112812", strokeWidth: 2.5 },
+          new go.Binding("stroke", "isSelected", function(sel) { return sel ? "#112812" : "#112812"; }).ofObject()),
         $(go.Shape,  // the arrowhead
-          { toArrow: "standard", strokeWidth: 0, fill: "gray" }),
+          { toArrow: "Triangle", strokeWidth: 1.5, stroke: "#002942", fill: "#002942"}),
         $(go.Panel, "Auto",  // the link label, normally not visible
           { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5 },
           new go.Binding("visible", "visible").makeTwoWay(),
           $(go.Shape, "RoundedRectangle",  // the label shape
-            { fill: "#F8F8F8", strokeWidth: 0 }),
+            { fill: "#F8F8F8", strokeWidth: 0}),
           $(go.TextBlock, "Yes",  // the label
             {
               textAlign: "center",
@@ -278,7 +278,7 @@ export default {
       myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
 
       // 수정 없이 읽기 
-      myDiagram.isReadOnly = true ;
+      // myDiagram.isReadOnly = true ;
 
       this.load();
 
@@ -330,7 +330,7 @@ export default {
     textStyle() {
       return {
         font: "bold 11pt Lato, Helvetica, Arial, sans-serif",
-        stroke: "#F8F8F8"
+        stroke: "#000000"
       }
     },
     
