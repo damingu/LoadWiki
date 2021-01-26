@@ -3,6 +3,9 @@
     <b-button @click="modalShow = !modalShow">로그인</b-button>
 
     <b-modal v-model="modalShow" hide-footer>
+      <template #modal-title>
+        로그인
+      </template>
       <base-input alternative
               class="mb-3"
               name="Email"
