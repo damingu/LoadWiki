@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      test: {
+      roadmapData: {
           class: "go.GraphLinksModel",
           linkFromPortIdProperty: "fromPort",
           linkToPortIdProperty: "toPort",
@@ -347,7 +347,7 @@ export default {
     // read 요청보내기
     readRoadmap() {
       // 외부 json파일 초기하면에 출력
-      myDiagram.model = go.Model.fromJson(this.test);
+      myDiagram.model = go.Model.fromJson(this.roadmapData);
     },
   },
 }
