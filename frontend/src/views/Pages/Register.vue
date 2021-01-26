@@ -147,6 +147,11 @@
                   <div class="text-center">
                     <b-button type="submit" variant="primary" class="mt-4" @click="signUp">회원가입하기</b-button>
                   </div>
+                  <div class="text-center">
+                    <!-- <b-button v-b-modal.modal-login variant="default" class="mt-4" @click="isLoginModal = true">로그인</b-button> -->
+                    <!-- <LoginContent v-if="isLoginModal" @close="isLoginModal = false" /> -->
+                    <LoginContent/>
+                  </div>
                 </b-form>
               </validation-observer>
             </b-card-body>
@@ -160,6 +165,7 @@
 <script>
   import ModalEmailValidation from "@/components/Validation/ModalEmailValidation.vue";
   import ModalPolicy from '@/components/Validation/ModalPolicy.vue';
+  import LoginContent from '@/components/Login/LoginContent.vue';
 
   import { extend } from 'vee-validate';
 
@@ -176,6 +182,7 @@
     components: {
       ModalEmailValidation,
       ModalPolicy,
+      LoginContent,
     },
     data() {
       return {
@@ -200,6 +207,7 @@
           { text: 'AI', value: 'AI'},
           { text: '기타', value: '기타'},
         ],
+        isLoginModal: false,
       }
     },
     methods: {
