@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- register -->
     <!-- Header -->
     <div class="header bg-gradient-success py-7 py-lg-8 pt-lg-9">
       <b-container class="container">
@@ -26,65 +27,96 @@
       <b-row class="justify-content-center">
         <b-col lg="6" md="8" >
           <b-card no-body class="bg-secondary border-0">
-            <!-- <b-card-header class="bg-transparent pb-5">
-              <div class="text-muted text-center mt-2 mb-4"><small>Sign up with</small></div>
-              <div class="text-center">
-                <a href="#" class="btn btn-neutral btn-icon mr-4">
-                  <span class="btn-inner--icon"><img src="img/icons/common/github.svg"></span>
-                  <span class="btn-inner--text">Github</span>
-                </a>
-                <a href="#" class="btn btn-neutral btn-icon">
-                  <span class="btn-inner--icon"><img src="img/icons/common/google.svg"></span>
-                  <span class="btn-inner--text">Google</span>
-                </a>
-              </div>
-            </b-card-header> -->
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <small>Or sign up with credentials</small>
+                <br>
+                <h1>회원가입</h1>
               </div>
               <validation-observer v-slot="{handleSubmit}" ref="formValidator">
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
+                  <!-- required속성이 true이면 The Name field is required라는 창이 뜸 -->
                   <base-input alternative
                               class="mb-3"
                               prepend-icon="ni ni-hat-3"
-                              placeholder="Name"
-                              name="Name"
+                              placeholder="닉네임"
+                              name="닉네임"
                               :rules="{required: true}"
-                              v-model="model.name">
+                              v-model="name">
                   </base-input>
+
+                  <div class="row">
+                    <div class="col-9">
+                      <base-input alternative
+                                  class="mb-3"
+                                  prepend-icon="ni ni-email-83"
+                                  placeholder="example123@ssafy.com"
+                                  name="이메일"
+                                  :rules="{required: true, email: true}"
+                                  v-model="email"
+                                  v-if="!confirmEmail"
+                                  >
+                      </base-input>
+                      <base-input alternative
+                                  prepend-icon="ni ni-email-83"
+                                  v-if="confirmEmail"
+                                  v-model="email"
+                                  placeholder="email"
+                                  disabled
+                                  >
+                      </base-input>
+                      <!-- 만약 기존에 계정이 존재하는 이메일이라면 this email is already taken 보여주기 -->
+                    </div>
+                    <div class="col-3 pl-0">
+                      <ModalEmailValidation v-if="isEmailModal" @close="closeModal"/>
+                      <b-button v-b-modal.modal-email v-if="!confirmEmail" @click="isEmailModal = true">인증하기</b-button>
+                      <b-button v-if="confirmEmail" disabled>인증완료</b-button>
+                    </div>
+                  </div>
 
                   <base-input alternative
                               class="mb-3"
-                              prepend-icon="ni ni-email-83"
-                              placeholder="Email"
-                              name="Email"
-                              :rules="{required: true, email: true}"
-                              v-model="model.email">
+                              prepend-icon="ni ni-lock-circle-open"
+                              placeholder="비밀번호"
+                              type="password"
+                              name="비밀번호"
+                              vid="password"
+                              :rules="{required: true, min: 8}"
+                              v-model="password">
                   </base-input>
 
                   <base-input alternative
                               class="mb-3"
                               prepend-icon="ni ni-lock-circle-open"
-                              placeholder="password"
+                              placeholder="비밀번호 확인"
                               type="password"
-                              name="Password"
-                              :rules="{required: true, min: 6}"
-                              v-model="model.password">
+                              name="비밀번호 확인"
+                              :rules="{required: true, min: 8, password: password}"
+                              v-model="rePassword">
                   </base-input>
-                  <div class="text-muted font-italic"><small>password strength: <span
-                    class="text-success font-weight-700">strong</span></small></div>
+                  <hr class="my-4">
+                  <part-checkboxes></part-checkboxes>
+                  <hr class="my-4">
                   <b-row class=" my-4">
                     <b-col cols="12">
-                      <base-input :rules="{ required: { allowFalse: false } }" name=Privacy Policy>
-                        <b-form-checkbox v-model="model.agree">
-                          <span class="text-muted">I agree with the <a href="#!">Privacy Policy</a></span>
+                      <base-input :rules="{ required: { allowFalse: false } }" name="회원약관 동의" Policy>
+                        <b-form-checkbox v-model="agree">
+                          <span class="text-muted">
+                            <b-link 
+                              v-b-modal.modal-scrollable 
+                              variant="link" 
+                              class="m-0 p-0" 
+                              @click="isPolicyModal = true">
+                              회원 약관
+                            </b-link>
+                            에 동의합니다. 
+                            <ModalPolicy v-if="isPolicyModal" @close="isPolicyModal = false" @accept="accept"/>
+                          </span>
                         </b-form-checkbox>
                       </base-input>
                     </b-col>
                   </b-row>
                   <div class="text-center">
-                    <b-button type="submit" variant="primary" class="mt-4">Create account</b-button>
+                    <b-button type="submit" variant="primary" class="mt-4">회원가입하기</b-button>
                   </div>
                 </b-form>
               </validation-observer>
@@ -95,26 +127,73 @@
     </b-container>
   </div>
 </template>
+
 <script>
+  import ModalEmailValidation from "@/components/Validation/ModalEmailValidation.vue";
+  import ModalPolicy from '@/components/Validation/ModalPolicy.vue';
+  import PartCheckboxes from '@/views/Pages/Register/PartCheckboxes.vue';
+
+  import { extend } from 'vee-validate';
+
+  extend('password', {
+    params: ['target'],
+    validate(value, { target }) {
+      return value === target;
+    },
+    message: '비밀번호가 일치하지 않습니다.'
+  });
 
   export default {
     name: 'register',
+    components: {
+      ModalEmailValidation,
+      ModalPolicy,
+      PartCheckboxes
+    },
     data() {
       return {
-        model: {
-          name: '',
-          email: '',
-          password: '',
-          agree: false
-        }
+        name: '',
+        email: '',
+        password: '',
+        rePassword: '',
+        isEmailModal: false,
+        isPolicyModal: false,
+        confirmEmail: false,
+        agree: false,
       }
     },
     methods: {
       onSubmit() {
         // this will be called only after form is valid. You can do an api call here to register users
-      }
-    }
-
+      },
+      closeModal(e) {
+        this.isEmailModal = false
+        if (e === true) {
+          this.confirmEmail = true
+        } else { this.confirmEmail = false}
+      },
+      accept() {
+        this.isPolicyModal = false
+        this.agree = true
+      },
+      signUp() {
+        // 인풋이 다 안채워지면 회원가입 버튼이 비활성화되게 로직 추가
+      },
+    },
+    watch: {
+      password() {
+        // isPasswordEqual()
+      },
+      rePassword() {
+        // isPasswordEqual()
+      },
+    },
+    // computed: {
+    //   passwordConfirmationRule() {
+    //     return () => (this.model.password === this.model.rePassword) || 'Password must match'
+    //   },
+    // },
+    
   };
 </script>
 <style></style>

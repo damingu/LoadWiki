@@ -3,6 +3,7 @@ import '@/polyfills';
 // Notifications plugin. Used on Notifications page
 import Notifications from '@/components/NotificationPlugin';
 // Validation plugin used to validate forms
+//https://logaretm.github.io/vee-validate/guide/rules.html#rules
 import { configure } from 'vee-validate';
 // A plugin file where you could register global components used across the app
 import GlobalComponents from './globalComponents';
@@ -24,14 +25,18 @@ import '@/assets/scss/argon.scss';
 import '@/assets/vendor/nucleo/css/nucleo.css';
 import { extend } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
-import { messages } from 'vee-validate/dist/locale/en.json';
+//https://vee-validate.logaretm.com/v2/guide/rules.html#after
+import { messages } from 'vee-validate/dist/locale/ko.json';
 
 Object.keys(rules).forEach(rule => {
   extend(rule, {
     ...rules[rule], // copies rule configuration
-    message: messages[rule] // assign message
+    message: messages[rule] //messages[rule] // assign message
   });
 });
+
+
+
 export default {
   install(Vue) {
     Vue.use(GlobalComponents);
