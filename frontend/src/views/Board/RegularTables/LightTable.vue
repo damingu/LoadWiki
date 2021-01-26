@@ -94,7 +94,7 @@ export default {
     [TableColumn.name]: TableColumn
   },
   computed: {
-    getRegDate: function(obj) {}
+    getRegDate: function(obj) { return 0}
   },
   data() {
     return {
