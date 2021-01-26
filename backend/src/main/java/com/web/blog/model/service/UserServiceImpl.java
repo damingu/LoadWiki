@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
 				return result;
 			}
 			Map<String, Object> result = new HashMap<String, Object>();
-			String token = loginServ.generate(user);
+			String token = loginServ.generate(cur);
 			result.put("authorizationToken", token);
 			result.put("uid", cur.getUid());
 			result.put("email", cur.getEmail());
