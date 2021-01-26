@@ -13,56 +13,57 @@
  	<select id="selectListAll" parameterType="Map" resultType="Posting">
 		select * 
 		from posting
-		limit page, cnt
+		where classifier=#{classifier}
+		limit #{page}, #{cnt}
 	</select>
 	
 	 <select id="selectListAllTag" parameterType="Map" resultType="Posting">
 		select * 
 		from posting
-		where tag=#{tag}
-		limit page, cnt
+		where classifier=#{classifier} AND tag=#{tag}
+		limit #{page}, #{cnt}
 	</select>
 	
 	<select id="selectListName" parameterType="Map" resultType="Posting">
 		select * 
 		from posting
-		where name=#{name}
-		limit page, cnt
+		where classifier=#{classifier} AND name=#{word}
+		limit #{page}, #{cnt}
 	</select>
 	
 	<select id="selectListNameTag" parameterType="Map" resultType="Posting">
 		select * 
 		from posting
-		where name=#{name} AND tag=#{tag}
-		limit page, cnt
+		where classifier=#{classifier} AND name=#{word} AND tag=#{tag}
+		limit #{page}, #{cnt}
 	</select>
 	
 	<select id="selectListTitle" parameterType="Map" resultType="Posting">
 		select * 
 		from posting
-		where title=concat("%", #{title}, "%")
-		limit page, cnt
+		where classifier=#{classifier} AND title=concat("%", #{word}, "%")
+		limit #{page}, #{cnt}
 	</select>
 	
 	<select id="selectListTitleTag" parameterType="Map" resultType="Posting">
 		select * 
 		from posting
-		where title=concat("%", #{title}, "%") AND tag=#{tag}
-		limit page, cnt
+		where classifier=#{classifier} AND title=concat("%", #{word}, "%") AND tag=#{tag}
+		limit #{page}, #{cnt}
 	</select>
 	
 	<select id="selectListContent" parameterType="Map" resultType="Posting">
 		select * 
 		from posting
-		where content=concat("%", #{content}, "%") AND tag=#{tag}
-		limit page, cnt
+		where classifier=#{classifier} AND content=concat("%", #{word}, "%") AND tag=#{tag}
+		limit #{page}, #{cnt}
 	</select>
 	
 	<select id="selectListContentTag" parameterType="Map" resultType="Posting">
 		select * 
 		from posting
-		where content=concat("%", #{content}, "%") AND tag=#{tag}
-		limit page, cnt
+		where classifier=#{classifier} AND content=concat("%", #{word}, "%") AND tag=#{tag}
+		limit #{page}, #{cnt}
 	</select>
 	
 	<insert id="insert" parameterType="Posting">
