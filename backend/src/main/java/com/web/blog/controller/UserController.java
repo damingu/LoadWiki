@@ -45,6 +45,7 @@ public class UserController {
 	@PostMapping("/login")
 	public Object login(@RequestBody User user, HttpServletResponse response) {
 		logger.trace("login");
+		System.out.println("로그인" + user);
 		try {
 			logger.info(user.toString());
 			Map<String, Object> result = (Map<String, Object>) userServ.login(user);
@@ -80,6 +81,7 @@ public class UserController {
 	@PostMapping("/join")
 	public Object join(@RequestBody User user) {
 		logger.trace("join");
+		System.out.println(user);
 		try {
 			logger.info(user.toString());
 			Map<String, Object> result = (Map<String, Object>) userServ.join(user);
@@ -114,6 +116,7 @@ public class UserController {
 	@DeleteMapping("/withdraw")
 	public Object withdraw(HttpServletRequest request) {
 		logger.trace("withdraw");
+		System.out.println(request.getHeader("auth-token"));
 		try {
 			String email = (String) loginServ.getData(request.getHeader("auth-token")).get("email");
 			logger.info(email);
