@@ -2,60 +2,19 @@
   <div>
     <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
       <!-- Card stats -->
-      <b-row>
-        <b-col xl="3" md="6">
-          <stats-card title="Total traffic"
-                      type="gradient-red"
-                      sub-title="350,897"
-                      icon="ni ni-active-40"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">3.48%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Total traffic"
-                      type="gradient-orange"
-                      sub-title="2,356"
-                      icon="ni ni-chart-pie-35"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">12.18%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Sales"
-                      type="gradient-green"
-                      sub-title="924"
-                      icon="ni ni-money-coins"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-danger mr-2">5.72%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Performance"
-                      type="gradient-info"
-                      sub-title="49,65%"
-                      icon="ni ni-chart-bar-32"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">54.8%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
+      <b-row >
+          <b-col xl="3" md="6" v-for="(item, index) in curriculumData" :key="index" @click="previewRoadmap(item.rmid)">  
+            <stats-card type="gradient-red"
+                        :sub-title="item.name"
+                        icon="ni ni-active-40"
+                        class="mb-4 btn" 
+                        :rmid="item.rmid">
+              <template slot="footer">
+                <span class="text-success mr-2">{{ item.createDate }}</span>
+              </template>
+            </stats-card>
+            
+          </b-col>
       </b-row>
     </base-header>
 
@@ -67,9 +26,7 @@
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
                 <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #2565AB"></div>
               </div>
-              <div class="col three" @click="updateRoadMap">				
-			          <a class="btn">로드맵 수정하기</a>			
-              </div>
+              <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid }}">수정하기</router-link> 
             </div>
           </b-card>
         </b-col>
@@ -77,51 +34,42 @@
     </b-container>
   </div>
 </template>
-
-
 <script>
 import RoadMap from '@/views/Roadmap/RoadMap'
+import router from '@/routes/router'
+import Dashboard from '@/views/Dashboard'
+
 
 // 코드 변환 시작 
 let go = window.go
 let $ = go.GraphObject.make
 let myDiagram;
 export default {
+  router,
   name: '',
+  componenets: {
+    RoadMap,
+    Dashboard,
+  },
   data() {
     return {
-      roadmapData: {
-          class: "go.GraphLinksModel",
-          linkFromPortIdProperty: "fromPort",
-          linkToPortIdProperty: "toPort",
-          nodeDataArray: [
-            {"key":-1, "category":"Start", "loc":"175 0", "text":"웹 개발"},
-            {"key":0, "loc":"-5 75", "text":"front"},
-            {"key":1, "loc":"175 100", "text":"back"},
-            {"key":2, "loc":"175 200", "text":"Gradually beat in 1 cup sugar and 2 cups sifted flour"},
-            {"key":3, "loc":"175 290", "text":"Mix in 6 oz (1 cup) Nestle's Semi-Sweet Chocolate Morsels"},
-            {"key":4, "loc":"175 380", "text":"Press evenly into ungreased 15x10x1 pan"},
-            {"key":5, "loc":"355 85", "text":"Finely chop 1/2 cup of your choice of nuts"},
-            {"key":6, "loc":"175 450", "text":"Sprinkle nuts on top"},
-            {"key":7, "loc":"175 515", "text":"Bake for 25 minutes and let cool"},
-            {"key":8, "loc":"175 585", "text":"Cut into rectangular grid"},
-            {"key":-2, "category":"End", "loc":"175 660", "text":"Enjoy!"}
-            ],
-          linkDataArray: [
-            {"from":1, "to":2, "fromPort":"B", "toPort":"T"},
-            {"from":2, "to":3, "fromPort":"B", "toPort":"T"},
-            {"from":3, "to":4, "fromPort":"B", "toPort":"T"},
-            {"from":4, "to":6, "fromPort":"B", "toPort":"T"},
-            {"from":6, "to":7, "fromPort":"B", "toPort":"T"},
-            {"from":7, "to":8, "fromPort":"B", "toPort":"T"},
-            {"from":8, "to":-2, "fromPort":"B", "toPort":"T"},
-            {"from":-1, "to":0, "fromPort":"B", "toPort":"T"},
-            {"from":-1, "to":1, "fromPort":"B", "toPort":"T"},
-            {"from":-1, "to":5, "fromPort":"B", "toPort":"T"},
-            {"from":5, "to":4, "fromPort":"B", "toPort":"T"},
-            {"from":0, "to":4, "fromPort":"B", "toPort":"T"}
-      ]},
+      test: '',  
+      curriculumData: [],
+      rmid: 0
     }
+  },
+  created() {
+      console.log(this.$store.getters.getServer)
+      const uid = this.$store.getters.getUid
+      // page => 차후 수정해야됨
+      const page = '1'
+      axios.get(`${this.$store.getters.getServer}/roadmap/list/${uid}/${page}`)
+        .then((res) => {
+          console.log('data', res.data)
+          this.curriculumData = res.data['roadmaps'];
+          console.log(this.curriculumData)
+        });
+    
   },
   mounted() {
     let self = this
@@ -278,8 +226,8 @@ export default {
       myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
 
       // 수정 없이 읽기 
-      // myDiagram.isReadOnly = true ;
-
+      myDiagram.isReadOnly = true ;
+      
       this.load();
 
       // canvas 내의 node 요소 잡기 
@@ -305,6 +253,7 @@ export default {
         }
       ];
     },
+    
 
     makePort(name, align, spot, output, input) {
       var horizontal = align.equals(go.Spot.Top) || align.equals(go.Spot.Bottom);
@@ -351,8 +300,16 @@ export default {
       animation.add(diagram, 'opacity', 0, 1);
       animation.start();
     },
-
-    // 외부 json파일 초기하면에 출력
+    // 리스트
+    previewRoadmap(clickrmid) {
+      this.rmid = clickrmid;
+        axios.get(`${this.$store.getters.getServer}/roadmap/get/${clickrmid}`)
+        .then((res) => {
+          this.test =  JSON.parse(res.data['roadmaps'].tmp);
+          this.load();
+        });
+    },
+    // 외부 json파일 초기화면에 출력
     load() {
       myDiagram.model = go.Model.fromJson(this.roadmapData);
     },
@@ -360,7 +317,6 @@ export default {
     updateRoadMap() {
       this.$router.push({ name: 'roadmap' })
     },
-    
   },
 }
 </script>

@@ -42,12 +42,14 @@ public class RoadmapServiceImpl implements RoadmapService {
 	public Object modify(String nowuid, Roadmap map) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			if (Integer.parseInt(nowuid) != map.getUid())
+			int nowuidnum = Integer.parseInt(nowuid); 
+			if (nowuidnum != map.getUid())
 				throw new RuntimeException("wrong user");
 
 			if (roadmaprepo.update(map) != 1)
 				throw new RuntimeException("Query wrong");
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			logger.error("Service modify : Something wrong");
 		}
 		return result;
