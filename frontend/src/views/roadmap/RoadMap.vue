@@ -11,7 +11,7 @@
             <div style="width: 100%;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
                 <div ref="myPaletteDiv" style="width: 150px; margin-right: 2px; background-color: #282c34;"></div>
-                <div @click="checkEvent" ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #282c34;"></div>
+                <div @click="checkEvent" ref="myDiagramDiv" style="flex-grow: 1; height: 900px; background-color: #282c34;"></div>
               </div>
             </div>
           </b-card>
@@ -29,6 +29,9 @@ let $ = go.GraphObject.make
 let myDiagram;
 export default {
   name: '',
+  components: {
+    
+  },
   data() {
     return {
       test: {
