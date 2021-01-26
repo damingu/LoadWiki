@@ -66,6 +66,7 @@ public class UserController {
 			String email = (String) loginServ.getData(request.getHeader("auth-token")).get("email");
 			logger.info(email);
 			Map<String, Object> result = (Map<String, Object>) userServ.getInfo(email);
+			result.put("msg", SUCCESS);
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 		} catch(Exception e) {
 			logger.error(e.getMessage());

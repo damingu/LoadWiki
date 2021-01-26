@@ -1203,6 +1203,11 @@
           message: 'Copied to clipboard'
         })
       }
+    },
+    data() {
+      return {
+        nodedata: {},
+      }
     }
   };
 </script>
