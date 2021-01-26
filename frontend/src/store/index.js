@@ -8,15 +8,23 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL;
 
 export default new Vuex.Store({
   state: {
+    server: SERVER_URL,
     accessToken: null,
+    uid: "",
     email: "",
     name: "",
     createDate: "",
-    code : "",
+    code: "",
   },
   getters: {
+    getServer(state) { 
+      return state.server;
+    },
     getAccessToken(state) {
       return state.accessToken;
+    },
+    getUid(state) { 
+      return state.uid;
     },
     getEmail(state) {
       return state.email;
@@ -33,12 +41,14 @@ export default new Vuex.Store({
   },
   mutations: {
     LOGIN(state, payload) {
+      state.uid = payload["uid"];
       state.accessToken = payload["authorizationToken"];
       state.email = payload["email"];
       state.name = payload["name"];
       state.createDate = payload["createDate"];
     },
     LOGOUT(state) {
+      state.uid = "";
       state.accessToken = null;
       state.email = "";
       state.name = "";
@@ -75,7 +85,7 @@ export default new Vuex.Store({
       sessionStorage.removeItem('auth-token');
     },
     SETINFO(context, user) {
-        context.commit("SETINFO", user);
+      context.commit("SETINFO", user);
     },
     SETCODE(context, code) { 
       context.commit("SETCODE", code);
