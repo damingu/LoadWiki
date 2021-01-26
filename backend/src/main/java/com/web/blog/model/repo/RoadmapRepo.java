@@ -1,7 +1,5 @@
 package com.web.blog.model.repo;
 
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
 import com.web.blog.model.dto.Roadmap;
