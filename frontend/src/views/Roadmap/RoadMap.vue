@@ -25,6 +25,8 @@
 
 
 <script>
+// src\views\Roadmap\RoadMap.vue
+// Roadmap 폴더 명 변경을 위한 주석
 // 코드 변환 시작 
 let go = window.go
 let $ = go.GraphObject.make
