@@ -49,21 +49,40 @@
         </sidebar-item>
 
         <sidebar-item
-          :link="{
-            name: 'Login',
-            path: '/login',
-            icon: 'ni ni-key-25 text-info'
-          }"
-        >
+                :link="{
+                  name: 'Tables',
+                  path: '/tables',
+                  icon: 'ni ni-bullet-list-67 text-red'
+                }">
         </sidebar-item>
+
+        <!-- <sidebar-item
+                  :link="{
+                    name: 'Login',
+                    path: '/login',
+                    icon: 'ni ni-key-25 text-info'
+                  }"
+                  v-if="!getAccessToken"
+                  >
+        </sidebar-item> -->
+        <div class="ml-5">
+          <LoginContent v-if="!getAccessToken"/>
+        </div>
+
+        <div class="ml-5">
+          <LogoutContent v-if="getAccessToken"/>
+        </div>
+
         <sidebar-item
-          :link="{
-            name: 'Register',
-            path: '/register',
-            icon: 'ni ni-circle-08 text-pink'
-          }"
-        >
+                  :link="{
+                    name: 'Register',
+                    path: '/register',
+                    icon: 'ni ni-circle-08 text-pink'
+                  }"
+                  v-if="!getAccessToken"
+                  >
         </sidebar-item>
+        
         <sidebar-item
           :link="{
             name: 'Tmp_board',
@@ -114,9 +133,12 @@
   </div>
 </template>
 <script>
-/* eslint-disable no-new */
-import PerfectScrollbar from "perfect-scrollbar";
-import "perfect-scrollbar/css/perfect-scrollbar.css";
+
+  /* eslint-disable no-new */
+  import PerfectScrollbar from 'perfect-scrollbar';
+  import 'perfect-scrollbar/css/perfect-scrollbar.css';
+  import LoginContent from '@/components/Login/LoginContent.vue';
+  import LogoutContent from '@/components/Logout/LogoutContent.vue';
 
 function hasElement(className) {
   return document.getElementsByClassName(className).length > 0;
@@ -133,22 +155,28 @@ function initScrollbar(className) {
   }
 }
 
-import DashboardNavbar from "./DashboardNavbar.vue";
-import ContentFooter from "./ContentFooter.vue";
-import DashboardContent from "./Content.vue";
-import { FadeTransition } from "vue2-transitions";
+  import DashboardNavbar from './DashboardNavbar.vue';
+  import ContentFooter from './ContentFooter.vue';
+  import DashboardContent from './Content.vue';
+  import { FadeTransition } from 'vue2-transitions';
+  import { mapGetters } from 'vuex'
 
-export default {
-  components: {
-    DashboardNavbar,
-    ContentFooter,
-    DashboardContent,
-    FadeTransition
-  },
-  created() {
-    let url = this.$route.name;
-    this.checkUrl(url);
-  },
+
+  export default {
+    components: {
+      DashboardNavbar,
+      ContentFooter,
+      DashboardContent,
+      FadeTransition,
+      LoginContent,
+      LogoutContent,
+
+    },
+    created() {
+      let url = this.$route.name;
+      this.checkUrl(url)
+    },
+    
   data() {
     return {
       isHeader: true
@@ -165,21 +193,26 @@ export default {
     checkUrl(url) {
       let array = ["roadmap"];
 
-      let isHeader = true;
-      array.map(path => {
-        if (url === path) isHeader = false;
-      });
-      this.isHeader = isHeader;
-    }
-  },
-  mounted() {
-    this.initScrollbar();
-  },
-  watch: {
-    $route(to) {
-      this.checkUrl(to.name);
-    }
-  }
-};
+        let isHeader = true;
+        array.map((path) => {
+          if (url === path) isHeader = false;
+        })
+        this.isHeader = isHeader
+      }
+    },
+    mounted() {
+      this.initScrollbar()
+    },
+    watch: {
+      $route(to) {
+        this.checkUrl(to.name)
+      },
+    },
+    computed: {
+      ...mapGetters(['getAccessToken'])
+
+    },
+  };
+
 </script>
 <style lang="scss"></style>

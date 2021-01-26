@@ -26,6 +26,9 @@ import "./plugins/axios"
 import router from './routes/router';
 
 import store from './store'
+
+import { mapGetters } from 'vuex'
+
 // plugin setup
 Vue.use(DashboardPlugin);
 Vue.use(VueMindmap)
