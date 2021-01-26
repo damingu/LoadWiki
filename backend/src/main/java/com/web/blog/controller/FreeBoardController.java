@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.blog.model.dto.Comment;
@@ -42,32 +43,36 @@ public class FreeBoardController {
 	@Autowired
 	LoginService loginServ;
 	
-	@GetMapping("/list")
-	public Object getList(@RequestBody Map<String, Object> map) {
+	@GetMapping(value = {
+			"/list/{classifier}/{selector}/{word}/{page}",
+			"/list/{classifier}/{selector}/{word}/{page}/{tag}",
+		})
+	public Object getList(@PathVariable String classifier, 
+			@PathVariable String selector, 
+			@PathVariable String word, 
+			@PathVariable String page,
+			@PathVariable(required = false) String tag) {
 		logger.trace("getList");
 		try {
 			Map<String, Object> result;
-			String page = (String) map.get("page");
-			String tag = (String) map.get("tag");
-			if(page == null) page = "1";
-			if(map.get("name") != null) {
-				String name = (String)map.get("name");
-				if(tag == null)	result = (Map<String, Object>) fBoardServ.getPostingListByName(page, name);
-				else result = (Map<String, Object>) fBoardServ.getPostingListByName(page, name, tag);
+			if(word == " ") word = "";
+			if(selector.equals("none")) {
+				if(tag == null) result = (Map<String, Object>) fBoardServ.getPostingListAll(page, classifier);
+				else result = (Map<String, Object>) fBoardServ.getPostingListAll(page, classifier, tag);
 			}
-			else if(map.get("title") != null){
-				String title = (String)map.get("title");
-				if(tag == null)	result = (Map<String, Object>) fBoardServ.getPostingListByTitle(page, title);
-					else result = (Map<String, Object>) fBoardServ.getPostingListByTitle(page, title, tag);
+			else if(selector.equals("name")) {
+				if(tag == null) result = (Map<String, Object>) fBoardServ.getPostingListByName(page, classifier, word);
+				else result = (Map<String, Object>) fBoardServ.getPostingListByName(page, classifier, word, tag);
 			}
-			else if(map.get("content") != null){
-				String content = (String)map.get("content");
-				if(tag == null)	result = (Map<String, Object>) fBoardServ.getPostingListByContent(page, content);
-				else result = (Map<String, Object>) fBoardServ.getPostingListByContent(page, content, tag);
+			else if(selector.equals("title")){
+				if(tag == null) result = (Map<String, Object>) fBoardServ.getPostingListByTitle(page, classifier, word);
+					else result = (Map<String, Object>) fBoardServ.getPostingListByTitle(page, classifier, word, tag);
 			}
-			else {
-				if(tag == null)	result = (Map<String, Object>) fBoardServ.getPostingListAll(page);
-				else result = (Map<String, Object>) fBoardServ.getPostingListAll(page, tag);
+			else if(selector.equals("content")){
+				if(tag == null) result = (Map<String, Object>) fBoardServ.getPostingListByContent(page, classifier, word);
+				else result = (Map<String, Object>) fBoardServ.getPostingListByContent(page, classifier, word, tag);
+			} else {
+				throw new RuntimeException("wrong select tag");
 			}
 			result.put("msg", SUCCESS);
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
