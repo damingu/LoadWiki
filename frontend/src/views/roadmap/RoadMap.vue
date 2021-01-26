@@ -2,6 +2,8 @@
   <div>
     <base-header class="pb-5 pb-2 pt-2 pt-md-2 bg-gradient-success">
       <!-- Card stats -->
+    <a :href="goToBack" class="btn">돌아가기</a>
+    <a class="btn" @click="updateRoadmap">수정완료</a>
     </base-header>
 
     <b-container fluid class="mt-1">
@@ -11,7 +13,7 @@
             <div style="width: 100%;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
                 <div ref="myPaletteDiv" style="width: 150px; margin-right: 2px; background-color: #282c34;"></div>
-                <div @click="checkEvent" ref="myDiagramDiv" style="flex-grow: 1; height: 900px; background-color: #282c34;"></div>
+                <div ref="myDiagramDiv" style="flex-grow: 1; height: 900px; background-color: #282c34;"></div>
               </div>
             </div>
           </b-card>
@@ -30,7 +32,7 @@ let myDiagram;
 export default {
   name: '',
   components: {
-    
+
   },
   data() {
     return {
@@ -66,6 +68,7 @@ export default {
             {"from":5, "to":4, "fromPort":"B", "toPort":"T"},
             {"from":0, "to":4, "fromPort":"B", "toPort":"T"}
       ]},
+      goToBack: '#/godiagram',
     }
   },
   mounted() {
@@ -240,6 +243,12 @@ export default {
             new go.Binding("text").makeTwoWay())
         )
       );
+      
+      // 어떤 커리큘럼을 눌렀는지 체크 => 커리큘럼 추천에 활용할 데이터 추출
+      myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
+        console.log(e.subject.part.data.key);
+        console.log(e.subject.part.data.text);
+      });
 
       // LinkingTool 및 RelinkingTool에서 사용하는 임시 링크도 직교합니다.
       myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
@@ -247,7 +256,7 @@ export default {
 
       console.log('309', myDiagram)
 
-      this.load();
+      this.readRoadmap();
       
       // 팔레트 설정 관련 코드
       let myPalette =
@@ -329,18 +338,15 @@ export default {
       animation.add(diagram, 'opacity', 0, 1);
       animation.start();
     },
-
-    save(e) {
-      console.log(e)
+    // update 요청보내기
+    updateRoadmap(e) {
+      console.log('update', e)
     },
-    load() {
+    // read 요청보내기
+    readRoadmap() {
       // 외부 json파일 초기하면에 출력
       myDiagram.model = go.Model.fromJson(this.test);
     },
-
-    checkEvent(e) {
-      console.log(e)
-    }
   },
 }
 </script>
