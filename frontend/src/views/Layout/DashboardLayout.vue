@@ -41,8 +41,8 @@
 
         <sidebar-item
           :link="{
-            name: 'roadmap',
-            path: '/roadmap',
+            name: 'officialRoadmap',
+            path: '/officialRoadmap',
             icon: 'ni ni-bullet-list-67 text-red'
           }"
         >
