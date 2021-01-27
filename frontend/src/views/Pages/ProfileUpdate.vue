@@ -94,7 +94,10 @@
                 </h2>
               </b-col>
               <b-col align-self="center">
-                <b-badge variant="warning" class="mr-3 h3">
+                <b-badge 
+                  variant="warning" 
+                  class="mr-3 h3"
+                  >
                   python
                    <!-- {{seleted[0]}} -->
                 </b-badge>

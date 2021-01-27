@@ -12,14 +12,14 @@
         >
         </sidebar-item>
 
-        <sidebar-item
+        <!-- <sidebar-item
           :link="{
             name: 'Icons',
             path: '/icons',
             icon: 'ni ni-planet text-blue'
           }"
         >
-        </sidebar-item>
+        </sidebar-item> -->
 
         <sidebar-item
           :link="{
@@ -48,13 +48,13 @@
         >
         </sidebar-item>
 
-        <sidebar-item
+        <!-- <sidebar-item
                 :link="{
-                  name: 'Tables',
-                  path: '/tables',
+                  name: 'Detail Content',
+                  path: '/detail-contents',
                   icon: 'ni ni-bullet-list-67 text-red'
                 }">
-        </sidebar-item>
+        </sidebar-item> -->
 
         <!-- <sidebar-item
                   :link="{
@@ -215,4 +215,6 @@ function initScrollbar(className) {
   };
 
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+
+</style>

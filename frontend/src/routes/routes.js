@@ -1,5 +1,6 @@
 import DashboardLayout from '@/views/Layout/DashboardLayout.vue';
 import AuthLayout from '@/views/Pages/AuthLayout.vue';
+import NothingMain from '@/views/NothingMain.vue';
 
 import NotFound from '@/views/NotFoundPage.vue';
 
@@ -38,9 +39,9 @@ const routes = [
         component: () => import(/* webpackChunkName: "demo" */ '../views/GoogleMaps.vue')
       },
       {
-        path: '/tables',
-        name: 'tables',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue')
+        path: '/detail-contents',
+        name: 'Detail Content',
+        component: () => import(/* webpackChunkName: "demo" */ '../components/Board/DetailContent.vue')
       },
       {
         path: '/godiagram',
@@ -61,8 +62,13 @@ const routes = [
     ]
   },
   {
+    path: '/main',
+    name: 'main',
+    component: NothingMain,
+  },
+  {
     path: '/',
-    redirect: 'login',
+    // redirect: 'login',
     component: AuthLayout,
     children: [
       {
@@ -75,9 +81,9 @@ const routes = [
         name: 'register',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Register.vue')
       },
-      { path: '*', component: NotFound }
+      { path: '*', component: NotFound },
     ]
-  }
+  },
 ];
 
 export default routes;
