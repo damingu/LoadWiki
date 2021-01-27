@@ -26,9 +26,11 @@
           <b-card no-body class="border-0">
             <div style="width: 100%; display: inline-block;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
+                
                 <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #F9F8F3"></div>
+                 <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid, mode : 1 }}" class= "btn" style=" background-color:#F9F8F3" >수정하기</router-link>
               </div>
-              <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid, mode : 1 }}" >수정하기</router-link> 
+              
             </div>
           </b-card>
         </b-col>
@@ -107,7 +109,7 @@ export default {
           // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
           $(go.Panel, "Auto",
             $(go.Shape, "RoundedRectangle",
-              { fill: "#D4E0DE", stroke: "#307363", strokeWidth:  5, strokeJoin: "round", strokeCap: "square" },
+              { fill: "#D4E0DE", stroke: "#307363", strokeWidth:  3.5, strokeJoin: "round", strokeCap: "square" },
               new go.Binding("figure", "figure")),
             $(go.TextBlock, this.textStyle(),
               {
@@ -130,7 +132,7 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           $(go.Panel, "Spot",
             $(go.Shape, "Circle",
-              { desiredSize: new go.Size(70, 70), fill: "#ffffff", stroke: "#5F7044", strokeWidth: 3.5 }),
+              { desiredSize: new go.Size(70, 70), fill: "#ffffff", stroke: "#F04A5E", strokeWidth: 3.5 }),
             $(go.TextBlock, "Start", this.textStyle(),
               new go.Binding("text"))
           ),
@@ -144,7 +146,7 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           $(go.Panel, "Spot",
             $(go.Shape, "Circle",
-              { desiredSize: new go.Size(60, 60), fill: "#ffffff", stroke: "#E17E23", strokeWidth: 3.5 }),
+              { desiredSize: new go.Size(60, 60), fill: "#ffffff", stroke: "#8D2040", strokeWidth: 3.5 }),
             $(go.TextBlock, "End", this.textStyle(),
               new go.Binding("text"))
           ),
@@ -332,7 +334,5 @@ export default {
 </script>
 
 <style>
-.bntn{
-  background-color: aquamarine;
-}
+
 </style>
