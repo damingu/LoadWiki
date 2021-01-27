@@ -2,6 +2,8 @@
   <div>
     <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
       <!-- Card stats -->
+      <router-link :to="{ name : 'roadmap', params: { rmid: 0, mode : 0 }}" >생성하기</router-link> 
+      <br>
       <b-row >
           <b-col xl="3" md="6" v-for="(item, index) in curriculumData" :key="index" @click="previewRoadmap(item.rmid)">  
             <stats-card type="gradient-red"
@@ -22,11 +24,11 @@
       <b-row>
         <b-col>
           <b-card no-body class="border-0">
-            <div style="width: 100%;">
+            <div style="width: 100%; display: inline-block;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
-                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #2565AB"></div>
+                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #F9F8F3"></div>
               </div>
-              <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid }}">수정하기</router-link> 
+              <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid, mode : 1 }}" >수정하기</router-link> 
             </div>
           </b-card>
         </b-col>
@@ -37,7 +39,6 @@
 <script>
 import RoadMap from '@/views/Roadmap/RoadMap'
 import router from '@/routes/router'
-import Dashboard from '@/views/Dashboard'
 
 
 // 코드 변환 시작 
@@ -49,11 +50,16 @@ export default {
   name: '',
   componenets: {
     RoadMap,
-    Dashboard,
   },
   data() {
     return {
-      test: '',  
+      test: { "class": "go.GraphLinksModel",
+        "linkFromPortIdProperty": "fromPort",
+        "linkToPortIdProperty": "toPort",
+        "nodeDataArray": [
+      ],
+        "linkDataArray": [
+      ]},  
       curriculumData: [],
       rmid: 0
     }
@@ -101,7 +107,7 @@ export default {
           // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
           $(go.Panel, "Auto",
             $(go.Shape, "RoundedRectangle",
-              { fill: "#F0DC45", stroke: "#E6E9F0", strokeWidth:  7, strokeJoin: "round", strokeCap: "square" },
+              { fill: "#D4E0DE", stroke: "#307363", strokeWidth:  5, strokeJoin: "round", strokeCap: "square" },
               new go.Binding("figure", "figure")),
             $(go.TextBlock, this.textStyle(),
               {
@@ -202,12 +208,12 @@ export default {
         },
         new go.Binding("points").makeTwoWay(),
         $(go.Shape,  // the highlight shape, normally transparent
-          { isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT" }),
+          { isPanelMain: true, strokeWidth: 5, stroke: "transparent", name: "HIGHLIGHT" }),
         $(go.Shape,  // the link path shape
-          { isPanelMain: true, stroke: "#112812", strokeWidth: 2.5 },
-          new go.Binding("stroke", "isSelected", function(sel) { return sel ? "#112812" : "#112812"; }).ofObject()),
+          { isPanelMain: true, stroke: "#1B443C", strokeWidth: 2.5 },
+          new go.Binding("stroke", "isSelected", function(sel) { return sel ? "#1B443C" : "#1B443C"; }).ofObject()),
         $(go.Shape,  // the arrowhead
-          { toArrow: "Triangle", strokeWidth: 1.5, stroke: "#002942", fill: "#002942"}),
+          { toArrow: "Triangle", strokeWidth: 1.5, stroke: "#1B443C", fill: "#307362"}),
         $(go.Panel, "Auto",  // the link label, normally not visible
           { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5 },
           new go.Binding("visible", "visible").makeTwoWay(),
@@ -309,7 +315,7 @@ export default {
         axios.get(`${this.$store.getters.getServer}/roadmap/get/${clickrmid}`)
         .then((res) => {
           
-          this.test =  JSON.parse(res.data['roadmaps'].tmp);
+          this.test = JSON.parse(res.data['roadmaps'].tmp);
           this.load();
         });
     },
@@ -326,5 +332,7 @@ export default {
 </script>
 
 <style>
-
+.bntn{
+  background-color: aquamarine;
+}
 </style>
