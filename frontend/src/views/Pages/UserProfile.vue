@@ -24,7 +24,9 @@
                 </b-link>
               </div>
               <br>
-              <a href="#!" class="btn btn-info">Edit profile</a>
+              <router-link :to="{ name : 'profile-update' }" class="btn btn-info">수정하기</router-link>
+              <!-- <a href="#!" class="btn btn-info">Edit profile</a> -->
+              
             </b-col>
           </b-row>
         </b-container>
