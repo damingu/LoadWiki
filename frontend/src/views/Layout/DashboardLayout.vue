@@ -58,20 +58,21 @@
 
         <!-- <sidebar-item
                   :link="{
-                    name: 'Login',
-                    path: '/login',
+                    name: 'Logout',
+                    path: '*',
                     icon: 'ni ni-key-25 text-info'
                   }"
-                  v-if="!getAccessToken"
+                  @click="logOut"
                   >
         </sidebar-item> -->
-        <div class="ml-5">
+
+        <!-- <div class="ml-5">
           <LoginContent v-if="!getAccessToken"/>
         </div>
 
         <div class="ml-5">
           <LogoutContent v-if="getAccessToken"/>
-        </div>
+        </div> -->
 
         <sidebar-item
                   :link="{
@@ -199,6 +200,14 @@ function initScrollbar(className) {
         })
         this.isHeader = isHeader
       }
+    },
+    logOut() {
+      this.$store.dispatch("LOGOUT").then(() => {
+        this.$router.push('/')
+      })
+      .catch(() => {
+        alert('로그아웃에 실패했습니다.')
+      })
     },
     mounted() {
       this.initScrollbar()
