@@ -44,7 +44,7 @@
                 </h2>
               </b-col>
               <b-col>
-                <b-form-input value="nike"></b-form-input>
+                <b-form-input :value="nickname" v-model="nickname"></b-form-input>
               </b-col>
             </b-row>
             <b-row class="mb-3">
@@ -66,6 +66,7 @@
                 </h2>
               </b-col>
               <b-col>
+                <!-- address 수정 -->
                 <b-form-input value="https://github.com/Jo-Myounghee"></b-form-input>
               </b-col>
             </b-row>
@@ -78,9 +79,8 @@
               </b-col>
               <b-col>
                 <b-form-textarea 
-                    value="
-                      나에게 힘을 주는 인생에 관한 명언 48가지 : 고개 숙이지 마십시오. ... 고난의 시기에 동요하지 않는 것, ... 사막이 아름다운 것은 ...행복의 한 쪽 문이 닫히면 다른 쪽 문이 열린다. ... 만족할 줄 아는 사람은 진정한 부자이고, ... 성공해서 만족하는 것은 아니다. ... 곧 위에 비교하면 족하지 못하나, ... 그대의 하루 하루를
-                    "
+                    :value="introduction"
+                    v-model="introduction"
                     rows="5"
                 >
                 </b-form-textarea>
@@ -95,13 +95,16 @@
               </b-col>
               <b-col align-self="center">
                 <b-badge variant="warning" class="mr-3 h3">
-                   Python
+                  python
+                   <!-- {{seleted[0]}} -->
                 </b-badge>
                 <b-badge variant="success" class="mr-3 h3">
-                   Django
+                  python
+                   <!-- {{seleted[1]}} -->
                 </b-badge>
                 <b-badge variant="primary" class="mr-3 h3">
-                   Python
+                  python
+                   <!-- {{seleted[2]}} -->
                 </b-badge>
               </b-col>
               <FlavourContent class="mr-3" align-self="center"/>
@@ -112,7 +115,7 @@
               <b-button variant="warning" class="mt-4" @click="withDrawal" size="sm">회원탈퇴</b-button>
             </b-row>
             <b-row class="justify-content-center">
-              <b-button variant="primary" class="mt-4" @click="withDrawal" size="lg">정보수정</b-button>
+              <b-button variant="primary" class="mt-4" size="lg" @click="updateHandler">정보수정</b-button>
             </b-row>
 
           </b-container>
@@ -150,7 +153,7 @@
     data() {
       return{
         nickname: '',
-        sentence: '',
+        introduction: '',
         address: '',
         profileImg: '',
         backImg: '',
@@ -190,6 +193,27 @@
           alert('오류가 발생했습니다. 다시 시도해주세요.')
         })
       },
+      updateHandler(){
+        // 보낼때 명명이 중요함
+        let user = {
+          name : this.nickname,
+          address : this.address,
+          major : this.major,
+          keyword : this.keywords,
+          introduction : this.introduction,
+        }
+        console.log("updateHandler : " + user)
+        axios
+          .put(`${this.$store.getters.getServer}/user/modify`, user)
+          .then((res) => {
+            console.log(res.data);
+            if(res.data.msg == 'success'){
+              alert('회원 수정이 완료되었습니다.');
+              this.$router.push('/profile');
+            } else
+              alert('회원 수정 시 문제가 발생했슴다');
+          })
+      }
     },
   };
 </script>
