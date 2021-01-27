@@ -24,7 +24,7 @@
           <b-card no-body class="border-0">
             <div style="width: 100%;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
-                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #2565AB"></div>
+                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #F7F3EA"></div>
               </div>
               <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid }}">수정하기</router-link> 
             </div>
