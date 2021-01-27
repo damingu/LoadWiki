@@ -2,8 +2,10 @@
   <div>
     <base-header class="pb-5 pb-2 pt-2 pt-md-2 bg-gradient-success">
       <!-- Card stats -->
-    <a :href="goToBack" class="btn">돌아가기</a>
-    <a class="btn" @click="updateRoadmap">수정완료</a>
+    <a :href="goToBack" class="btn">돌아가기</a> 
+    <a v-if="mode" class="btn" @click="updateRoadmap">수정완료</a>
+    <a v-else class="btn" @click="createRoadmap">생성완료</a>
+    <input v-model="roadmapname" placeholder="로드맵 제목을 입력해 주세요.">
 
     </base-header>
 
@@ -22,7 +24,6 @@
       </b-row>
     </b-container>
   </div>
-  
 </template>
 
 
@@ -40,6 +41,9 @@ export default {
   props: {
       rmid: {
           type: Number,
+      },
+      mode: {
+        type : Number,
       },
   },
   data() {
@@ -324,6 +328,15 @@ export default {
     // read 요청보내기
     readRoadmap() {
       // 외부 json파일 초기하면에 출력
+      if(this.rmid == 0){
+        this.test = { "class": "go.GraphLinksModel",
+        "linkFromPortIdProperty": "fromPort",
+        "linkToPortIdProperty": "toPort",
+        "nodeDataArray": [
+      ],
+        "linkDataArray": [
+      ]}
+      }else{
       axios.get(`${this.$store.getters.getServer}/roadmap/get/${this.rmid}`)
         .then((res) => {
           this.test =  JSON.parse(res.data['roadmaps'].tmp);
@@ -332,6 +345,7 @@ export default {
           // console.log('check', this.roadmapname, this.rmorder)
           myDiagram.model = go.Model.fromJson(this.test);
       });
+      }
     },
     // update 요청보내기
     updateRoadmap() {
@@ -350,6 +364,28 @@ export default {
       .then((res) => {
         console.log(res)
         console.log('응답')
+        this.$router.push({ name: 'godiagram' })
+      })
+      .catch((err) =>{
+        console.error(err)
+      })
+    },
+    createRoadmap() {
+      console.log('실행')
+      this.test = myDiagram.model.toJson();
+      myDiagram.isModified = false;
+      axios.post(`${this.$store.getters.getServer}/roadmap/create`,
+        {
+          // login기능 완료되면 store에서 가져오기로 수정!!!!!!!!!!
+          uid: this.$store.getters.getUid,
+          name: this.roadmapname,
+          tmp: JSON.stringify(this.test)
+        }
+      )
+      .then((res) => {
+        console.log(res)
+        console.log('응답')
+        this.$router.push({ name: 'godiagram' })
       })
     },
   },
