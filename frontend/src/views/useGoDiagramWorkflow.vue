@@ -59,9 +59,12 @@ export default {
     }
   },
   created() {
-      console.log(this.$store.getters.getServer)
-      const uid = this.$store.getters.getUid
+      
+      console.log(this.$store.getters.getUid)
+      const uid = String(this.$store.getters.getUid)
       // page => 차후 수정해야됨
+
+      
       const page = '1'
       axios.get(`${this.$store.getters.getServer}/roadmap/list/${uid}/${page}`)
         .then((res) => {
@@ -305,13 +308,14 @@ export default {
       this.rmid = clickrmid;
         axios.get(`${this.$store.getters.getServer}/roadmap/get/${clickrmid}`)
         .then((res) => {
+          
           this.test =  JSON.parse(res.data['roadmaps'].tmp);
           this.load();
         });
     },
     // 외부 json파일 초기화면에 출력
     load() {
-      myDiagram.model = go.Model.fromJson(this.roadmapData);
+      myDiagram.model = go.Model.fromJson(this.test);
     },
     // 로드맵 수정버튼 
     updateRoadMap() {
