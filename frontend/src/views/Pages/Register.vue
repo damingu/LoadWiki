@@ -2,14 +2,15 @@
   <div>
     <!-- register -->
     <!-- Header -->
-    <div class="header bg-gradient-success py-7 py-lg-8 pt-lg-9">
+    <div class="header bg-gradient-default py-7 py-lg-8 pt-lg-9">
       <b-container class="container">
         <div class="header-body text-center mb-7">
           <b-row class="justify-content-center">
             <b-col xl="5" lg="6" md="8" class="px-5">
-              <h1 class="text-white">Create an account</h1>
-              <p class="text-lead text-white">Use these awesome forms to login or create new account in your project for
-                free.</p>
+              <img src="/img/brand/white_roadwiki.png" alt="roadwiki" width="250rem;">
+              <!-- <h1 class="text-white">회원가입</h1> -->
+              <!-- <p class="text-lead text-white">Use these awesome forms to login or create new account in your project for
+                free.</p> -->
             </b-col>
           </b-row>
         </div>
@@ -29,8 +30,8 @@
           <b-card no-body class="bg-secondary border-0">
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <br>
-                <h1>회원가입</h1>
+                <!-- <br> -->
+                <!-- <h1>회원가입</h1> -->
               </div>
               <validation-observer v-slot="{handleSubmit}" ref="formValidator">
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
@@ -119,11 +120,11 @@
 
                       </b-container>
                     </b-form-group>
-                    <div>
+                    <b-container>
                       <div>1순위 <strong v-if="selected.length > 2">{{ options[selected[0]-1].text }}</strong></div>
                       <div>2순위 <strong v-if="selected.length > 2">{{ options[selected[1]-1].text }}</strong></div>
                       <div>3순위 <strong v-if="selected.length > 2">{{ options[selected[2]-1].text }}</strong></div>
-                    </div>
+                    </b-container>
                   </div>
                   <hr class="my-4">
                   <b-row class=" my-4">
@@ -146,13 +147,13 @@
                     </b-col>
                   </b-row>
                   <div class="text-center">
-                    <b-button type="submit" variant="primary" class="mt-4" @click="signUp">회원가입하기</b-button>
+                    <b-button type="submit" variant="primary" class="mt-4" @click="signUp">가입하기</b-button>
                   </div>
                   <div class="text-center">
                     <!-- <b-button v-b-modal.modal-login variant="default" class="mt-4" @click="isLoginModal = true">로그인</b-button> -->
                     <!-- <LoginContent v-if="isLoginModal" @close="isLoginModal = false" /> -->
-                    <LoginContent/>
-                    <LogoutContent/>
+                    <!-- <LoginContent/> -->
+                    <!-- <LogoutContent/> -->
                   </div>
                 </b-form>
               </validation-observer>
@@ -167,8 +168,8 @@
 <script>
   import ModalEmailValidation from "@/components/Validation/ModalEmailValidation.vue";
   import ModalPolicy from '@/components/Validation/ModalPolicy.vue';
-  import LoginContent from '@/components/Login/LoginContent.vue';
-  import LogoutContent from '@/components/Logout/LogoutContent.vue';
+  // import LoginContent from '@/components/Login/LoginContent.vue';
+  // import LogoutContent from '@/components/Logout/LogoutContent.vue';
 
   import { extend } from 'vee-validate';
 
@@ -185,8 +186,8 @@
     components: {
       ModalEmailValidation,
       ModalPolicy,
-      LoginContent,
-      LogoutContent,
+      // LoginContent,
+      // LogoutContent,
     },
     data() {
       return {
@@ -247,6 +248,7 @@
         }
         if (this.confirmEmail && this.selected.length >= 3) {
           axios.post(`${this.$store.getters.getServer}/user/join`, user)
+          this.$router.replace('/')
         } else {
           if (!this.confirmEmail) {
             alert('이메일 인증이 완료되지 않았습니다.')
