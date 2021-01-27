@@ -5,6 +5,7 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL;
+// console.log(SERVER_URL)
 
 export default new Vuex.Store({
   state: {
@@ -70,7 +71,8 @@ export default new Vuex.Store({
       return axios
         .post(`${SERVER_URL}/user/login`, user)
         .then((response) => {
-            context.commit("LOGIN", response.data);
+          console.log(response.data)
+          context.commit("LOGIN", response.data);
           if(`${response.data["authorizationToken"]}` == "undefined") reject();
           axios.defaults.headers.common["auth-token"] = `${response.data["authorizationToken"]}`;
           sessionStorage.setItem('auth-token', `${response.data["authorizationToken"]}`)

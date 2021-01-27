@@ -1,22 +1,19 @@
 <template>
-  <b-card no-body>
-    <b-card-header class="border-0">
-      <h3 class="mb-0">Light table</h3>
-    </b-card-header>
+    <b-card no-body class="bg-default shadow">
+        <b-card-header class="bg-transparent border-0">
+            <h3 class="mb-0 text-white">Dark table</h3>
+        </b-card-header>
 
-    <b-container>
-      <detail-content></detail-content>
-    </b-container>
-    <!-- <el-table class="table-responsive table"
-                  header-row-class-name="thead-light"
+        <el-table class="table-responsive table table-dark"
+                  header-row-class-name="thead-dark"
                   :data="projects">
             <el-table-column label="Project"
                              min-width="310px"
                              prop="name">
                 <template v-slot="{row}">
                     <b-media no-body class="align-items-center">
-                        <a href="#" class="avatar rounded-circle mr-3">
-                            <img alt="Image placeholder" :src="row.img">
+                        <a href="#" class="mr-3">
+                            <b-img class="avatar" rounded="circle" alt="Image placeholder" :src="row.img" />
                         </a>
                         <b-media-body>
                             <span class="font-weight-600 name mb-0 text-sm">{{row.title}}</span>
@@ -33,7 +30,7 @@
                              min-width="170px"
                              prop="status">
                 <template v-slot="{row}">
-                    <badge class="badge-dot mr-4" type="">
+                    <badge class="badge-dot mr-4">
                         <i :class="`bg-${row.statusType}`"></i>
                         <span class="status" :class="`text-${row.statusType}`">{{row.status}}</span>
                     </badge>
@@ -73,30 +70,24 @@
                     </div>
                 </template>
             </el-table-column>
-        </el-table> -->
+        </el-table>
 
-    <!-- <b-card-footer class="py-4 d-flex justify-content-end">
-            <base-pagination v-model="currentPage" :per-page="10" :total="50"></base-pagination>
-        </b-card-footer> -->
-  </b-card>
+    </b-card>
 </template>
 <script>
-import projects from "./../projects";
-import { Table, TableColumn } from "element-ui";
-import DetailContent from "@/components/Board/DetailContent.vue";
-
-export default {
-  name: "light-table",
-  components: {
-    [Table.name]: Table,
-    [TableColumn.name]: TableColumn,
-    DetailContent,
-  },
-  data() {
-    return {
-      projects,
-      currentPage: 1
-    };
+  import projects from './../projects'
+  import { Table, TableColumn} from 'element-ui'
+  export default {
+    name: 'light-table',
+    components: {
+      [Table.name]: Table,
+      [TableColumn.name]: TableColumn
+    },
+    data() {
+      return {
+        projects,
+        currentPage: 1
+      };
+    }
   }
-};
 </script>

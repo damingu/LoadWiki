@@ -119,10 +119,11 @@
 
                       </b-container>
                     </b-form-group>
-
-                    <div>1순위 <strong>{{ selected[0] }}</strong></div>
-                    <div>2순위 <strong>{{ selected[1] }}</strong></div>
-                    <div>3순위 <strong>{{ selected[2] }}</strong></div>
+                    <div>
+                      <div>1순위 <strong v-if="selected.length > 2">{{ options[selected[0]-1].text }}</strong></div>
+                      <div>2순위 <strong v-if="selected.length > 2">{{ options[selected[1]-1].text }}</strong></div>
+                      <div>3순위 <strong v-if="selected.length > 2">{{ options[selected[2]-1].text }}</strong></div>
+                    </div>
                   </div>
                   <hr class="my-4">
                   <b-row class=" my-4">
@@ -151,6 +152,7 @@
                     <!-- <b-button v-b-modal.modal-login variant="default" class="mt-4" @click="isLoginModal = true">로그인</b-button> -->
                     <!-- <LoginContent v-if="isLoginModal" @close="isLoginModal = false" /> -->
                     <LoginContent/>
+                    <LogoutContent/>
                   </div>
                 </b-form>
               </validation-observer>
@@ -166,6 +168,7 @@
   import ModalEmailValidation from "@/components/Validation/ModalEmailValidation.vue";
   import ModalPolicy from '@/components/Validation/ModalPolicy.vue';
   import LoginContent from '@/components/Login/LoginContent.vue';
+  import LogoutContent from '@/components/Logout/LogoutContent.vue';
 
   import { extend } from 'vee-validate';
 
@@ -183,6 +186,7 @@
       ModalEmailValidation,
       ModalPolicy,
       LoginContent,
+      LogoutContent,
     },
     data() {
       return {
@@ -196,16 +200,16 @@
         agree: false,
         selected: [],
         options: [
-          { text: 'Python', value: 'Python'},
-          { text: 'JAVA', value: 'JAVA'},
-          { text: 'C', value: 'C'},
-          { text: 'Vue', value: 'Vue'},
-          { text: 'Spring', value: 'Spring'},
-          { text: 'Frontend', value: 'Frontend'},
-          { text: 'Backend', value: 'Backend'},
-          { text: 'Database', value: 'Database'},
-          { text: 'AI', value: 'AI'},
-          { text: '기타', value: '기타'},
+          { text: 'Python', value: 1},
+          { text: 'JAVA', value: 2},
+          { text: 'C', value: 3},
+          { text: 'Vue', value: 4},
+          { text: 'Spring', value: 5},
+          { text: 'Frontend', value: 6},
+          { text: 'Backend', value: 7},
+          { text: 'Database', value: 8},
+          { text: 'AI', value: 9},
+          { text: '기타', value: 10},
         ],
         isLoginModal: false,
       }
@@ -226,10 +230,11 @@
       },
       emailNumSend() {
         this.isEmailModal = true
-        axios.get(`${SERVER_URL}/email/${this.email}`)
+        console.log(this.$store.getters.getServer)
+        axios.get(`${this.$store.getters.getServer}/email/${this.email}`)
         .then((res) => {
-          this.$store.dispatch('SETCODE', response.data['code']);
-          this.$store.dispatch('SETEMAIL', response.data['email']);
+          this.$store.dispatch('SETCODE', res.data['code']);
+          this.$store.dispatch('SETEMAIL', res.data['email']);
         });
       },
       signUp() {
@@ -241,7 +246,7 @@
           keyword: this.selected,
         }
         if (this.confirmEmail && this.selected.length >= 3) {
-          axios.post(`${SERVER_URL}/user/join`, user)
+          axios.post(`${this.$store.getters.getServer}/user/join`, user)
         } else {
           if (!this.confirmEmail) {
             alert('이메일 인증이 완료되지 않았습니다.')
