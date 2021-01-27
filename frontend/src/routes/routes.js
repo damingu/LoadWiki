@@ -28,6 +28,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/UserProfile.vue')
       },
       {
+        path: '/profile-update',
+        name: 'profile-update',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/ProfileUpdate.vue')
+      },
+      {
         path: '/maps',
         name: 'maps',
         component: () => import(/* webpackChunkName: "demo" */ '../views/GoogleMaps.vue')
