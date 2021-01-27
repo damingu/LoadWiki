@@ -64,7 +64,31 @@ public class RoadmapController {
 		}
 		return new ResponseEntity<Map<String, Object>>(result, status);
 	}
-
+	
+	@GetMapping("/Official/{page}")
+	public Object listOfficialRoadmap(@PathVariable String page, HttpServletRequest request) {
+		logger.trace("listOfficialRoadmap start");
+		Map<String, Object> result = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			logger.info(" page : " + page);
+			result = (Map<String, Object>) roadmapservice.getOfficialRoadmapList(page);
+			result.put("msg", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (NumberFormatException e) {
+			logger.error("input data type error");
+			result.put("msg", FAIL);
+			result.put("errorMsg", e.getMessage());
+			status = HttpStatus.NO_CONTENT;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.put("msg", FAIL);
+			result.put("errorMsg", e.getMessage());
+			status = HttpStatus.NO_CONTENT;
+		}
+		return new ResponseEntity<Map<String, Object>>(result, status);
+	}
+	
 	@GetMapping("/log/{uid}/{page}/{rmorder}")
 	public Object listLog(@PathVariable String uid, @PathVariable String page, @PathVariable String rmorder,
 			HttpServletRequest request) {

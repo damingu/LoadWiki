@@ -2,8 +2,10 @@
   <div>
     <base-header class="pb-5 pb-2 pt-2 pt-md-2 bg-gradient-success">
       <!-- Card stats -->
-    <a :href="goToBack" class="btn">돌아가기</a>
-    <a class="btn" @click="updateRoadmap">수정완료</a>
+    <a :href="goToBack" class="btn">돌아가기</a> 
+    <a v-if="mode" class="btn" @click="updateRoadmap">수정완료</a>
+    <a v-else class="btn" @click="createRoadmap">생성완료</a>
+    <input v-model="roadmapname" placeholder="로드맵 제목을 입력해 주세요.">
 
     </base-header>
 
@@ -13,8 +15,8 @@
           <b-card no-body class="border-0">
             <div style="width: 100%;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
-                <div ref="myPaletteDiv" style="width: 150px; margin-right: 2px; background-color: #282c34;"></div>
-                <div ref="myDiagramDiv" style="flex-grow: 1; height: 900px; background-color: #282c34;"></div>
+                <div ref="myPaletteDiv" style="width: 150px; margin-right: 2px; background-color: #F9F8F3;"></div>
+                <div ref="myDiagramDiv" style="flex-grow: 1; height: 900px; background-color: #F9F8F3;"></div>
               </div>
             </div>
           </b-card>
@@ -22,7 +24,6 @@
       </b-row>
     </b-container>
   </div>
-  
 </template>
 
 
@@ -40,6 +41,9 @@ export default {
   props: {
       rmid: {
           type: Number,
+      },
+      mode: {
+        type : Number,
       },
   },
   data() {
@@ -80,8 +84,8 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
           $(go.Panel, "Auto",
-            $(go.Shape, "Rectangle",
-              { fill: "#282c34", stroke: "#00A9C9", strokeWidth: 3.5 },
+            $(go.Shape, "RoundedRectangle",
+              { fill: "#D4E0DE", stroke: "#307363", strokeWidth: 3.5, strokeJoin: "round", strokeCap: "square" },
               new go.Binding("figure", "figure")),
             $(go.TextBlock, this.textStyle(),
               {
@@ -104,7 +108,7 @@ export default {
           // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
           $(go.Panel, "Auto",
             $(go.Shape, "Diamond",
-              { fill: "#282c34", stroke: "#00A9C9", strokeWidth: 3.5 },
+              { fill: "#D4E0DE", stroke: "#307363", strokeWidth: 3.5 },
               new go.Binding("figure", "figure")),
             $(go.TextBlock, this.textStyle(),
               {
@@ -126,7 +130,7 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           $(go.Panel, "Spot",
             $(go.Shape, "Circle",
-              { desiredSize: new go.Size(70, 70), fill: "#282c34", stroke: "#09d3ac", strokeWidth: 3.5 }),
+              { desiredSize: new go.Size(70, 70), fill: "#ffffff", stroke: "#F04A5E", strokeWidth: 3.5 }),
             $(go.TextBlock, "Start", this.textStyle(),
               new go.Binding("text"))
           ),
@@ -140,7 +144,7 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           $(go.Panel, "Spot",
             $(go.Shape, "Circle",
-              { desiredSize: new go.Size(60, 60), fill: "#282c34", stroke: "#DC3C00", strokeWidth: 3.5 }),
+              { desiredSize: new go.Size(60, 60), fill: "#ffffff", stroke: "#8D2040", strokeWidth: 3.5 }),
             $(go.TextBlock, "End", this.textStyle(),
               new go.Binding("text"))
           ),
@@ -172,7 +176,7 @@ export default {
     myDiagram.nodeTemplateMap.add("Comment",
       $(go.Node, "Auto", this.nodeStyle(),
         $(go.Shape, "File",
-          { fill: "#282c34", stroke: "#DEE0A3", strokeWidth: 3 }),
+          { fill: "#D4E0DE", stroke: "#AA8A71", strokeWidth: 3 }),
         $(go.TextBlock, this.textStyle(),
           {
             margin: 8,
@@ -204,12 +208,12 @@ export default {
         },
         new go.Binding("points").makeTwoWay(),
         $(go.Shape,  // the highlight shape, normally transparent
-          { isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT" }),
+          { isPanelMain: true, strokeWidth: 5, stroke: "transparent", name: "HIGHLIGHT" }),
         $(go.Shape,  // the link path shape
-          { isPanelMain: true, stroke: "gray", strokeWidth: 2 },
-          new go.Binding("stroke", "isSelected", function(sel) { return sel ? "dodgerblue" : "gray"; }).ofObject()),
+          { isPanelMain: true, stroke: "#1B443C", strokeWidth: 2.5 },
+          new go.Binding("stroke", "isSelected", function(sel) { return sel ? "#1B443C" : "#1B443C"; }).ofObject()),
         $(go.Shape,  // the arrowhead
-          { toArrow: "standard", strokeWidth: 0, fill: "gray" }),
+          { toArrow: "Triangle", strokeWidth: 1.5, stroke: "#1B443C", fill: "#307362"}),
         $(go.Panel, "Auto",  // the link label, normally not visible
           { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5 },
           new go.Binding("visible", "visible").makeTwoWay(),
@@ -300,7 +304,7 @@ export default {
     textStyle() {
       return {
         font: "bold 11pt Lato, Helvetica, Arial, sans-serif",
-        stroke: "#F8F8F8"
+        stroke: "#000000"
       }
     },
     
@@ -324,6 +328,15 @@ export default {
     // read 요청보내기
     readRoadmap() {
       // 외부 json파일 초기하면에 출력
+      if(this.rmid == 0){
+        this.test = { "class": "go.GraphLinksModel",
+        "linkFromPortIdProperty": "fromPort",
+        "linkToPortIdProperty": "toPort",
+        "nodeDataArray": [
+      ],
+        "linkDataArray": [
+      ]}
+      }else{
       axios.get(`${this.$store.getters.getServer}/roadmap/get/${this.rmid}`)
         .then((res) => {
           this.test =  JSON.parse(res.data['roadmaps'].tmp);
@@ -332,6 +345,7 @@ export default {
           // console.log('check', this.roadmapname, this.rmorder)
           myDiagram.model = go.Model.fromJson(this.test);
       });
+      }
     },
     // update 요청보내기
     updateRoadmap() {
@@ -350,6 +364,28 @@ export default {
       .then((res) => {
         console.log(res)
         console.log('응답')
+        this.$router.push({ name: 'godiagram' })
+      })
+      .catch((err) =>{
+        console.error(err)
+      })
+    },
+    createRoadmap() {
+      console.log('실행')
+      this.test = myDiagram.model.toJson();
+      myDiagram.isModified = false;
+      axios.post(`${this.$store.getters.getServer}/roadmap/create`,
+        {
+          // login기능 완료되면 store에서 가져오기로 수정!!!!!!!!!!
+          uid: this.$store.getters.getUid,
+          name: this.roadmapname,
+          tmp: JSON.stringify(this.test)
+        }
+      )
+      .then((res) => {
+        console.log(res)
+        console.log('응답')
+        this.$router.push({ name: 'godiagram' })
       })
     },
   },

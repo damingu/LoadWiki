@@ -135,4 +135,16 @@ public class RoadmapServiceImpl implements RoadmapService {
 		return result;
 	}
 
+	@Override
+	public Object getOfficialRoadmapList(String page) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			int pageSt = (Integer.parseInt(page) - 1) * PAGESIZE[0];
+			result.put("roadmaps", roadmaprepo.selectOfficialListRoadmap(pageSt, PAGESIZE[0]));
+		} catch (Exception e) {
+			logger.error("Service getRoadmapListByUid : Something wrong");
+		}
+		return result;
+	}
+
 }
