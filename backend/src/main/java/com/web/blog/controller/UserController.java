@@ -96,8 +96,9 @@ public class UserController {
 	}
 	
 	@PutMapping("/modify")
-	public Object modify(@RequestBody User user, HttpServletRequest request) {
+	public Object modify(@RequestBody User user, @RequestBody Map<String, Object> map, HttpServletRequest request) {
 		logger.trace("modify");
+		System.out.println(map.toString());
 		try {
 			String email = (String) loginServ.getData(request.getHeader("auth-token")).get("email");
 			user.setEmail(email);
