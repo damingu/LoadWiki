@@ -10,7 +10,7 @@
           <b-row >
             <b-col lg="7" md="10">
               <!-- 닉네임 들어갈 부분 -->
-              <h1 class="display-2 text-white">닉네임</h1>
+              <h1 class="display-2 text-white">{{ nickname }}</h1>
               <!-- 한줄 소개 들어갈 부분 -->
               <p class="text-white mt-0 mb-3">
                 나에게 힘을 주는 인생에 관한 명언 48가지 : 고개 숙이지 마십시오. ... 고난의 시기에 동요하지 않는 것, ... 사막이 아름다운 것은 ...행복의 한 쪽 문이 닫히면 다른 쪽 문이 열린다. ... 만족할 줄 아는 사람은 진정한 부자이고, ... 성공해서 만족하는 것은 아니다. ... 곧 위에 비교하면 족하지 못하나, ... 그대의 하루 하루를
@@ -24,7 +24,9 @@
                 </b-link>
               </div>
               <br>
-              <a href="#!" class="btn btn-info">Edit profile</a>
+              <router-link :to="{ name : 'profile-update' }" class="btn btn-info">수정하기</router-link>
+              <!-- <a href="#!" class="btn btn-info">Edit profile</a> -->
+              
             </b-col>
           </b-row>
         </b-container>
@@ -32,7 +34,80 @@
     </div>
 
     <b-container fluid class="mt--6">
-      <user-card></user-card>
+      <b-card no-body class="card-profile" alt="Image placeholder" img-top>
+        <b-row class="justify-content-center">
+          <b-col lg="3" class="order-lg-2">
+            <div class="card-profile-image">
+              <a href="#">
+                <b-img src="img/theme/team-4.jpg" rounded="circle" />
+              </a>
+            </div>
+          </b-col>
+        </b-row>
+
+        <b-card-header class="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 mb-4">
+          <!-- <div class="d-flex justify-content-between">
+            <a href="#" class="btn btn-sm btn-info mr-4">Connect</a>
+            <a href="#" class="btn btn-sm btn-default float-right">Message</a>
+          </div> -->
+        </b-card-header>
+        <b-card-body class="pt-0">
+          <b-row>
+            <b-col>
+              <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                <div>
+                  <span class="heading">22</span>
+                  <span class="description">follower</span>
+                </div>
+                <div>
+                  <span class="heading">10</span>
+                  <span class="description">following</span>
+                </div>
+                <div>
+                  <span class="heading">8</span>
+                  <span class="description">게시글</span>
+                </div>
+                <div>
+                  <span class="heading">89</span>
+                  <span class="description">댓글</span>
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+          <div class="text-center">
+            <h1>
+              {{ nickname }}
+            </h1>
+            <div class="mb-2">
+              <i class="ni ni-hat-3 mr-2"></i>기계공학
+            </div>
+            <div class="h5 font-weight-300">
+              <i class="ni ni-tag mx-1"></i>
+              <b-badge variant="primary">
+                {{ keywords[0] }}
+              </b-badge>
+              <i class="ni ni-tag mx-1"></i>
+              <b-badge variant="primary">
+                {{ keywords[1] }}
+              </b-badge>
+              <i class="ni ni-tag mx-1"></i>
+              <b-badge variant="primary">
+                {{ keywords[2] }}
+              </b-badge>
+            </div>
+            <hr class="my-4">
+            <h3>
+              <i class="ni ni-palette mr-2"></i>
+              생성한 로드맵 모음
+            </h3>
+            <hr class="my-4">
+            <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music.</p>
+            <b-button variant="primary" class="mt-4" @click="withDrawal">회원탈퇴</b-button>
+            <LoginContent/>
+
+          </div>
+        </b-card-body>
+      </b-card>
       <!-- <b-row> -->
         <!-- <b-col xl="4" class="order-xl-2 mb-5"> -->
           <!-- <user-card></user-card> -->
@@ -47,12 +122,59 @@
 <script>
   // import EditProfileForm from './UserProfile/EditProfileForm.vue';
   import UserCard from './UserProfile/UserCard.vue';
+  import LoginContent from '@/components/Login/LoginContent.vue';
+
 
   export default {
     components: {
       // EditProfileForm,
-      UserCard
-    }
+      UserCard,
+      LoginContent,
+    },
+    data() {
+      return{
+        nickname: '',
+        sentence: '',
+        address: '',
+        profileImg: '',
+        backImg: '',
+        keywords: [],
+        follower: '',
+        following: '',
+        boards: '',
+        comments: '',
+        major: '',
+        email: '',
+      }
+    },
+    created() {
+      axios.get(`${this.$store.getters.getServer}/user/info`)
+      .then((res) => {
+        console.log(res.data)
+        this.nickname = res.data.name
+        this.email = res.data.email
+        this.keywords = res.data.keywords
+      })
+      .catch(() => {
+        alert('로그인이 필요한 서비스입니다.')
+        this.$store.dispatch("LOGOUT")
+        .then(() => {
+          this.$router.replace('/')
+        })
+      })
+    },
+    methods: {
+      withDrawal() {
+        axios.delete(`${this.$store.getters.getServer}/user/withdraw`)
+        .then(() => {
+          alert('회원 탈퇴가 완료되었습니다.')
+          this.$router.replace('/')
+        })
+        .catch(() => {
+          alert('오류가 발생했습니다. 다시 시도해주세요.')
+        })
+      },
+    },
   };
 </script>
 <style>

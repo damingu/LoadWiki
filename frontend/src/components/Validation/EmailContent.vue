@@ -51,11 +51,22 @@ export default {
   },
   methods: {
     isCorrect() {
-      if (this.mailNum === this.inputNum) {
-        this.$emit('confirmSuccess')
-        clearInterval(this.polling)
-        this.timeOut = true
-      } else {this.$emit('confirmFail')}
+      let map = {
+        email: this.$store.getters.getEmail,
+        code: this.$store.getters.getCode,
+        inputCode: this.inputNum,
+      };
+      axios.post(`${this.$store.getters.getServer}/email/`, map)
+      .then((res) => {
+        console.log(res.data)
+        if (res.data.msg === 'success') {
+          this.$emit('confirmSuccess')
+          clearInterval(this.polling)
+          this.timeOut = true
+        } else {
+          this.$emit('confirmFail')
+        }
+      })
     },
     start() {
       this.timeOut = false

@@ -1,5 +1,7 @@
 package com.web.blog.model.dto;
 
+import java.util.Arrays;
+
 public class User {
 	private int uid;
 	private String password;
@@ -9,14 +11,14 @@ public class User {
 	private String image;
 	private String bgImage;
 	private String address;
-	private Keyword keyword;
+	private String keyword[];
 	
 	public User() {
 		super();
 	}
 
 	public User(int uid, String password, String email, String name, String createDate, String image, String bgImage,
-			String address, Keyword keyword) {
+			String address, String[] keyword) {
 		super();
 		this.uid = uid;
 		this.password = password;
@@ -93,11 +95,11 @@ public class User {
 		this.address = address;
 	}
 
-	public Keyword getKeyword() {
+	public String[] getKeyword() {
 		return keyword;
 	}
 
-	public void setKeyword(Keyword keyword) {
+	public void setKeyword(String[] keyword) {
 		this.keyword = keyword;
 	}
 
@@ -105,7 +107,8 @@ public class User {
 	public String toString() {
 		return "User [uid=" + uid + ", password=" + password + ", email=" + email + ", name=" + name + ", createDate="
 				+ createDate + ", image=" + image + ", bgImage=" + bgImage + ", address=" + address + ", keyword="
-				+ keyword + "]";
+				+ Arrays.toString(keyword) + "]";
 	}
+	
 	
 }

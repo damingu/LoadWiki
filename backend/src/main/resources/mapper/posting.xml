@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="com.web.blog.model.repo.PostingRepo">
+	
+	<select id="select" parameterType="String" resultType="Posting">
+		select * 
+		from posting 
+		where pid=#{pid}
+	</select>
+	
+ 	<select id="selectListAll" parameterType="Map" resultType="Posting">
+		select * 
+		from posting
+		where classifier=#{classifier}
+		limit #{page}, #{cnt}
+	</select>
+	
+	 <select id="selectListAllTag" parameterType="Map" resultType="Posting">
+		select * 
+		from posting
+		where classifier=#{classifier} AND tag=#{tag}
+		limit #{page}, #{cnt}
+	</select>
+	
+	<select id="selectListName" parameterType="Map" resultType="Posting">
+		select * 
+		from posting
+		where classifier=#{classifier} AND name=#{word}
+		limit #{page}, #{cnt}
+	</select>
+	
+	<select id="selectListNameTag" parameterType="Map" resultType="Posting">
+		select * 
+		from posting
+		where classifier=#{classifier} AND name=#{word} AND tag=#{tag}
+		limit #{page}, #{cnt}
+	</select>
+	
+	<select id="selectListTitle" parameterType="Map" resultType="Posting">
+		select * 
+		from posting
+		where classifier=#{classifier} AND title=concat("%", #{word}, "%")
+		limit #{page}, #{cnt}
+	</select>
+	
+	<select id="selectListTitleTag" parameterType="Map" resultType="Posting">
+		select * 
+		from posting
+		where classifier=#{classifier} AND title=concat("%", #{word}, "%") AND tag=#{tag}
+		limit #{page}, #{cnt}
+	</select>
+	
+	<select id="selectListContent" parameterType="Map" resultType="Posting">
+		select * 
+		from posting
+		where classifier=#{classifier} AND content=concat("%", #{word}, "%") AND tag=#{tag}
+		limit #{page}, #{cnt}
+	</select>
+	
+	<select id="selectListContentTag" parameterType="Map" resultType="Posting">
+		select * 
+		from posting
+		where classifier=#{classifier} AND content=concat("%", #{word}, "%") AND tag=#{tag}
+		limit #{page}, #{cnt}
+	</select>
+	
+	<insert id="insert" parameterType="Posting">
+		insert 
+		into posting(pid, classifier, tag, title, uid, content, image)
+		values(#{pid}, #{classifier}, #{tag}, #{title}, #{uid}, #{content}, #{image})
+	</insert>
+	
+	<update id="update" parameterType="Posting">
+		update posting
+		set tag=#{tag}, title=#{title}, content=#{content}, modifyDate=#{modifyDate}, image=#{image}
+		where pid=#{pid}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		delete 
+		from posting 
+		where pid=#{pid}
+	</delete>
+
+</mapper>

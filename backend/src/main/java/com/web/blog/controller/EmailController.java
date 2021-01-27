@@ -52,7 +52,6 @@ public class EmailController {
 			}}, HttpStatus.NO_CONTENT);
 		}
 	}
-
 	
 	@PostMapping("/")
 	public Object authorization(@RequestBody Map<String, Object> map) {

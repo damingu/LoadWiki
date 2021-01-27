@@ -45,6 +45,7 @@ public class UserController {
 	@PostMapping("/login")
 	public Object login(@RequestBody User user, HttpServletResponse response) {
 		logger.trace("login");
+		System.out.println("로그인" + user);
 		try {
 			logger.info(user.toString());
 			Map<String, Object> result = (Map<String, Object>) userServ.login(user);
@@ -66,6 +67,7 @@ public class UserController {
 			String email = (String) loginServ.getData(request.getHeader("auth-token")).get("email");
 			logger.info(email);
 			Map<String, Object> result = (Map<String, Object>) userServ.getInfo(email);
+			result.put("msg", SUCCESS);
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 		} catch(Exception e) {
 			logger.error(e.getMessage());
@@ -79,6 +81,7 @@ public class UserController {
 	@PostMapping("/join")
 	public Object join(@RequestBody User user) {
 		logger.trace("join");
+		System.out.println(user);
 		try {
 			logger.info(user.toString());
 			Map<String, Object> result = (Map<String, Object>) userServ.join(user);
@@ -95,6 +98,7 @@ public class UserController {
 	@PutMapping("/modify")
 	public Object modify(@RequestBody User user, HttpServletRequest request) {
 		logger.trace("modify");
+		System.out.println(user);
 		try {
 			String email = (String) loginServ.getData(request.getHeader("auth-token")).get("email");
 			user.setEmail(email);
@@ -113,6 +117,7 @@ public class UserController {
 	@DeleteMapping("/withdraw")
 	public Object withdraw(HttpServletRequest request) {
 		logger.trace("withdraw");
+		System.out.println(request.getHeader("auth-token"));
 		try {
 			String email = (String) loginServ.getData(request.getHeader("auth-token")).get("email");
 			logger.info(email);
