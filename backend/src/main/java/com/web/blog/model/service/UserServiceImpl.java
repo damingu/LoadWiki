@@ -1,14 +1,28 @@
 package com.web.blog.model.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.web.blog.model.dto.FileInfoDto;
 import com.web.blog.model.dto.User;
 import com.web.blog.model.repo.UserRepo;
 
@@ -23,6 +37,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	LoginService loginServ;
 
+	@Autowired
+	ServletContext servletContext;
+	
 	@Override
 	public Object getInfo(String email) {
 		try {
@@ -123,4 +140,30 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
+	public void upload(MultipartFile[] files, Model model, HttpSession session) throws Exception, IOException {
+		String realPath = servletContext.getRealPath("/upload");
+		String today = new SimpleDateFormat("yyMMdd").format(new Date());
+		//String saveFolder = realPath + File.separator + today;
+		String saveFolder = File.separator + today;
+		System.out.println(saveFolder);
+		File folder = new File(saveFolder);
+		if(!folder.exists())
+			folder.mkdirs();
+		List<FileInfoDto> fileInfos = new ArrayList<FileInfoDto>();
+		for (MultipartFile mfile : files) {
+			FileInfoDto fileInfoDto = new FileInfoDto();
+			String originalFileName = mfile.getOriginalFilename();
+			if (!originalFileName.isEmpty()) {
+				String saveFileName = UUID.randomUUID().toString() + originalFileName.substring(originalFileName.lastIndexOf('.'));
+				fileInfoDto.setSaveFolder(today);
+				fileInfoDto.setOriginFile(originalFileName);
+				fileInfoDto.setSaveFile(saveFileName);
+				System.out.println(mfile.getOriginalFilename() + "   " + saveFileName);
+				mfile.transferTo(new File(folder, saveFileName));
+			}
+			fileInfos.add(fileInfoDto);
+		}
+		
+	}
 }
