@@ -16,7 +16,27 @@
                 <b-img src="img/theme/team-4.jpg" rounded="circle" />
               </b-row>
               <b-row class="justify-content-end">
-                <ProfileImg/>
+                <!-- <ProfileImg/> -->
+                <div>
+                  <b-button size="sm" @click="modalShow = !modalShow">사진📷</b-button>
+                  <b-modal v-model="modalShow" hide-footer>
+                    <template #modal-title>
+                      <h1>프로필 업로드</h1>
+                    </template>
+                    <div>
+                      <b-form-file
+                        v-model="file1"
+                        :state="Boolean(file1)"
+                        placeholder="Choose a file or drop it here..."
+                        drop-placeholder="Drop file here..."
+                      ></b-form-file>
+                      <div class="mt-3">Selected file: {{ file1 ? file1.name : '' }}</div>
+                    </div>
+                    <div class="text-center">
+                      <base-button type="primary" native-type="submit" class="my-4" @click="modalShow = false">확인</base-button>
+                    </div>
+                  </b-modal>
+                </div>
               </b-row>
             </b-container>
           </b-col>
@@ -140,7 +160,7 @@
   import UserCard from './UserProfile/UserCard.vue';
   import LoginContent from '@/components/Login/LoginContent.vue';
   import FlavourContent from '@/components/Profileupdate/FlavourContent.vue';
-  import ProfileImg from '@/components/Profileupdate/ProfileImg.vue';
+  // import ProfileImg from '@/components/Profileupdate/ProfileImg.vue';
   import BackgroundImg from '@/components/Profileupdate/BackgroundImg.vue';
 
 
@@ -150,7 +170,7 @@
       UserCard,
       LoginContent,
       FlavourContent,
-      ProfileImg,
+      // ProfileImg,
       BackgroundImg,
     },
     data() {
@@ -167,6 +187,8 @@
         comments: '',
         major: '',
         email: '',
+        modalShow: false,
+        file1: null,
       }
     },
     created() {
@@ -204,6 +226,7 @@
           major : this.major,
           keyword : this.keywords,
           introduction : this.introduction,
+          file : this.file1,
         }
         console.log("updateHandler : " + user)
         axios

@@ -6,8 +6,13 @@ import NotFound from '@/views/NotFoundPage.vue';
 
 const routes = [
   {
+    path: '/main',
+    name: 'main',
+    component: NothingMain,
+  },
+  {
     path: '/',
-    redirect: 'dashboard',
+    redirect: 'main',
     component: DashboardLayout,
     children: [
       {
@@ -60,11 +65,6 @@ const routes = [
         component: () => import('../views/Board/Board.vue')
       },
     ]
-  },
-  {
-    path: '/main',
-    name: 'main',
-    component: NothingMain,
   },
   {
     path: '/',
