@@ -58,6 +58,13 @@ const routes = [
         name: 'tmp_board',
         component: () => import('../views/Board/Board.vue')
       },
+      {
+        path: '/officialRoadmap',
+        name: 'officialRoadmap',
+        component: () => import('../views/officialRoadmap.vue'),
+        props: true
+      },
+
     ]
   },
   {
