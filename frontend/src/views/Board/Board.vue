@@ -84,8 +84,6 @@ import {
   Table,
   TableColumn
 } from "element-ui";
-import projects from "./projects";
-import users from "./users";
 import LightTable from "./Tables/LightTable";
 import DarkTable from "./Tables/DarkTable";
 import Detail from "./Posting/Detail";
@@ -103,8 +101,6 @@ export default {
   },
   data() {
     return {
-      projects,
-      users,
       isSelected: false,
       tWidth: "550px",
       selPid: ""
@@ -135,5 +131,18 @@ export default {
 .el-table.table-dark td,
 .el-table.table-dark th.is-leaf {
   border-bottom: none;
+}
+
+body {
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+.box {
+  -ms-overflow-style: none;
+}
+.box::-webkit-scrollbar {
+  display: none;
 }
 </style>

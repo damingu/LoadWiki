@@ -1,8 +1,8 @@
 <template>
-  <b-card no-body>
-    <b-card-header class="border-0">
-      <!-- <h3 class="mb-0">TMP_BOARD</h3> -->
-    </b-card-header>
+  <b-card class="m-2" no-body>
+    <!-- <b-card-header class="border-0">
+      <h3 class="mb-0">TMP_BOARD</h3>
+    </b-card-header> -->
 
     <el-table
       class="table-responsive table"
@@ -10,6 +10,18 @@
       :data="postings"
       @row-click="openDetail"
     >
+      <el-table-column label="ID" min-width="120px" prop="ID">
+        <template v-slot="{ row }">
+          <b-media no-body class="align-items-center">
+            <b-media-body>
+              <span class="font-weight-600 name mb-0 text-sm">{{
+                row.pid
+              }}</span>
+            </b-media-body>
+          </b-media>
+        </template>
+      </el-table-column>
+
       <el-table-column label="TITLE" min-width="300px" prop="title">
         <template v-slot="{ row }">
           <b-media no-body class="align-items-center">
@@ -100,7 +112,6 @@
   </b-card>
 </template>
 <script>
-import projects from "./../projects";
 import { Table, TableColumn } from "element-ui";
 // TableColumn.rowKey = ["pid", "uid", "tag", "title", "createDate"];
 
@@ -114,7 +125,6 @@ export default {
   props: ["isClicked"],
   data() {
     return {
-      projects,
       currentPage: 1,
       word: "",
       selector: "none",
