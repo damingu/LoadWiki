@@ -32,6 +32,7 @@ const routes = [
         name: 'profile-update',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/ProfileUpdate.vue')
       },
+              
       {
         path: '/maps',
         name: 'maps',
@@ -64,7 +65,6 @@ const routes = [
         component: () => import('../views/officialRoadmap.vue'),
         props: true
       },
-
     ]
   },
   {

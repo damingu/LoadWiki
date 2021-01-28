@@ -23,18 +23,9 @@
 
         <sidebar-item
           :link="{
-            name: 'godiagram',
+            name: 'MyRoadmap',
             path: '/godiagram',
             icon: 'ni ni-pin-3 text-orange'
-          }"
-        >
-        </sidebar-item>
-
-        <sidebar-item
-          :link="{
-            name: 'User Profile',
-            path: '/profile',
-            icon: 'ni ni-single-02 text-yellow'
           }"
         >
         </sidebar-item>
@@ -44,6 +35,15 @@
             name: 'officialRoadmap',
             path: '/officialRoadmap',
             icon: 'ni ni-bullet-list-67 text-red'
+          }"
+        >
+        </sidebar-item>
+
+        <sidebar-item
+          :link="{
+            name: 'User Profile',
+            path: '/profile',
+            icon: 'ni ni-single-02 text-yellow'
           }"
         >
         </sidebar-item>

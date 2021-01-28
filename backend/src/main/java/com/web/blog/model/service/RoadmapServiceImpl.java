@@ -118,9 +118,12 @@ public class RoadmapServiceImpl implements RoadmapService {
 		try {
 			int rmidnum = Integer.parseInt(rmid);
 			int uidnum = roadmaprepo.selectUidByRmid(rmidnum);
-			int nowuidnum = Integer.parseInt(nowuid);
+			int nowuidnum = 0;
+			if(uidnum <0) {
+				nowuidnum = uidnum;
+			}else
+				nowuidnum = Integer.parseInt(nowuid);
 			Object roadmap = null;
-
 			if (nowuidnum == uidnum)
 				roadmap = roadmaprepo.selectMyRoadmap(rmidnum);
 			else

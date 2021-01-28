@@ -1,57 +1,109 @@
 <template>
+
   <div>
-    <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
+    <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-default">
       <!-- Card stats -->
-      <router-link :to="{ name : 'roadmap', params: { rmid: 0, mode : 0 }}" >생성하기</router-link> 
       <br>
-      <b-row >
-          <b-col xl="3" md="6" v-for="(item, index) in curriculumData" :key="index" @click="previewRoadmap(item.rmid)">  
-            <stats-card type="gradient-red"
-                        :sub-title="item.name"
-                        icon="ni ni-active-40"
-                        class="mb-4 btn" 
-                        :rmid="item.rmid">
-              <template slot="footer">
-                <span class="text-success mr-2">{{ item.createDate }}</span>
-              </template>
-            </stats-card>
-            
-          </b-col>
-      </b-row>
+        <carousel :per-page="4"   :mouse-drag="true" >
+          <slide v-for="(item, index) in curriculumData" :key="index" >
+            <b-col  @click="previewRoadmap(item.rmid, index)">
+                  <stats-card type="gradient-red"
+                            :sub-title="item.name"
+                            icon="ni ni-active-40"
+                            class="mb-4 btn" 
+                            :rmid="item.rmid"
+                            >
+                  <template slot="footer">
+                    <span class="text-success mr-2">{{ item.createDate }}</span>
+                  </template>
+                </stats-card>
+                </b-col>
+          </slide>
+        </carousel>
     </base-header>
 
+    
+
+    
     <b-container fluid class="mt--7">
       <b-row>
         <b-col>
+          <div style="text-align: right;">
+            <button class="btn" style="background-color: rgb(256, 256, 256);" @click="goToCreate">생성하기</button>
+            <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid, mode : 1 }}" class= "btn" style=" background-color:#F9F8F3" >수정하기</router-link>
+          </div>
           <b-card no-body class="border-0">
-            <div style="width: 100%; display: inline-block;">
-              <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
+            <div class="inline-block" style="width: 100%;">
+
+              <!--goJS/start-->
+              <div style="width: 100%; display: flex; justify-content: space-between; z-index:1;">
+                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #F9F8F3;" @click="checkCur">
+                </div>
+
+                 <!-- 커리큘럼 데이터 출력 카드/start -->
+                <b-card
+                  title="Curriculum Information"
+                  style="width: 252px;"
+                >
+                  <h3>{{ headertext }}</h3>
+                  <hr>
+                  <b-card-text>
+                    <base-input label="시작날짜-종료날짜">
+                    <flat-pickr slot-scope="{focus, blur}"
+                    @on-open="focus"
+                    @on-close="blur"
+                    :config="{allowInput: true, mode: 'range',}"
+                    class="form-control datepickr"
+                    v-model="dates.range"
+                    disabled>
+                    </flat-pickr>
+                    </base-input>
+                  </b-card-text>
+                  <hr>
+                  <span>커리큘럼 설명</span>
+                  <hr>
+                  <b-card-text>
+                   <b-form-input v-model="memotext" placeholder="Enter your memo" readonly ></b-form-input>
+                  </b-card-text>
+                  
+                </b-card>
                 
-                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #F9F8F3"></div>
-                 <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid, mode : 1 }}" class= "btn" style=" background-color:#F9F8F3" >수정하기</router-link>
+                <!-- 커리큘럼 데이터 출력 카드/end -->
+
               </div>
-              
+              <!--goJs/end-->
+
             </div>
           </b-card>
         </b-col>
       </b-row>
     </b-container>
+   
   </div>
 </template>
 <script>
 import RoadMap from '@/views/Roadmap/RoadMap'
 import router from '@/routes/router'
-
+import { Carousel, Slide } from 'vue-carousel';
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+import 'flatpickr/dist/themes/material_blue.css';
+import {Hindi} from 'flatpickr/dist/l10n/hi.js';
 
 // 코드 변환 시작 
 let go = window.go
 let $ = go.GraphObject.make
 let myDiagram;
+// node 속성 체크위한 전역변수(여기서만 사용)
+let head;
 export default {
   router,
   name: '',
   componenets: {
     RoadMap,
+    Carousel,
+    Slide,
+    flatPickr,
   },
   data() {
     return {
@@ -63,12 +115,27 @@ export default {
         "linkDataArray": [
       ]},  
       curriculumData: [],
-      rmid: 0
+      rmid: 0,
+      ismounted: false,
+      headertext: '',
+      dates :{
+        range : ''
+      },
+      memotext : '',
+        // Get more form https://flatpickr.js.org/options/
+      config: {
+        wrap: true, // set wrap to true only when using 'input-group'
+        altFormat: 'M j, Y',
+        altInput: true,
+        dateFormat: 'Y-m-d',
+        locale: Hindi, // locale for this instance only          
+      },
+
     }
   },
   created() {
       
-      console.log(this.$store.getters.getUid)
+      
       const uid = String(this.$store.getters.getUid)
       // page => 차후 수정해야됨
 
@@ -76,14 +143,17 @@ export default {
       const page = '1'
       axios.get(`${this.$store.getters.getServer}/roadmap/list/${uid}/${page}`)
         .then((res) => {
-          console.log('data', res.data)
+        if(res.data.msg == 'success')
           this.curriculumData = res.data['roadmaps'];
-          console.log(this.curriculumData)
+          else
+            alert("데이터 로드에 실패했습니다.")
+          
+        }).catch((e) =>{
+          alert("axois 오류")
         });
     
   },
   mounted() {
-    let self = this
     myDiagram = 
         $(go.Diagram, this.$refs.myDiagramDiv,
           {
@@ -243,14 +313,12 @@ export default {
 
       // canvas 내의 node 요소 잡기 
       myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
-      console.log(e.subject.part.data.key);
-      console.log(e.subject.part.data.text);
-});
-
+        head = e.subject.part.data.text;
+       });
   },
-  watch:{},
   computed: {},
   methods: {
+
     nodeStyle() {
       return [
         // The Node.location comes from the "loc" property of the node data,
@@ -312,23 +380,36 @@ export default {
       animation.start();
     },
     // 리스트
-    previewRoadmap(clickrmid) {
+    previewRoadmap(clickrmid, index) {
       this.rmid = clickrmid;
         axios.get(`${this.$store.getters.getServer}/roadmap/get/${clickrmid}`)
         .then((res) => {
-          
+          if(res.data.msg == 'success'){
           this.test = JSON.parse(res.data['roadmaps'].tmp);
           this.load();
+          }else{
+            alert("데이터 로드에 실패했습니다.")
+          }
+        }).catch((e) =>{
+          alert("axois 오류")
         });
     },
     // 외부 json파일 초기화면에 출력
     load() {
       myDiagram.model = go.Model.fromJson(this.test);
+      this.ismounted = true
     },
     // 로드맵 수정버튼 
     updateRoadMap() {
       this.$router.push({ name: 'roadmap' })
     },
+    checkCur(e) {
+      // 차후에 DB에 요청을 보낸다음 DB정보로 반영
+      this.headertext = head
+    },
+    goToCreate() {
+      this.$router.push({ name : 'roadmap', params: { rmid: 0, mode : 0 } })
+    }
   },
 }
 </script>
