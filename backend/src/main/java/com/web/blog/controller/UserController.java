@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -97,7 +98,7 @@ public class UserController {
 	@PostMapping("/join")
 	public Object join(@RequestBody User user) {
 		logger.trace("join");
-		System.out.println(user);
+		System.out.println("회원가입하는주우우우우우우우우웅" + user);
 		try {
 			logger.info(user.toString());
 			Map<String, Object> result = (Map<String, Object>) userServ.join(user);
