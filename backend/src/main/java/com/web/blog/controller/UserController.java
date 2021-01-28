@@ -131,4 +131,21 @@ public class UserController {
 		}
 	}
 	
+	@GetMapping("/name/{uid}")
+	public Object getName(@PathVariable String uid) {
+		logger.trace("getName");
+		try {
+			Map<String, Object> result = (Map<String, Object>)userServ.getName(uid);
+			result.put("msg", SUCCESS);
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+		} catch(Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(new HashMap<String, Object>(){{
+				put("errorMsg", e.getMessage());
+				put("msg", FAIL);
+			}}, HttpStatus.NO_CONTENT);
+		}
+		
+	}
+	
 }
