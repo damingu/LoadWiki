@@ -30,8 +30,9 @@ public class LoginConfig implements WebMvcConfigurer{
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(loginItc)
-			.addPathPatterns("/user/**")
-			.excludePathPatterns(Arrays.asList("/user/login", "/user/join"));
+			.addPathPatterns("/user/login")
+			//.excludePathPatterns(Arrays.asList("/user/login", "/user/join", "/user/**"));
+			.excludePathPatterns(Arrays.asList("/user/**"));
 	}
 	
 	
