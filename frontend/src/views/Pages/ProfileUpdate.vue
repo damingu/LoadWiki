@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center profile-header"
-        style="min-height: 600px; background-image: url(img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+    <div
+      class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center profile-header"
+      style="min-height: 600px; background-image: url(img/theme/profile-cover.jpg); background-size: cover; background-position: center top;"
+    >
       <b-container class="align-items-center">
-        <b-row class="justify-content-end"><BackgroundImg/></b-row>
+        <b-row class="justify-content-end"><BackgroundImg /></b-row>
       </b-container>
     </div>
 
@@ -16,13 +18,56 @@
                 <b-img src="img/theme/team-4.jpg" rounded="circle" />
               </b-row>
               <b-row class="justify-content-end">
-                <ProfileImg/>
+                <!-- <ProfileImg/> -->
+                <div>
+                  <b-button size="sm" @click="modalShow = !modalShow"
+                    >사진📷</b-button
+                  >
+
+                  <b-modal v-model="modalShow" hide-footer>
+                    <template #modal-title>
+                      <h1>프로필 업로드</h1>
+                    </template>
+                    <div>
+                      <!-- <b-form-file
+                        v-model="files"
+                        multiple
+                        placeholder="Choose a file or drop it here..."
+                        drop-placeholder="Drop file here..."
+                      ></b-form-file> -->
+                      <!-- <form>
+                        <input
+                          type="file"
+                          name="files"
+                          id="photo"
+                          :state="Boolean(files)"
+                          placeholder="Choose a file or drop it here..."
+                          drop-placeholder="Drop file here..."
+                        />
+                      </form> -->
+                      <div class="mt-3">
+                        Selected file: {{ files ? files.name : "" }}
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <base-button
+                        type="primary"
+                        native-type="submit"
+                        class="my-4"
+                        @click="uploadHandler"
+                        >확인</base-button
+                      >
+                    </div>
+                  </b-modal>
+                </div>
               </b-row>
             </b-container>
           </b-col>
         </b-row>
 
-        <b-card-header class="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 mb-4">
+        <b-card-header
+          class="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 mb-4"
+        >
           <h1 class="display-1">
             <!-- email.com -->
           </h1>
@@ -30,8 +75,9 @@
         <b-card-body class="pt-0">
           <b-row>
             <b-col>
-              <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-              </div>
+              <div
+                class="card-profile-stats d-flex justify-content-center mt-md-5"
+              ></div>
             </b-col>
           </b-row>
           <b-container>
@@ -44,7 +90,10 @@
                 </h2>
               </b-col>
               <b-col>
-                <b-form-input :value="nickname" v-model="nickname"></b-form-input>
+                <b-form-input
+                  :value="nickname"
+                  v-model="nickname"
+                ></b-form-input>
               </b-col>
             </b-row>
             <b-row class="mb-3">
@@ -67,7 +116,9 @@
               </b-col>
               <b-col>
                 <!-- address 수정 -->
-                <b-form-input value="https://github.com/Jo-Myounghee"></b-form-input>
+                <b-form-input
+                  value="https://github.com/Jo-Myounghee"
+                ></b-form-input>
               </b-col>
             </b-row>
             <b-row class="mb-3">
@@ -78,10 +129,10 @@
                 </h2>
               </b-col>
               <b-col>
-                <b-form-textarea 
-                    :value="introduction"
-                    v-model="introduction"
-                    rows="5"
+                <b-form-textarea
+                  :value="introduction"
+                  v-model="introduction"
+                  rows="5"
                 >
                 </b-form-textarea>
               </b-col>
@@ -94,131 +145,167 @@
                 </h2>
               </b-col>
               <b-col align-self="center">
-                <b-badge 
-                  variant="warning" 
-                  class="mr-3 h3"
-                  >
+                <b-badge variant="warning" class="mr-3 h3">
                   python
-                   <!-- {{seleted[0]}} -->
+                  <!-- {{seleted[0]}} -->
                 </b-badge>
                 <b-badge variant="success" class="mr-3 h3">
                   python
-                   <!-- {{seleted[1]}} -->
+                  <!-- {{seleted[1]}} -->
                 </b-badge>
                 <b-badge variant="primary" class="mr-3 h3">
                   python
-                   <!-- {{seleted[2]}} -->
+                  <!-- {{seleted[2]}} -->
                 </b-badge>
               </b-col>
-              <FlavourContent class="mr-3" align-self="center"/>
+              <FlavourContent class="mr-3" align-self="center" />
             </b-row>
-
-            <hr class="my-4">
+            
+              <b-form-file
+                v-model="files"
+                show-size
+                label="File input"
+              ></b-form-file>
+              <p>File Name : {{ files.name }}</p>
+              
+            
+            <hr class="my-4" />
             <b-row class="justify-content-end">
-              <b-button variant="warning" class="mt-4" @click="withDrawal" size="sm">회원탈퇴</b-button>
+              <b-button
+                variant="warning"
+                class="mt-4"
+                @click="withDrawal"
+                size="sm"
+                >회원탈퇴</b-button
+              >
             </b-row>
             <b-row class="justify-content-center">
-              <b-button variant="primary" class="mt-4" size="lg" @click="updateHandler">정보수정</b-button>
+              <b-button
+                variant="primary"
+                class="mt-4"
+                size="lg"
+                @click="updateHandler"
+                >정보수정</b-button
+              >
             </b-row>
-
           </b-container>
         </b-card-body>
       </b-card>
       <!-- <b-row> -->
-        <!-- <b-col xl="4" class="order-xl-2 mb-5"> -->
-          <!-- <user-card></user-card> -->
-        <!-- </b-col> -->
-        <!-- <b-col xl="8" class="order-xl-1"> -->
-          <!-- <edit-profile-form></edit-profile-form> -->
-        <!-- </b-col> -->
+      <!-- <b-col xl="4" class="order-xl-2 mb-5"> -->
+      <!-- <user-card></user-card> -->
+      <!-- </b-col> -->
+      <!-- <b-col xl="8" class="order-xl-1"> -->
+      <!-- <edit-profile-form></edit-profile-form> -->
+      <!-- </b-col> -->
       <!-- </b-row> -->
     </b-container>
   </div>
 </template>
 <script>
-  // import EditProfileForm from './UserProfile/EditProfileForm.vue';
-  import UserCard from './UserProfile/UserCard.vue';
-  import LoginContent from '@/components/Login/LoginContent.vue';
-  import FlavourContent from '@/components/Profileupdate/FlavourContent.vue';
-  import ProfileImg from '@/components/Profileupdate/ProfileImg.vue';
-  import BackgroundImg from '@/components/Profileupdate/BackgroundImg.vue';
+// import EditProfileForm from './UserProfile/EditProfileForm.vue';
+import UserCard from "./UserProfile/UserCard.vue";
+import LoginContent from "@/components/Login/LoginContent.vue";
+import FlavourContent from "@/components/Profileupdate/FlavourContent.vue";
+// import ProfileImg from '@/components/Profileupdate/ProfileImg.vue';
+import BackgroundImg from "@/components/Profileupdate/BackgroundImg.vue";
 
-
-  export default {
-    components: {
-      // EditProfileForm,
-      UserCard,
-      LoginContent,
-      FlavourContent,
-      ProfileImg,
-      BackgroundImg,
-    },
-    data() {
-      return{
-        nickname: '',
-        introduction: '',
-        address: '',
-        profileImg: '',
-        backImg: '',
-        keywords: [],
-        follower: '',
-        following: '',
-        boards: '',
-        comments: '',
-        major: '',
-        email: '',
-      }
-    },
-    created() {
-      axios.get(`${this.$store.getters.getServer}/user/info`)
-      .then((res) => {
-        console.log(res.data)
-        this.nickname = res.data.name
-        this.email = res.data.email
-        this.keywords = res.data.keywords
+export default {
+  components: {
+    // EditProfileForm,
+    UserCard,
+    LoginContent,
+    FlavourContent,
+    // ProfileImg,
+    BackgroundImg
+  },
+  data() {
+    return {
+      nickname: "",
+      introduction: "",
+      address: "",
+      profileImg: "",
+      backImg: "",
+      keywords: [],
+      follower: "",
+      following: "",
+      boards: "",
+      comments: "",
+      major: "",
+      email: "",
+      modalShow: false,
+      files: [],
+      file: ""
+    };
+  },
+  created() {
+    axios
+      .get(`${this.$store.getters.getServer}/user/info`)
+      .then(res => {
+        console.log(res.data);
+        this.nickname = res.data.name;
+        this.email = res.data.email;
+        this.keywords = res.data.keywords;
       })
       .catch(() => {
-        alert('로그인이 필요한 서비스입니다.')
-        this.$store.dispatch("LOGOUT")
+        alert("로그인이 필요한 서비스입니다.");
+        this.$store.dispatch("LOGOUT").then(() => {
+          this.$router.replace("/");
+        });
+      });
+  },
+  methods: {
+    withDrawal() {
+      axios
+        .delete(`${this.$store.getters.getServer}/user/withdraw`)
         .then(() => {
-          this.$router.replace('/')
-        })
-      })
-    },
-    methods: {
-      withDrawal() {
-        axios.delete(`${this.$store.getters.getServer}/user/withdraw`)
-        .then(() => {
-          alert('회원 탈퇴가 완료되었습니다.')
-          this.$router.replace('/')
+          alert("회원 탈퇴가 완료되었습니다.");
+          this.$router.replace("/");
         })
         .catch(() => {
-          alert('오류가 발생했습니다. 다시 시도해주세요.')
-        })
-      },
-      updateHandler(){
-        // 보낼때 명명이 중요함
-        let user = {
-          name : this.nickname,
-          address : this.address,
-          major : this.major,
-          keyword : this.keywords,
-          introduction : this.introduction,
-        }
-        console.log("updateHandler : " + user)
-        axios
-          .put(`${this.$store.getters.getServer}/user/modify`, user)
-          .then((res) => {
-            console.log(res.data);
-            if(res.data.msg == 'success'){
-              alert('회원 수정이 완료되었습니다.');
-              this.$router.push('/profile');
-            } else
-              alert('회원 수정 시 문제가 발생했슴다');
-          })
-      }
+          alert("오류가 발생했습니다. 다시 시도해주세요.");
+        });
     },
-  };
+    updateHandler() {
+      // 보낼때 명명이 중요함
+      let user = {
+        name: this.nickname,
+        address: this.address,
+        major: this.major,
+        keyword: this.keywords,
+        introduction: this.introduction
+      };
+      console.log("updateHandler : " + user);
+
+      axios
+        .put(`${this.$store.getters.getServer}/user/modify`, user)
+        .then(res => {
+          console.log(res.data);
+          if (res.data.msg == "success") {
+            alert("회원 수정이 완료되었습니다.");
+            this.$router.push("/profile");
+          } else alert("회원 수정 시 문제가 발생했슴다");
+        });
+    },
+    async uploadHandler() {
+      var formData = new FormData();
+      formData.append("file", this.files);
+      // var photoFile = document.getElementById("photo");
+      // frm.append("photo", photoFile.files[0]);
+
+      // this.modalShow = false;
+      console.log("upload 시작 ");
+      console.log(this.files);
+
+      await axios
+        .post(`${this.$store.getters.getServer}/upload`, formData, {
+          headers: { "content-type": "multipart/form-data" }
+        })
+        .then(() => {
+          console.log("upload 성공 ");
+        });
+    }
+  }
+};
 </script>
-<style>
-</style>
+<style></style>
