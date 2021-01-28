@@ -40,7 +40,8 @@
                     <img alt="Image placeholder" src="img/theme/team-4.jpg">
                   </span>
             <b-media-body class="ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm  font-weight-bold">John Snow</span>
+              <!-- <span class="mb-0 text-sm  font-weight-bold">John Snow</span> -->
+              <span class="mb-0 text-sm  font-weight-bold">{{this.$store.getters.getName}}</span>
             </b-media-body>
           </b-media>
         </a>
@@ -50,7 +51,7 @@
           <b-dropdown-header class="noti-title">
             <h6 class="text-overflow m-0">Welcome!</h6>
           </b-dropdown-header>
-          <b-dropdown-item href="#!">
+          <b-dropdown-item href="/#/profile">
             <i class="ni ni-single-02"></i>
             <span>My profile</span>
           </b-dropdown-item>
@@ -67,7 +68,7 @@
             <span>Support</span>
           </b-dropdown-item> -->
           <div class="dropdown-divider"></div>
-          <b-dropdown-item href="#!">
+          <b-dropdown-item @click="logOut">
             <i class="ni ni-user-run"></i>
             <span>Logout</span>
           </b-dropdown-item>
@@ -138,6 +139,14 @@ export default {
           if (url === path) isHeader = false;
         })
         this.isHeader = isHeader
+    },
+    logOut() {
+      this.$store.dispatch("LOGOUT").then(() => {
+        this.$router.push('/')
+      })
+      .catch(() => {
+        alert('로그아웃에 실패했습니다.')
+      })
     }
   }
 };

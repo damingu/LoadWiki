@@ -29,7 +29,7 @@
         </p>
         <LoginContent class="mb-3"/>
         계정이 없다면?
-        <b-link href="/register"><strong>가입하러 가기</strong></b-link>
+        <b-link href="/#/register"><strong>가입하러 가기</strong></b-link>
       </b-jumbotron>
     </b-container>
   </div>

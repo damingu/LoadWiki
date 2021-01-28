@@ -20,43 +20,24 @@
               <b-row class="justify-content-end">
                 <!-- <ProfileImg/> -->
                 <div>
-                  <b-button size="sm" @click="modalShow = !modalShow"
-                    >사진📷</b-button
-                  >
-
+                  <b-button size="sm" @click="modalShow = !modalShow">사진📷</b-button>
+                  
                   <b-modal v-model="modalShow" hide-footer>
                     <template #modal-title>
                       <h1>프로필 업로드</h1>
                     </template>
                     <div>
-                      <!-- <b-form-file
-                        v-model="files"
-                        multiple
+
+                      <b-form-file
+                        v-model="file1"
+                        :state="Boolean(file1)"
                         placeholder="Choose a file or drop it here..."
                         drop-placeholder="Drop file here..."
-                      ></b-form-file> -->
-                      <!-- <form>
-                        <input
-                          type="file"
-                          name="files"
-                          id="photo"
-                          :state="Boolean(files)"
-                          placeholder="Choose a file or drop it here..."
-                          drop-placeholder="Drop file here..."
-                        />
-                      </form> -->
-                      <div class="mt-3">
-                        Selected file: {{ files ? files.name : "" }}
-                      </div>
+                      ></b-form-file>
+                      <div class="mt-3">Selected file: {{ file1 ? file1.name : '' }}</div>
                     </div>
                     <div class="text-center">
-                      <base-button
-                        type="primary"
-                        native-type="submit"
-                        class="my-4"
-                        @click="uploadHandler"
-                        >확인</base-button
-                      >
+                      <base-button type="primary" native-type="submit" class="my-4" @click="modalShow = false">확인</base-button>
                     </div>
                   </b-modal>
                 </div>
@@ -144,21 +125,12 @@
                   관심 개발 분야
                 </h2>
               </b-col>
-              <b-col align-self="center">
-                <b-badge variant="warning" class="mr-3 h3">
-                  python
-                  <!-- {{seleted[0]}} -->
-                </b-badge>
-                <b-badge variant="success" class="mr-3 h3">
-                  python
-                  <!-- {{seleted[1]}} -->
-                </b-badge>
-                <b-badge variant="primary" class="mr-3 h3">
-                  python
-                  <!-- {{seleted[2]}} -->
+              <b-col cols="7" align-self="center">
+                <b-badge variant="warning" class="mx-1" v-for="(keyword, idx) in keywords" :key="idx">
+                  {{ keyword }}
                 </b-badge>
               </b-col>
-              <FlavourContent class="mr-3" align-self="center" />
+              <FlavourContent class="col align-self-center pl-5 ml-5"/>
             </b-row>
             
               <b-form-file
@@ -171,13 +143,7 @@
             
             <hr class="my-4" />
             <b-row class="justify-content-end">
-              <b-button
-                variant="warning"
-                class="mt-4"
-                @click="withDrawal"
-                size="sm"
-                >회원탈퇴</b-button
-              >
+              <b-button variant="danger" class="mt-4 mr-4" @click="withDrawal" size="sm">회원탈퇴</b-button>
             </b-row>
             <b-row class="justify-content-center">
               <b-button
@@ -203,49 +169,48 @@
   </div>
 </template>
 <script>
-// import EditProfileForm from './UserProfile/EditProfileForm.vue';
-import UserCard from "./UserProfile/UserCard.vue";
-import LoginContent from "@/components/Login/LoginContent.vue";
-import FlavourContent from "@/components/Profileupdate/FlavourContent.vue";
-// import ProfileImg from '@/components/Profileupdate/ProfileImg.vue';
-import BackgroundImg from "@/components/Profileupdate/BackgroundImg.vue";
+  // import EditProfileForm from './UserProfile/EditProfileForm.vue';
+  import UserCard from './UserProfile/UserCard.vue';
+  import LoginContent from '@/components/Login/LoginContent.vue';
+  import FlavourContent from '@/components/Profileupdate/FlavourContent.vue';
+  // import ProfileImg from '@/components/Profileupdate/ProfileImg.vue';
+  import BackgroundImg from '@/components/Profileupdate/BackgroundImg.vue';
 
-export default {
-  components: {
-    // EditProfileForm,
-    UserCard,
-    LoginContent,
-    FlavourContent,
-    // ProfileImg,
-    BackgroundImg
-  },
-  data() {
-    return {
-      nickname: "",
-      introduction: "",
-      address: "",
-      profileImg: "",
-      backImg: "",
-      keywords: [],
-      follower: "",
-      following: "",
-      boards: "",
-      comments: "",
-      major: "",
-      email: "",
-      modalShow: false,
-      files: [],
-      file: ""
-    };
-  },
-  created() {
-    axios
-      .get(`${this.$store.getters.getServer}/user/info`)
-      .then(res => {
-        console.log(res.data);
-        this.nickname = res.data.name;
-        this.email = res.data.email;
-        this.keywords = res.data.keywords;
+
+  export default {
+    components: {
+      // EditProfileForm,
+      UserCard,
+      LoginContent,
+      FlavourContent,
+      // ProfileImg,
+      BackgroundImg,
+    },
+    data() {
+      return{
+        nickname: '',
+        introduction: '',
+        address: '',
+        profileImg: '',
+        backImg: '',
+        keywords: [],
+        follower: '',
+        following: '',
+        boards: '',
+        comments: '',
+        major: '',
+        email: '',
+        modalShow: false,
+        file1: null,
+      }
+    },
+    created() {
+      axios.get(`${this.$store.getters.getServer}/user/info`)
+      .then((res) => {
+        console.log(res.data)
+        this.nickname = res.data.name
+        this.email = res.data.email
+        this.keywords = res.data.keywords
       })
       .catch(() => {
         alert("로그인이 필요한 서비스입니다.");
@@ -259,34 +224,35 @@ export default {
       axios
         .delete(`${this.$store.getters.getServer}/user/withdraw`)
         .then(() => {
-          alert("회원 탈퇴가 완료되었습니다.");
-          this.$router.replace("/");
+          alert('회원 탈퇴가 완료되었습니다.')
+          this.$router.replace('/main')
         })
         .catch(() => {
-          alert("오류가 발생했습니다. 다시 시도해주세요.");
-        });
-    },
-    updateHandler() {
-      // 보낼때 명명이 중요함
-      let user = {
-        name: this.nickname,
-        address: this.address,
-        major: this.major,
-        keyword: this.keywords,
-        introduction: this.introduction
-      };
-      console.log("updateHandler : " + user);
-
-      axios
-        .put(`${this.$store.getters.getServer}/user/modify`, user)
-        .then(res => {
-          console.log(res.data);
-          if (res.data.msg == "success") {
-            alert("회원 수정이 완료되었습니다.");
-            this.$router.push("/profile");
-          } else alert("회원 수정 시 문제가 발생했슴다");
-        });
-    },
+          alert('오류가 발생했습니다. 다시 시도해주세요.')
+        })
+      },
+      updateHandler(){
+        // 보낼때 명명이 중요함
+        let user = {
+          name : this.nickname,
+          address : this.address,
+          major : this.major,
+          keyword : this.keywords,
+          introduction : this.introduction,
+          file : this.file1,
+        }
+        console.log("updateHandler : " + user)
+        axios
+          .put(`${this.$store.getters.getServer}/user/modify`, user)
+          .then((res) => {
+            console.log(res.data);
+            if(res.data.msg == 'success'){
+              alert('회원 수정이 완료되었습니다.');
+              this.$router.push('/profile');
+            } else
+              alert('회원 수정 시 문제가 발생했슴다');
+          })
+      },
     async uploadHandler() {
       var formData = new FormData();
       formData.append("file", this.files);
