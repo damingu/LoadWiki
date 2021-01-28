@@ -114,20 +114,8 @@
                 </h2>
               </b-col>
               <b-col align-self="center">
-                <b-badge 
-                  variant="warning" 
-                  class="mr-3 h3"
-                  >
-                  python
-                   <!-- {{seleted[0]}} -->
-                </b-badge>
-                <b-badge variant="success" class="mr-3 h3">
-                  python
-                   <!-- {{seleted[1]}} -->
-                </b-badge>
-                <b-badge variant="primary" class="mr-3 h3">
-                  python
-                   <!-- {{seleted[2]}} -->
+                <b-badge variant="warning" class="mx-1" v-for="(keyword, idx) in keywords" :key="idx">
+                  {{ keyword }}
                 </b-badge>
               </b-col>
               <FlavourContent class="mr-3" align-self="center"/>
@@ -135,7 +123,7 @@
 
             <hr class="my-4">
             <b-row class="justify-content-end">
-              <b-button variant="warning" class="mt-4" @click="withDrawal" size="sm">회원탈퇴</b-button>
+              <b-button variant="danger" class="mt-4" @click="withDrawal" size="sm">회원탈퇴</b-button>
             </b-row>
             <b-row class="justify-content-center">
               <b-button variant="primary" class="mt-4" size="lg" @click="updateHandler">정보수정</b-button>
