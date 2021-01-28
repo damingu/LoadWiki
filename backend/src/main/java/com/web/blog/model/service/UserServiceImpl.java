@@ -139,6 +139,18 @@ public class UserServiceImpl implements UserService {
 			throw new RuntimeException("login error");
 		}
 	}
+	
+	@Override
+	public Object getName(String uid) throws Exception {
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			String name = userRepo.getName(Integer.parseInt(uid));
+			result.put("name", name);
+		} catch(Exception e) {
+			throw e;
+		}
+		return result;
+	}
 
 	@Override
 	public void upload(MultipartFile[] files, Model model, HttpSession session) throws Exception, IOException {

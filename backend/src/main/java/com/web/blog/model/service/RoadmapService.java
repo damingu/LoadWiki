@@ -10,5 +10,5 @@ public interface RoadmapService {
 	public Object getRoadmap(String nowuid,String rmid);
 	public Object getRoadmapListByRmorder(String page,String nowuid, String uid,String rmorder); // 추가적인 요소 끄트 ?
 	public Object deleteRoadmap(String nowuid,String uid,String rmorder);
-	
+	public Object getOfficialRoadmapList(String page);
 }	
