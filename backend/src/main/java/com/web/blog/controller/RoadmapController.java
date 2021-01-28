@@ -37,18 +37,18 @@ public class RoadmapController {
 	LoginServiceImpl loginServ;
 
 	// 1
-	@GetMapping("/list/{uid}/{page}")
-	public Object listRoadmap(@PathVariable String uid, @PathVariable String page, HttpServletRequest request) {
+	@GetMapping("/list/{uid}")
+	public Object listRoadmap(@PathVariable String uid,HttpServletRequest request) {
 		logger.trace("listRoadmap start");
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			logger.info("uid : " + uid + " page : " + page);
+			logger.info("uid : " + uid);
 			logger.info(request.getHeader("auth-token"));
 			logger.info("nowuid : " + loginServ.getData(request.getHeader("auth-token")).get("uid"));
 
 			String nowuid = Integer.toString((int) loginServ.getData(request.getHeader("auth-token")).get("uid"));
-			result = (Map<String, Object>) roadmapservice.getRoadmapListByUid(page, nowuid, uid);
+			result = (Map<String, Object>) roadmapservice.getRoadmapListByUid( nowuid, uid);
 			result.put("msg", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (NumberFormatException e) {
@@ -65,14 +65,13 @@ public class RoadmapController {
 		return new ResponseEntity<Map<String, Object>>(result, status);
 	}
 	
-	@GetMapping("/Official/{page}")
-	public Object listOfficialRoadmap(@PathVariable String page, HttpServletRequest request) {
+	@GetMapping("/Official")
+	public Object listOfficialRoadmap(HttpServletRequest request) {
 		logger.trace("listOfficialRoadmap start");
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			logger.info(" page : " + page);
-			result = (Map<String, Object>) roadmapservice.getOfficialRoadmapList(page);
+			result = (Map<String, Object>) roadmapservice.getOfficialRoadmapList();
 			result.put("msg", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (NumberFormatException e) {
@@ -89,16 +88,16 @@ public class RoadmapController {
 		return new ResponseEntity<Map<String, Object>>(result, status);
 	}
 	
-	@GetMapping("/log/{uid}/{page}/{rmorder}")
-	public Object listLog(@PathVariable String uid, @PathVariable String page, @PathVariable String rmorder,
+	@GetMapping("/log/{uid}/{rmorder}")
+	public Object listLog(@PathVariable String uid,  @PathVariable String rmorder,
 			HttpServletRequest request) {
 		logger.trace("listLog start");
 		Map<String, Object> result = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			logger.info("uid : " + uid + " page : " + page + " rmorder : " + rmorder);
+			logger.info("uid : " + uid + " rmorder : " + rmorder);
 			String nowuid = Integer.toString((int) loginServ.getData(request.getHeader("auth-token")).get("uid"));
-			result = (Map<String, Object>) roadmapservice.getRoadmapListByRmorder(page, nowuid, uid, rmorder);
+			result = (Map<String, Object>) roadmapservice.getRoadmapListByRmorder(nowuid, uid, rmorder);
 			result.put("msg", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (NumberFormatException e) {
