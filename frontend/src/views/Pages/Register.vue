@@ -249,6 +249,7 @@
         if (this.confirmEmail && this.selected.length >= 3) {
           axios.post(`${this.$store.getters.getServer}/user/join`, user)
           .then(() => {
+            console.log('잘 가나요오오오오오오오오오오')
             const userinfo = {
               email: this.email,
               password: this.password,

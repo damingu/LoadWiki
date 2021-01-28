@@ -3,14 +3,14 @@
     <notifications></notifications>
     <side-bar v-if="isHeader">
       <template slot="links">
-        <sidebar-item
+        <!-- <sidebar-item
           :link="{
             name: 'Dashboard',
             path: '/dashboard',
             icon: 'ni ni-tv-2 text-primary'
           }"
         >
-        </sidebar-item>
+        </sidebar-item> -->
 
         <!-- <sidebar-item
           :link="{
@@ -23,7 +23,7 @@
 
         <sidebar-item
           :link="{
-            name: 'MyRoadmap',
+            name: 'User Roadmap',
             path: '/godiagram',
             icon: 'ni ni-pin-3 text-orange'
           }"
@@ -32,16 +32,16 @@
 
         <sidebar-item
           :link="{
-            name: 'officialRoadmap',
+            name: 'Official Roadmap',
             path: '/officialRoadmap',
-            icon: 'ni ni-bullet-list-67 text-red'
+            icon: 'ni ni-tv-2 text-primary'
           }"
         >
         </sidebar-item>
 
         <sidebar-item
           :link="{
-            name: 'User Profile',
+            name: 'Profile',
             path: '/profile',
             icon: 'ni ni-single-02 text-yellow'
           }"
@@ -86,9 +86,9 @@
         
         <sidebar-item
           :link="{
-            name: 'Tmp_board',
+            name: 'Board',
             path: '/tmp_board',
-            icon: 'ni ni-circle-08 text-pink'
+            icon: 'ni ni-bullet-list-67 text-red'
           }"
         >
         </sidebar-item>
