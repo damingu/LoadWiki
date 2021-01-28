@@ -32,6 +32,7 @@ const routes = [
         name: 'profile-update',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/ProfileUpdate.vue')
       },
+              
       {
         path: '/maps',
         name: 'maps',
@@ -57,6 +58,12 @@ const routes = [
         path: '/tmp_board',
         name: 'tmp_board',
         component: () => import('../views/Board/Board.vue')
+      },
+      {
+        path: '/officialRoadmap',
+        name: 'officialRoadmap',
+        component: () => import('../views/officialRoadmap.vue'),
+        props: true
       },
     ]
   },

@@ -118,9 +118,12 @@ public class RoadmapServiceImpl implements RoadmapService {
 		try {
 			int rmidnum = Integer.parseInt(rmid);
 			int uidnum = roadmaprepo.selectUidByRmid(rmidnum);
-			int nowuidnum = Integer.parseInt(nowuid);
+			int nowuidnum = 0;
+			if(uidnum <0) {
+				nowuidnum = uidnum;
+			}else
+				nowuidnum = Integer.parseInt(nowuid);
 			Object roadmap = null;
-
 			if (nowuidnum == uidnum)
 				roadmap = roadmaprepo.selectMyRoadmap(rmidnum);
 			else
@@ -131,6 +134,18 @@ public class RoadmapServiceImpl implements RoadmapService {
 			result.put("roadmaps", roadmap);
 		} catch (Exception e) {
 			logger.error("Service getRoadmap : Something wrong");
+		}
+		return result;
+	}
+
+	@Override
+	public Object getOfficialRoadmapList(String page) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			int pageSt = (Integer.parseInt(page) - 1) * PAGESIZE[0];
+			result.put("roadmaps", roadmaprepo.selectOfficialListRoadmap(pageSt, PAGESIZE[0]));
+		} catch (Exception e) {
+			logger.error("Service getRoadmapListByUid : Something wrong");
 		}
 		return result;
 	}

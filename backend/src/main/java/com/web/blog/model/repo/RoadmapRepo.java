@@ -10,7 +10,7 @@ public interface RoadmapRepo {
 	public int update(Roadmap map);
 
 	public int selectUidByRmid(int rmid);
-	
+	public Roadmap[] selectOfficialListRoadmap(int pageSt,int cnt);
 	public Roadmap[] selectMyRoadmapListByUid(int pageSt,int cnt,int uid);
 	public Roadmap[] selectOtherRoadmapListByUid(int pageSt,int cnt,int uid);
 	public Roadmap selectMyRoadmap(int rmid);
