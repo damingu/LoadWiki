@@ -24,26 +24,27 @@
 	
 	<select id="selectMyRoadmapListByUid" parameterType="map" resultType="Roadmap">
 		select * from roadmap
-		where uid = #{uid} and createDate in (select max(createDate) from roadmap group by uid,rmorder)
-		limit #{pageSt}, #{cnt}
+		where uid = #{uid} and createDate in (select max(createDate) from roadmap group by uid,rmorder) 
+		order by rmorder
 	</select>
 	<select id="selectOtherRoadmapListByUid" parameterType="map" resultType="Roadmap">
 		select * from roadmap
 		where uid = #{uid} and permission = 1 and createDate in (select max(createDate) from roadmap group by uid,rmorder)
-		limit #{pageSt}, #{cnt}
+		order by rmorder
 	</select>
 	
 	<select id="selectRoadmapListByRmorder" parameterType="map" resultType="Roadmap">
 		select *
 		from roadmap
 		where uid = #{uid} and rmorder = #{rmorder}
-		limit #{pageSt}, #{cnt}
+		order by createDate desc
+		
 	</select>
 
 	<select id="selectOfficialListRoadmap" parameterType="map" resultType="Roadmap">
 		select * from roadmap
 		where uid <![CDATA[ < ]]> 0 and createDate in (select max(createDate) from roadmap group by uid,rmorder)
-		limit #{pageSt}, #{cnt}
+		order by rmorder
 	</select>	
 
 	<insert id="update" parameterType="Roadmap">

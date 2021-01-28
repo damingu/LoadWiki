@@ -18,6 +18,7 @@ import Vue from 'vue';
 import DashboardPlugin from './plugins/dashboard-plugin';
 import App from './App.vue';
 import VueMindmap from 'vue-mindmap'
+import VueMoment from 'vue-moment'
 import 'vue-mindmap/dist/vue-mindmap.css'
 import VueCarousel from 'vue-carousel'
 import "./plugins/axios"
@@ -37,7 +38,8 @@ Vue.use(VueFlatPickr);
 // plugin setup
 Vue.use(VueCarousel)
 Vue.use(DashboardPlugin);
-Vue.use(VueMindmap)
+Vue.use(VueMindmap);
+Vue.use(VueMoment);
 
 /* eslint-disable no-new */
 new Vue({

@@ -14,7 +14,6 @@ import com.web.blog.model.repo.RoadmapRepo;
 @Service
 public class RoadmapServiceImpl implements RoadmapService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	final static int[] PAGESIZE = new int[] { 10 };
 
 	@Autowired
 	RoadmapRepo roadmaprepo;
@@ -75,17 +74,16 @@ public class RoadmapServiceImpl implements RoadmapService {
 	}
 
 	@Override
-	public Object getRoadmapListByUid(String page, String nowuid, String uid) {
+	public Object getRoadmapListByUid( String nowuid, String uid) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			int pageSt = (Integer.parseInt(page) - 1) * PAGESIZE[0];
 			int uidnum = Integer.parseInt(uid);
 			int nowuidnum = Integer.parseInt(nowuid);
 
 			if (nowuidnum == uidnum)
-				result.put("roadmaps", roadmaprepo.selectMyRoadmapListByUid(pageSt, PAGESIZE[0], uidnum));
+				result.put("roadmaps", roadmaprepo.selectMyRoadmapListByUid(uidnum));
 			else
-				result.put("roadmaps", roadmaprepo.selectOtherRoadmapListByUid(pageSt, PAGESIZE[0], uidnum));
+				result.put("roadmaps", roadmaprepo.selectOtherRoadmapListByUid(uidnum));
 
 		} catch (Exception e) {
 			logger.error("Service getRoadmapListByUid : Something wrong");
@@ -94,18 +92,17 @@ public class RoadmapServiceImpl implements RoadmapService {
 	}
 
 	@Override
-	public Object getRoadmapListByRmorder(String page, String nowuid, String uid, String rmorder) {
+	public Object getRoadmapListByRmorder( String nowuid, String uid, String rmorder) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			int uidnum = Integer.parseInt(uid);
 			int nowuidnum = Integer.parseInt(nowuid);
-			int pageSt = (Integer.parseInt(page) - 1) * PAGESIZE[0];
 			int rmordernum = Integer.parseInt(rmorder);
 
 			if (uidnum != nowuidnum)
 				throw new RuntimeException("wrong user");
 
-			result.put("roadmaps", roadmaprepo.selectRoadmapListByRmorder(pageSt, PAGESIZE[0], rmordernum, uidnum));
+			result.put("roadmaps", roadmaprepo.selectRoadmapListByRmorder( rmordernum, uidnum));
 		} catch (Exception e) {
 			logger.error("Service getRoadmapListByRmorder : Something wrong");
 		}
@@ -139,11 +136,10 @@ public class RoadmapServiceImpl implements RoadmapService {
 	}
 
 	@Override
-	public Object getOfficialRoadmapList(String page) {
+	public Object getOfficialRoadmapList() {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			int pageSt = (Integer.parseInt(page) - 1) * PAGESIZE[0];
-			result.put("roadmaps", roadmaprepo.selectOfficialListRoadmap(pageSt, PAGESIZE[0]));
+			result.put("roadmaps", roadmaprepo.selectOfficialListRoadmap());
 		} catch (Exception e) {
 			logger.error("Service getRoadmapListByUid : Something wrong");
 		}

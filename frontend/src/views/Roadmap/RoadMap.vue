@@ -19,7 +19,25 @@
         </div>
       </b-button>
     <b-form-input v-model="roadmapname" class="inline-block" placeholder="로드맵 제목을 입력해 주세요." style="width:30%; display:inline-block;"></b-form-input>
-
+    <!-- 커리큘럼 히스토리 보여주기 -->
+    <div>
+    <carousel :per-page="4"   :mouse-drag="true">
+          <slide v-for="(item, index) in logData" :key="index" >
+            <b-col  @click="previewRoadmap(item.rmid, index)">
+                  <stats-card type="gradient-red"
+                            :title="item.name"
+                            
+                            class="mb-4 btn" 
+                            :rmid="item.rmid"
+                            >
+                  <template slot="footer">
+                    <span class="text-success mr-2">{{ item.createDate }}</span>
+                  </template>
+                </stats-card>
+              </b-col>
+          </slide>
+      </carousel>
+    </div>
       <b-modal id="modal-1" title="BootstrapVue">
         <h3>로드위키 사용법</h3>
         <h4>❤ Read</h4>
@@ -64,7 +82,8 @@
           </li>
       </b-modal>
     <!-- 사용법 modal / end -->
-
+    
+    <!-- 커리큘럼 히스토리 보여주기 -->
     </base-header>
 
     <b-container fluid class="mt-1">
@@ -118,6 +137,9 @@
 
 
 <script>
+// carousel 
+import { Carousel, Slide } from 'vue-carousel'; 
+// 날짜  
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import 'flatpickr/dist/themes/material_blue.css';
@@ -138,6 +160,9 @@ export default {
       rmid: {
           type: Number,
       },
+      rmorder :{
+        type : Number,
+      },
       mode: {
         type : Number,
       },
@@ -147,7 +172,6 @@ export default {
       goToBack: '#/godiagram',
       test: '',
       roadmapname: '',
-      rmorder: '',
       headertext: '',
       dates :{
         range : ''
@@ -161,6 +185,7 @@ export default {
         dateFormat: 'Y-m-d',
         locale: Hindi, // locale for this instance only          
         },
+      logData: [],
     }
   },
   created(){
@@ -368,6 +393,8 @@ export default {
           })
           
       this.readRoadmap();
+      // 수정로그 가져오기
+      this.readRoadmapLog();
   },
   watch:{},
   computed: {},
@@ -449,10 +476,26 @@ export default {
           if(res.data.msg == 'success'){
           this.test =  JSON.parse(res.data['roadmaps'].tmp);
           this.roadmapname = res.data['roadmaps'].name;
-          this.rmorder = res.data['roadmaps'].rmorder
           // console.log('check', this.roadmapname, this.rmorder)
           myDiagram.model = go.Model.fromJson(this.test);
           }else{
+            alert("데이터 로드에 실패했습니다.")
+          }
+        }).catch((e) =>{
+          alert("axois 오류")
+        });
+      }
+    },
+    // 로드맵 로그 가져오는 함수(mounted에서 rmorder를 불러온뒤 실행)
+    readRoadmapLog(){
+      if(this.mode == 1){
+        console.log(`${this.$store.getters.getServer}/roadmap/log/${this.$store.getters.getUid}/${this.rmorder}`);
+         axios.get(`${this.$store.getters.getServer}/roadmap/log/${this.$store.getters.getUid}/${this.rmorder}`)
+        .then((res) => {
+          if(res.data.msg == 'success'){
+            this.logData = res.data['roadmaps'];  
+          }else{
+            console.log(e);
             alert("데이터 로드에 실패했습니다.")
           }
         }).catch((e) =>{
@@ -510,6 +553,28 @@ export default {
     checkCur(e) {
       // 차후에 DB에 요청을 보낸다음 DB정보로 반영
       this.headertext = head
+    },
+    
+    previewRoadmap(clickrmid, index) {
+      
+      
+        axios.get(`${this.$store.getters.getServer}/roadmap/get/${clickrmid}`)
+        .then((res) => {
+          if(res.data.msg == 'success'){
+          this.test = JSON.parse(res.data['roadmaps'].tmp);
+          this.load();
+          }else{
+            console.log('previewRoadmap');
+            alert("데이터 로드에 실패했습니다. log")
+          }
+        }).catch((e) =>{
+          console.log(e);
+          alert("axois 오류")
+        });
+    },
+    load() {
+      myDiagram.model = go.Model.fromJson(this.test);
+      this.ismounted = true
     },
   },
 }
