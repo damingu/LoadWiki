@@ -13,7 +13,7 @@
               <h1 class="display-2 text-white opacity-8">{{ nickname }}</h1>
               <!-- 한줄 소개 들어갈 부분 -->
               <p class="text-white mt-0 mb-3">
-                안녕하세요 여기는 한 줄 소개를 적는 부분입니다. 안녕하세요 여기는 한 줄 소개를 적는 부분입니다. 안녕하세요 여기는 한 줄 소개를 적는 부분입니다.
+                술잔을 들자하니 천하가 내발아래 있고 6팀 친구들 또한 옆에 있으니 염라대왕 두렵지 않구나
               </p>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

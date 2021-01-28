@@ -114,6 +114,7 @@
                   :value="introduction"
                   v-model="introduction"
                   rows="5"
+                  placeholder="술잔을 들자하니 천하가 내발아래 있고 6팀 친구들 또한 옆에 있으니 염라대왕 두렵지 않구나"
                 >
                 </b-form-textarea>
               </b-col>
