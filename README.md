@@ -1,8 +1,8 @@
 
 
-<p align="center">
+<center>
     <img src="README.assets/roadwiki_logo_2.png" height="300">
-</p>
+</center>
 
 
 
