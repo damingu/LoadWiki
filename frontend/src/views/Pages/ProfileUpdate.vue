@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center profile-header"
-        style="min-height: 600px; background-image: url(img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+    <div
+      class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center profile-header"
+      style="min-height: 600px; background-image: url(img/theme/profile-cover.jpg); background-size: cover; background-position: center top;"
+    >
       <b-container class="align-items-center">
-        <b-row class="justify-content-end"><BackgroundImg/></b-row>
+        <b-row class="justify-content-end"><BackgroundImg /></b-row>
       </b-container>
     </div>
 
@@ -19,11 +21,13 @@
                 <!-- <ProfileImg/> -->
                 <div>
                   <b-button size="sm" @click="modalShow = !modalShow">사진📷</b-button>
+                  
                   <b-modal v-model="modalShow" hide-footer>
                     <template #modal-title>
                       <h1>프로필 업로드</h1>
                     </template>
                     <div>
+
                       <b-form-file
                         v-model="file1"
                         :state="Boolean(file1)"
@@ -42,7 +46,9 @@
           </b-col>
         </b-row>
 
-        <b-card-header class="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 mb-4">
+        <b-card-header
+          class="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 mb-4"
+        >
           <h1 class="display-1">
             <!-- email.com -->
           </h1>
@@ -50,8 +56,9 @@
         <b-card-body class="pt-0">
           <b-row>
             <b-col>
-              <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-              </div>
+              <div
+                class="card-profile-stats d-flex justify-content-center mt-md-5"
+              ></div>
             </b-col>
           </b-row>
           <b-container>
@@ -64,7 +71,10 @@
                 </h2>
               </b-col>
               <b-col>
-                <b-form-input :value="nickname" v-model="nickname"></b-form-input>
+                <b-form-input
+                  :value="nickname"
+                  v-model="nickname"
+                ></b-form-input>
               </b-col>
             </b-row>
             <b-row class="mb-3">
@@ -87,7 +97,9 @@
               </b-col>
               <b-col>
                 <!-- address 수정 -->
-                <b-form-input value="https://github.com/Jo-Myounghee"></b-form-input>
+                <b-form-input
+                  value="https://github.com/Jo-Myounghee"
+                ></b-form-input>
               </b-col>
             </b-row>
             <b-row class="mb-3">
@@ -98,10 +110,10 @@
                 </h2>
               </b-col>
               <b-col>
-                <b-form-textarea 
-                    :value="introduction"
-                    v-model="introduction"
-                    rows="5"
+                <b-form-textarea
+                  :value="introduction"
+                  v-model="introduction"
+                  rows="5"
                 >
                 </b-form-textarea>
               </b-col>
@@ -120,25 +132,38 @@
               </b-col>
               <FlavourContent class="col align-self-center pl-5 ml-5"/>
             </b-row>
-
-            <hr class="my-4">
+            
+              <b-form-file
+                v-model="files"
+                show-size
+                label="File input"
+              ></b-form-file>
+              <p>File Name : {{ files.name }}</p>
+              
+            
+            <hr class="my-4" />
             <b-row class="justify-content-end">
               <b-button variant="danger" class="mt-4 mr-4" @click="withDrawal" size="sm">회원탈퇴</b-button>
             </b-row>
             <b-row class="justify-content-center">
-              <b-button variant="primary" class="mt-4" size="lg" @click="updateHandler">정보수정</b-button>
+              <b-button
+                variant="primary"
+                class="mt-4"
+                size="lg"
+                @click="updateHandler"
+                >정보수정</b-button
+              >
             </b-row>
-
           </b-container>
         </b-card-body>
       </b-card>
       <!-- <b-row> -->
-        <!-- <b-col xl="4" class="order-xl-2 mb-5"> -->
-          <!-- <user-card></user-card> -->
-        <!-- </b-col> -->
-        <!-- <b-col xl="8" class="order-xl-1"> -->
-          <!-- <edit-profile-form></edit-profile-form> -->
-        <!-- </b-col> -->
+      <!-- <b-col xl="4" class="order-xl-2 mb-5"> -->
+      <!-- <user-card></user-card> -->
+      <!-- </b-col> -->
+      <!-- <b-col xl="8" class="order-xl-1"> -->
+      <!-- <edit-profile-form></edit-profile-form> -->
+      <!-- </b-col> -->
       <!-- </b-row> -->
     </b-container>
   </div>
@@ -188,16 +213,16 @@
         this.keywords = res.data.keywords
       })
       .catch(() => {
-        alert('로그인이 필요한 서비스입니다.')
-        this.$store.dispatch("LOGOUT")
-        .then(() => {
-          this.$router.replace('/')
-        })
-      })
-    },
-    methods: {
-      withDrawal() {
-        axios.delete(`${this.$store.getters.getServer}/user/withdraw`)
+        alert("로그인이 필요한 서비스입니다.");
+        this.$store.dispatch("LOGOUT").then(() => {
+          this.$router.replace("/");
+        });
+      });
+  },
+  methods: {
+    withDrawal() {
+      axios
+        .delete(`${this.$store.getters.getServer}/user/withdraw`)
         .then(() => {
           alert('회원 탈퇴가 완료되었습니다.')
           this.$router.replace('/main')
@@ -227,9 +252,26 @@
             } else
               alert('회원 수정 시 문제가 발생했슴다');
           })
-      }
-    },
-  };
+      },
+    async uploadHandler() {
+      var formData = new FormData();
+      formData.append("file", this.files);
+      // var photoFile = document.getElementById("photo");
+      // frm.append("photo", photoFile.files[0]);
+
+      // this.modalShow = false;
+      console.log("upload 시작 ");
+      console.log(this.files);
+
+      await axios
+        .post(`${this.$store.getters.getServer}/upload`, formData, {
+          headers: { "content-type": "multipart/form-data" }
+        })
+        .then(() => {
+          console.log("upload 성공 ");
+        });
+    }
+  }
+};
 </script>
-<style>
-</style>
+<style></style>
