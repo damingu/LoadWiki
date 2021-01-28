@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center profile-header"
-        style="min-height: 600px; background-image: url(img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+    <div
+      class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center profile-header"
+      style="min-height: 600px; background-image: url(img/theme/profile-cover.jpg); background-size: cover; background-position: center top;"
+    >
       <b-container class="align-items-center">
-        <b-row class="justify-content-end"><BackgroundImg/></b-row>
+        <b-row class="justify-content-end"><BackgroundImg /></b-row>
       </b-container>
     </div>
 
@@ -16,13 +18,37 @@
                 <b-img src="img/theme/team-4.jpg" rounded="circle" />
               </b-row>
               <b-row class="justify-content-end">
-                <ProfileImg/>
+                <!-- <ProfileImg/> -->
+                <div>
+                  <b-button size="sm" @click="modalShow = !modalShow">사진📷</b-button>
+                  
+                  <b-modal v-model="modalShow" hide-footer>
+                    <template #modal-title>
+                      <h1>프로필 업로드</h1>
+                    </template>
+                    <div>
+
+                      <b-form-file
+                        v-model="file1"
+                        :state="Boolean(file1)"
+                        placeholder="Choose a file or drop it here..."
+                        drop-placeholder="Drop file here..."
+                      ></b-form-file>
+                      <div class="mt-3">Selected file: {{ file1 ? file1.name : '' }}</div>
+                    </div>
+                    <div class="text-center">
+                      <base-button type="primary" native-type="submit" class="my-4" @click="modalShow = false">확인</base-button>
+                    </div>
+                  </b-modal>
+                </div>
               </b-row>
             </b-container>
           </b-col>
         </b-row>
 
-        <b-card-header class="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 mb-4">
+        <b-card-header
+          class="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4 mb-4"
+        >
           <h1 class="display-1">
             <!-- email.com -->
           </h1>
@@ -30,8 +56,9 @@
         <b-card-body class="pt-0">
           <b-row>
             <b-col>
-              <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-              </div>
+              <div
+                class="card-profile-stats d-flex justify-content-center mt-md-5"
+              ></div>
             </b-col>
           </b-row>
           <b-container>
@@ -44,7 +71,10 @@
                 </h2>
               </b-col>
               <b-col>
-                <b-form-input value="nike"></b-form-input>
+                <b-form-input
+                  :value="nickname"
+                  v-model="nickname"
+                ></b-form-input>
               </b-col>
             </b-row>
             <b-row class="mb-3">
@@ -66,7 +96,10 @@
                 </h2>
               </b-col>
               <b-col>
-                <b-form-input value="https://github.com/Jo-Myounghee"></b-form-input>
+                <!-- address 수정 -->
+                <b-form-input
+                  value="https://github.com/Jo-Myounghee"
+                ></b-form-input>
               </b-col>
             </b-row>
             <b-row class="mb-3">
@@ -77,11 +110,10 @@
                 </h2>
               </b-col>
               <b-col>
-                <b-form-textarea 
-                    value="
-                      나에게 힘을 주는 인생에 관한 명언 48가지 : 고개 숙이지 마십시오. ... 고난의 시기에 동요하지 않는 것, ... 사막이 아름다운 것은 ...행복의 한 쪽 문이 닫히면 다른 쪽 문이 열린다. ... 만족할 줄 아는 사람은 진정한 부자이고, ... 성공해서 만족하는 것은 아니다. ... 곧 위에 비교하면 족하지 못하나, ... 그대의 하루 하루를
-                    "
-                    rows="5"
+                <b-form-textarea
+                  :value="introduction"
+                  v-model="introduction"
+                  rows="5"
                 >
                 </b-form-textarea>
               </b-col>
@@ -93,38 +125,45 @@
                   관심 개발 분야
                 </h2>
               </b-col>
-              <b-col align-self="center">
-                <b-badge variant="warning" class="mr-3 h3">
-                   Python
-                </b-badge>
-                <b-badge variant="success" class="mr-3 h3">
-                   Django
-                </b-badge>
-                <b-badge variant="primary" class="mr-3 h3">
-                   Python
+              <b-col cols="7" align-self="center">
+                <b-badge variant="warning" class="mx-1" v-for="(keyword, idx) in keywords" :key="idx">
+                  {{ keyword }}
                 </b-badge>
               </b-col>
-              <FlavourContent class="mr-3" align-self="center"/>
+              <FlavourContent class="col align-self-center pl-5 ml-5"/>
             </b-row>
-
-            <hr class="my-4">
+            
+              <!-- <b-form-file
+                v-model="files"
+                show-size
+                label="File input"
+              ></b-form-file>
+              <p>File Name : {{ files.name }}</p> -->
+              
+            
+            <hr class="my-4" />
             <b-row class="justify-content-end">
-              <b-button variant="warning" class="mt-4" @click="withDrawal" size="sm">회원탈퇴</b-button>
+              <b-button variant="danger" class="mt-4 mr-4" @click="withDrawal" size="sm">회원탈퇴</b-button>
             </b-row>
             <b-row class="justify-content-center">
-              <b-button variant="primary" class="mt-4" @click="withDrawal" size="lg">정보수정</b-button>
+              <b-button
+                variant="primary"
+                class="mt-4"
+                size="lg"
+                @click="updateHandler"
+                >정보수정</b-button
+              >
             </b-row>
-
           </b-container>
         </b-card-body>
       </b-card>
       <!-- <b-row> -->
-        <!-- <b-col xl="4" class="order-xl-2 mb-5"> -->
-          <!-- <user-card></user-card> -->
-        <!-- </b-col> -->
-        <!-- <b-col xl="8" class="order-xl-1"> -->
-          <!-- <edit-profile-form></edit-profile-form> -->
-        <!-- </b-col> -->
+      <!-- <b-col xl="4" class="order-xl-2 mb-5"> -->
+      <!-- <user-card></user-card> -->
+      <!-- </b-col> -->
+      <!-- <b-col xl="8" class="order-xl-1"> -->
+      <!-- <edit-profile-form></edit-profile-form> -->
+      <!-- </b-col> -->
       <!-- </b-row> -->
     </b-container>
   </div>
@@ -134,7 +173,7 @@
   import UserCard from './UserProfile/UserCard.vue';
   import LoginContent from '@/components/Login/LoginContent.vue';
   import FlavourContent from '@/components/Profileupdate/FlavourContent.vue';
-  import ProfileImg from '@/components/Profileupdate/ProfileImg.vue';
+  // import ProfileImg from '@/components/Profileupdate/ProfileImg.vue';
   import BackgroundImg from '@/components/Profileupdate/BackgroundImg.vue';
 
 
@@ -144,13 +183,13 @@
       UserCard,
       LoginContent,
       FlavourContent,
-      ProfileImg,
+      // ProfileImg,
       BackgroundImg,
     },
     data() {
       return{
         nickname: '',
-        sentence: '',
+        introduction: '',
         address: '',
         profileImg: '',
         backImg: '',
@@ -161,6 +200,9 @@
         comments: '',
         major: '',
         email: '',
+        modalShow: false,
+        file1: null,
+        files: [],
       }
     },
     created() {
@@ -172,26 +214,65 @@
         this.keywords = res.data.keywords
       })
       .catch(() => {
-        alert('로그인이 필요한 서비스입니다.')
-        this.$store.dispatch("LOGOUT")
-        .then(() => {
-          this.$router.replace('/')
-        })
-      })
-    },
-    methods: {
-      withDrawal() {
-        axios.delete(`${this.$store.getters.getServer}/user/withdraw`)
+        alert("로그인이 필요한 서비스입니다.");
+        this.$store.dispatch("LOGOUT").then(() => {
+          this.$router.replace("/");
+        });
+      });
+  },
+  methods: {
+    withDrawal() {
+      axios
+        .delete(`${this.$store.getters.getServer}/user/withdraw`)
         .then(() => {
           alert('회원 탈퇴가 완료되었습니다.')
-          this.$router.replace('/')
+          this.$router.replace('/main')
         })
         .catch(() => {
           alert('오류가 발생했습니다. 다시 시도해주세요.')
         })
       },
-    },
-  };
+      updateHandler(){
+        // 보낼때 명명이 중요함
+        let user = {
+          name : this.nickname,
+          address : this.address,
+          major : this.major,
+          keyword : this.keywords,
+          introduction : this.introduction,
+          file : this.file1,
+        }
+        console.log("updateHandler : " + user)
+        axios
+          .put(`${this.$store.getters.getServer}/user/modify`, user)
+          .then((res) => {
+            console.log(res.data);
+            if(res.data.msg == 'success'){
+              alert('회원 수정이 완료되었습니다.');
+              this.$router.push('/profile');
+            } else
+              alert('회원 수정 시 문제가 발생했슴다');
+          })
+      },
+    async uploadHandler() {
+      var formData = new FormData();
+      formData.append("file", this.files);
+      // var photoFile = document.getElementById("photo");
+      // frm.append("photo", photoFile.files[0]);
+
+      // this.modalShow = false;
+      console.log("upload 시작 ");
+      console.log(this.files);
+
+      await axios
+        .post(`${this.$store.getters.getServer}/upload`, formData, {
+          headers: { "content-type": "multipart/form-data" }
+        })
+        .then(() => {
+          console.log("upload 성공 ");
+        });
+    }
+  }
+};
 </script>
-<style>
-</style>
+<style></style>

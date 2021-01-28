@@ -27,6 +27,7 @@ export default {
   data() {
     return{
       modalShow: false,
+      file1: null,
     }
   },
 }
