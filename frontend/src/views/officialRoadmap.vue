@@ -131,8 +131,8 @@ export default {
       // page => 차후 수정해야됨
 
       
-      const page = '1'
-      axios.get(`${this.$store.getters.getServer}/roadmap/Official/${page}`)
+      
+      axios.get(`${this.$store.getters.getServer}/roadmap/Official`)
         .then((res) => {
           if(res.data.msg == 'success'){
           console.log('data', res.data)

@@ -6,12 +6,13 @@
       <br>
         <carousel :per-page="4"   :mouse-drag="true" >
           <slide v-for="(item, index) in curriculumData" :key="index" >
-            <b-col  @click="previewRoadmap(item.rmid, index)">
+            <b-col  @click="previewRoadmap(item.rmorder, item.rmid, index)">
                   <stats-card type="gradient-red"
                             :sub-title="item.name"
                             icon="ni ni-active-40"
                             class="mb-4 btn" 
                             :rmid="item.rmid"
+                            :rmorder="item.rmorder"
                             >
                   <template slot="footer">
                     <span class="text-success mr-2">{{ item.createDate }}</span>
@@ -30,7 +31,7 @@
         <b-col>
           <div style="text-align: right;">
             <button class="btn" style="background-color: rgb(256, 256, 256);" @click="goToCreate">생성하기</button>
-            <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid, mode : 1 }}" class= "btn" style=" background-color:#F9F8F3" >수정하기</router-link>
+            <router-link :to="{ name : 'roadmap', params: { rmorder: this.rmorder, rmid: this.rmid, mode : 1 }}" class= "btn" style=" background-color:#F9F8F3" v-if="isSelectCard">수정하기</router-link>
           </div>
           <b-card no-body class="border-0">
             <div class="inline-block" style="width: 100%;">
@@ -45,6 +46,7 @@
                   title="Curriculum Information"
                   style="width: 252px;"
                 >
+                <hr>
                   <h3>{{ headertext }}</h3>
                   <hr>
                   <b-card-text>
@@ -116,6 +118,7 @@ export default {
       ]},  
       curriculumData: [],
       rmid: 0,
+      rmorder: 0,
       ismounted: false,
       headertext: '',
       dates :{
@@ -130,18 +133,16 @@ export default {
         dateFormat: 'Y-m-d',
         locale: Hindi, // locale for this instance only          
       },
-
+      isSelectCard: false,
     }
   },
   created() {
-      
-      
       const uid = String(this.$store.getters.getUid)
       // page => 차후 수정해야됨
 
       
-      const page = '1'
-      axios.get(`${this.$store.getters.getServer}/roadmap/list/${uid}/${page}`)
+      
+      axios.get(`${this.$store.getters.getServer}/roadmap/list/${uid}`)
         .then((res) => {
         if(res.data.msg == 'success')
           this.curriculumData = res.data['roadmaps'];
@@ -149,6 +150,7 @@ export default {
             alert("데이터 로드에 실패했습니다.")
           
         }).catch((e) =>{
+          console.log(e);
           alert("axois 오류")
         });
     
@@ -380,8 +382,10 @@ export default {
       animation.start();
     },
     // 리스트
-    previewRoadmap(clickrmid, index) {
+    previewRoadmap(clickrmorder,clickrmid, index) {
+      this.isSelectCard = true;
       this.rmid = clickrmid;
+      this.rmorder = clickrmorder;
         axios.get(`${this.$store.getters.getServer}/roadmap/get/${clickrmid}`)
         .then((res) => {
           if(res.data.msg == 'success'){
@@ -398,10 +402,6 @@ export default {
     load() {
       myDiagram.model = go.Model.fromJson(this.test);
       this.ismounted = true
-    },
-    // 로드맵 수정버튼 
-    updateRoadMap() {
-      this.$router.push({ name: 'roadmap' })
     },
     checkCur(e) {
       // 차후에 DB에 요청을 보낸다음 DB정보로 반영
