@@ -1,6 +1,8 @@
 
 
-![roadwiki_logo_2](README.assets/roadwiki_logo_2.png)
+<p align="center">
+    <img src="README.assets/roadwiki_logo_2.png" height="300">
+</center>
 
 
 
@@ -146,7 +148,7 @@ sub02
 
 
 
-## 🏃‍♂️ 기능 설명
+## 📜 기능 설명
 
 ### 🎨로드맵 기능
 
