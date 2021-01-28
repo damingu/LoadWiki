@@ -100,7 +100,6 @@ public class UserController {
 	@PostMapping("/join")
 	public Object join(@RequestBody User user) {
 		logger.trace("join");
-		System.out.println("회원가입하는주우우우우우우우우웅" + user);
 		try {
 			logger.info(user.toString());
 			Map<String, Object> result = (Map<String, Object>) userServ.join(user);
