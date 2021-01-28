@@ -24,6 +24,9 @@
     <b-container fluid class="mt--7">
       <b-row>
         <b-col>
+          <div style="text-align : right;">
+            <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid, mode : 0 }}" class= "btn" style=" background-color:#F9F8F3" >내보내기</router-link> 
+          </div>
           <b-card no-body class="border-0">
             <div style="width: 100%; display: inline-block;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
@@ -64,7 +67,7 @@
 
               </div>
 
-              <router-link :to="{ name : 'roadmap', params: { rmid: this.rmid, mode : 1 }}" >내보내기</router-link> 
+              
 
             </div>
           </b-card>
@@ -378,7 +381,7 @@ export default {
         axios.get(`${this.$store.getters.getServer}/roadmap/get/${clickrmid}`)
         .then((res) => {
           if(res.data.msg == 'success'){
-          
+          console.log(res.data['roadmaps'].tmp);
           this.test = JSON.parse(res.data['roadmaps'].tmp);
           this.load();
           }else{
