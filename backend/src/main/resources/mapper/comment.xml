@@ -4,7 +4,7 @@
 	
 	<mapper namespace="com.web.blog.model.repo.CommentRepo">
 
-	<select id="select" parameterType="Integer" resultType="User">
+	<select id="select" parameterType="Integer" resultType="Comment">
 		select * 
 		from comment 
 		where cid=#{cid}
@@ -19,7 +19,7 @@
 	<insert id="insert" parameterType="Comment">
 		insert 
 		into comment(parentid, uid, type, content)
-		values(#{parentid}, #{uid}, #{type}, #{content})
+		values(#{pid}, #{uid}, #{type}, #{content})
 	</insert>
 	
 	<update id="update" parameterType="Comment">

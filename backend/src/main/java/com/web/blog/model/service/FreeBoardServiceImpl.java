@@ -13,6 +13,7 @@ import com.web.blog.model.dto.Comment;
 import com.web.blog.model.dto.Posting;
 import com.web.blog.model.repo.CommentRepo;
 import com.web.blog.model.repo.PostingRepo;
+import com.web.blog.model.repo.UserRepo;
 
 @Service
 public class FreeBoardServiceImpl implements FreeBoardService{
@@ -24,6 +25,9 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	
 	@Autowired
 	PostingRepo postingRepo;
+	
+	@Autowired
+	UserRepo userRepo;
 	
 	final static String[] TAG = new String[] {"tag"};
 	final static int[] PAGESIZE = new int[]{10};
@@ -38,11 +42,17 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 			} else {
 				result.put("postings", postingRepo.selectListAllTag(page, cnt, classifier, tags[0]));
 			}
+			Posting[] Postings = (Posting[]) result.get("postings");
+			String[] names = new String[Postings.length];
+			for(int i = 0; i < Postings.length; i++) 
+				names[i] = userRepo.getName(Postings[i].getUid());
+			result.put("names", names);
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
 			logger.error("input data type error");
 			result.put("msg", "fail");
 		} catch(Exception e) {
+			e.printStackTrace();
 			logger.error("i dont know");
 			result.put("msg", "fail");
 		}
@@ -59,6 +69,11 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 			} else {
 				result.put("postings", postingRepo.selectListNameTag(page, cnt, classifier, word, tags[0]));
 			}
+			Posting[] Postings = (Posting[]) result.get("postings");
+			String[] names = new String[Postings.length];
+			for(int i = 0; i < Postings.length; i++) 
+				names[i] = userRepo.getName(Postings[i].getUid());
+			result.put("names", names);
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
 			logger.error("input data type error");
@@ -80,6 +95,11 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 			} else {
 				result.put("postings", postingRepo.selectListTitleTag(page, cnt, classifier, word, tags[0]));
 			}
+			Posting[] Postings = (Posting[]) result.get("postings");
+			String[] names = new String[Postings.length];
+			for(int i = 0; i < Postings.length; i++) 
+				names[i] = userRepo.getName(Postings[i].getUid());
+			result.put("names", names);
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
 			logger.error("input data type error");
@@ -101,6 +121,11 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 			} else {
 				result.put("postings", postingRepo.selectListContentTag(page, cnt, classifier, word, tags[0]));
 			}
+			Posting[] Postings = (Posting[]) result.get("postings");
+			String[] names = new String[Postings.length];
+			for(int i = 0; i < Postings.length; i++) 
+				names[i] = userRepo.getName(Postings[i].getUid());
+			result.put("names", names);
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
 			logger.error("input data type error");
@@ -115,8 +140,12 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	public Object getPosting(String pid) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			result.put("posting", postingRepo.select(Integer.parseInt(pid)));
-			result.put("comments", commentRepo.selectListPid(Integer.parseInt(pid)));
+			Posting posting = postingRepo.select(Integer.parseInt(pid));
+			Comment[] comments = commentRepo.selectListPid(Integer.parseInt(pid));
+			if(posting == null) throw new RuntimeException("cant fine posting");
+			if(comments != null)result.put("comments", comments);
+			result.put("posting", posting);
+			result.put("name", userRepo.getName(posting.getUid()));
 			result.put("msg", "success");
 		} catch(NumberFormatException e){
 			logger.error("input data type error");

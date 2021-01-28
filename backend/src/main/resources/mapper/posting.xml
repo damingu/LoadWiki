@@ -4,7 +4,7 @@
 	
 	<mapper namespace="com.web.blog.model.repo.PostingRepo">
 	
-	<select id="select" parameterType="String" resultType="Posting">
+	<select id="select" parameterType="Integer" resultType="Posting">
 		select * 
 		from posting 
 		where pid=#{pid}

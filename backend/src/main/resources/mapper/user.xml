@@ -45,6 +45,12 @@
 		from user 
 		where email=#{email}
 	</delete>
+	
+	<select id="getName" parameterType="Integer" resultType="String">
+		select name 
+		from user 
+		where uid=#{uid}
+	</select>
 
 </mapper>
 	

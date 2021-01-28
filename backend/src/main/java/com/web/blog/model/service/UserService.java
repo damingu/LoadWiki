@@ -9,5 +9,6 @@ public interface UserService {
 	public Object modify(User user);
 	public Object withdraw(String email);
 	public Object login(User user);
+	public Object getName(String uid) throws Exception;
 	
 }
