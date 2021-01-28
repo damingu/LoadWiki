@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button @click="modalShow = !modalShow">관심 개발 분야 수정</b-button>
+    <b-button variant="default" size="sm" @click="modalShow = !modalShow">수정하기</b-button>
 
     <b-modal v-model="modalShow" hide-footer>
       <template #modal-title>
@@ -8,7 +8,7 @@
       </template>
       <div>
         <b-form-group label="" v-slot="{ ariaDescribedby }">
-          <p>1순위부터 체크해주세요</p>
+          <p>가장 관심있는 것부터 순서대로 체크해주세요. (3개 이상 선택 가능)</p>
           <b-container>
             <b-form-checkbox
               v-for="option in options"
@@ -20,20 +20,21 @@
             >
               {{ option.text }}
             </b-form-checkbox>
+            <hr>
+            <b-row class="justify-content-md-center">
+              <b-col class="ml-3">1순위</b-col> 
+              <b-col v-if="selected.length > 0">{{ options[selected[0]-1].text }}</b-col>
+            </b-row>
+            <b-row class="justify-content-md-center">
+              <b-col class="ml-3">2순위</b-col> 
+              <b-col v-if="selected.length > 1">{{ options[selected[1]-1].text }}</b-col>
+            </b-row>
+            <b-row class="justify-content-md-center">
+              <b-col class="ml-3">3순위</b-col> 
+              <b-col v-if="selected.length > 2">{{ options[selected[2]-1].text }}</b-col>
+            </b-row>
           </b-container>
         </b-form-group>
-        <b-row class="justify-content-md-center">
-          <b-col class="ml-3">1순위</b-col> 
-          <b-col v-if="selected.length > 2">{{ options[selected[0]-1].text }}</b-col>
-        </b-row>
-        <b-row class="justify-content-md-center">
-          <b-col class="ml-3">2순위</b-col> 
-          <b-col v-if="selected.length > 2">{{ options[selected[0]-1].text }}</b-col>
-        </b-row>
-        <b-row class="justify-content-md-center">
-          <b-col class="ml-3">3순위</b-col> 
-          <b-col v-if="selected.length > 2">{{ options[selected[0]-1].text }}</b-col>
-        </b-row>
       </div>
       <div class="text-center">
         <base-button type="primary" native-type="submit" class="my-4" @click="sendFlavour">확인</base-button>
