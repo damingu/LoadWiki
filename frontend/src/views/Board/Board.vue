@@ -58,15 +58,22 @@
         </b-col>
       </b-row> -->
     </base-header>
-    <b-container fluid class="mt--7">
-      <b-row>
-        <b-col>
-          <light-table />
+    <b-container fluid="xl">
+      <b-row v-if="isSelected">
+        <b-col cols="4">
+          <light-table v-bind:isClicked="isSelected" v-on:clickRow="clickOn" />
+        </b-col>
+        <b-col cols="7">
+          <detail v-bind:pid="selPid" v-on:goBack="clickOff" />
         </b-col>
       </b-row>
-      <div class="mt-5"></div>
-      <!-- <dark-table></dark-table> -->
+      <b-row v-else>
+        <b-col>
+          <light-table v-bind:isClicked="isSelected" v-on:clickRow="clickOn" />
+        </b-col>
+      </b-row>
     </b-container>
+    <!-- <dark-table></dark-table> -->
   </div>
 </template>
 <script>
@@ -79,13 +86,15 @@ import {
 } from "element-ui";
 import projects from "./projects";
 import users from "./users";
-import LightTable from "./RegularTables/LightTable";
-import DarkTable from "./RegularTables/DarkTable";
+import LightTable from "./Tables/LightTable";
+import DarkTable from "./Tables/DarkTable";
+import Detail from "./Posting/Detail";
 
 export default {
   components: {
     LightTable,
     DarkTable,
+    Detail,
     [Dropdown.name]: Dropdown,
     [DropdownItem.name]: DropdownItem,
     [DropdownMenu.name]: DropdownMenu,
@@ -95,8 +104,20 @@ export default {
   data() {
     return {
       projects,
-      users
+      users,
+      isSelected: false,
+      tWidth: "550px",
+      selPid: ""
     };
+  },
+  methods: {
+    clickOn: function(pid) {
+      this.isSelected = true;
+      this.selPid = pid;
+    },
+    clickOff: function() {
+      this.isSelected = false;
+    }
   }
 };
 </script>
