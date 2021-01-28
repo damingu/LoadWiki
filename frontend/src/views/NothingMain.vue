@@ -25,7 +25,9 @@
         <template #lead>
         </template>
         <p>
-          For more information visit websiteFor more information visit websiteFor more information visit website
+          Ask and it will be given to you
+ seek and you will find
+ knock and the door will be opened to you.
         </p>
         <LoginContent class="mb-3"/>
         계정이 없다면?
@@ -59,6 +61,6 @@ export default {
 }
 .jumbotron h1 {
   background-color: rgba(0, 0, 0, 0);
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
 }
 </style>
