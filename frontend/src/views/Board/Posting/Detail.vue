@@ -1,13 +1,13 @@
 <template>
-  <b-card no-body>
-    <b-card-header class="border-0">
+  <b-card class="m-2" no-body>
+    <b-card-header bg-variant="secondary" class="border-0">
       <b-button class="mb-2" variant="info" size="sm" @click="goBack"
         >go back</b-button
       >
     </b-card-header>
 
     <!-- class="table-responsive table" -->
-    <b-container fluid="lg" :items="frame">
+    <b-table fluid="lg" :items="frame" thead-tr-class="d-none">
       <template v-for="(item, idx) in frame">
         <b-container fluid="lg" :key="idx">
           <b-row class="mb-2">
@@ -22,13 +22,6 @@
               </span>
             </b-col>
           </b-row>
-          <template #row-details="item">
-            <b-row class="mb-2">
-              <b-col sm="3" class="text-sm-right" min-height="500px">
-                {{ item.content }}
-              </b-col>
-            </b-row>
-          </template>
         </b-container>
       </template>
       <!-- <b-col min-width="240px">
@@ -49,9 +42,12 @@
           </b-col>
         </b-row>
       </template> -->
-    </b-container>
+    </b-table>
 
-    <b-card-footer class="py-4 d-flex justify-content-end"> </b-card-footer>
+    <b-card-footer class="text-right">
+      <b-button class="mb-2" variant="danger" size="sm">delete</b-button>
+      <b-button class="mb-2" variant="primary" size="sm">modify</b-button>
+    </b-card-footer>
   </b-card>
 </template>
 <script>
@@ -60,6 +56,10 @@ export default {
     return {
       desc: "DESC",
       frame: [
+        {
+          desc: "ID",
+          data: ""
+        },
         {
           desc: "TITLE",
           data: ""
@@ -74,9 +74,7 @@ export default {
         },
         {
           desc: "CONTENT",
-          data: "",
-          content: "",
-          _showDetails: true
+          data: ""
         },
         {
           desc: "LIKE",
@@ -98,11 +96,12 @@ export default {
         .get(adr)
         .then(response => {
           var posting = response.data.posting;
-          this.frame[0].data = posting.title;
-          this.frame[1].data = response.data.name;
-          this.frame[2].data = posting.createDate;
-          this.frame[3].data = posting.content;
-          this.frame[4].data = posting.likeCnt;
+          this.frame[0].data = posting.pid;
+          this.frame[1].data = posting.title;
+          this.frame[2].data = response.data.name;
+          this.frame[3].data = posting.createDate;
+          this.frame[4].data = posting.content;
+          this.frame[5].data = posting.likeCnt;
         })
         .catch(response => {
           console.log("FAIL", response);
