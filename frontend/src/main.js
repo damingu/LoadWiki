@@ -19,7 +19,7 @@ import DashboardPlugin from './plugins/dashboard-plugin';
 import App from './App.vue';
 import VueMindmap from 'vue-mindmap'
 import 'vue-mindmap/dist/vue-mindmap.css'
-
+import VueCarousel from 'vue-carousel'
 import "./plugins/axios"
 
 // router setup
@@ -29,7 +29,13 @@ import store from './store'
 
 import { mapGetters } from 'vuex'
 
+
+import VueFlatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+Vue.use(VueFlatPickr);
+
 // plugin setup
+Vue.use(VueCarousel)
 Vue.use(DashboardPlugin);
 Vue.use(VueMindmap)
 

@@ -1,11 +1,69 @@
 <template>
   <div>
-    <base-header class="pb-5 pb-2 pt-2 pt-md-2 bg-gradient-success">
+    <base-header class="pb-5 pb-2 pt-2 pt-md-2 bg-gradient-default">
       <!-- Card stats -->
-    <a :href="goToBack" class="btn">돌아가기</a> 
-    <a v-if="mode" class="btn" @click="updateRoadmap">수정완료</a>
-    <a v-else class="btn" @click="createRoadmap">생성완료</a>
-    <input v-model="roadmapname" placeholder="로드맵 제목을 입력해 주세요.">
+    <a :href="goToBack" class="btn" style="background-color: rgb(242, 214, 174);">돌아가기</a> 
+    <button v-if="mode" class="btn" @click="updateRoadmap" style="background-color: rgba(256, 256, 256, 0.95);">수정완료</button>
+    <button v-else class="btn" @click="createRoadmap" style="background-color: rgb(181, 199, 211);">생성완료</button>
+    <!-- 사용법 modal / start -->
+      <b-button 
+        v-b-modal.modal-1
+        type="button" 
+        class="btn ml-4" 
+        title=""
+        data-original-title="Copy to clipboard"
+      >
+        <div>
+          <i class="ni ni-air-baloon"></i>
+          <span>How to use</span>
+        </div>
+      </b-button>
+    <b-form-input v-model="roadmapname" class="inline-block" placeholder="로드맵 제목을 입력해 주세요." style="width:30%; display:inline-block;"></b-form-input>
+
+      <b-modal id="modal-1" title="BootstrapVue">
+        <h3>로드위키 사용법</h3>
+        <h4>❤ Read</h4>
+          <li>
+            '내 로드맵 보기'에서 나만의 로드맵을 볼 수 있습니다.
+          </li>
+          <li>
+            상위의 리스트에서 파일을 클릭하시면 원하시는 로드맵을 볼 수 있습니다.
+          </li>
+          <li>
+            수정버튼을 누르시면 로드맵을 수정 할 수 있는 페이지로 넘어갑니다.
+          </li>
+        <h4>❤ Create</h4>
+          <li>
+            원하시는 커리큘럼을 선택하세요.
+          </li>
+          <li>
+            원하시는 커리큘럼에서 내보내기 버튼을 누르시면 내 로드맵으로 불러오기가 가능합니다.
+          </li>
+          <li>
+            서비스에서 제공하는 로드맵에서 나만의 로드맵으로 맞춤 설정이 가능합니다!
+          </li>
+        <h4>❤ Update</h4>
+        <li>
+            수정하고 싶은 요소를 클릭해 delete버튼을 누르시면 요소가 삭제됩니다.
+          </li>
+          <li>
+            오른쪽에는 커리큘럼의 정보가 제공됩니다.
+          </li>        
+          <li>
+            왼쪽에는 서비스에서 추천해주는 로드맵 요소들을 끌어다 내 로드맵에 옮길 수 있습니다.
+          </li>
+          <li>
+            선 이수체계에 맞도록 요소의 상, 하, 좌, 우에서 가지를 요소에 연결해 보세요.
+          </li>
+        <h4>❤ Delete</h4>
+          <li>
+            로드맵이 마음에 들지 않으시다면 삭제도 가능합니다.
+          </li>
+          <li>
+            삭제버튼을 눌러 로드맵을 삭제하세요.
+          </li>
+      </b-modal>
+    <!-- 사용법 modal / end -->
 
     </base-header>
 
@@ -16,7 +74,37 @@
             <div style="width: 100%;">
               <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
                 <div ref="myPaletteDiv" style="width: 150px; margin-right: 2px; background-color: #F9F8F3;"></div>
-                <div ref="myDiagramDiv" style="flex-grow: 1; height: 900px; background-color: #F9F8F3;"></div>
+                <div ref="myDiagramDiv" style="flex-grow: 1; height: 900px; background-color: #F9F8F3;" @click="checkCur">
+                </div>
+                
+                <b-card
+                  title="Curriculum Information"
+                  style="width: 252px;"
+                >
+                <hr>
+                <h2>{{ headertext }}</h2>
+                  
+                  <hr>
+                  <b-card-text>
+                    <base-input label="시작날짜-종료날짜">
+                    <flat-pickr slot-scope="{focus, blur}"
+                    @on-open="focus"
+                    @on-close="blur"
+                    :config="{allowInput: true, mode: 'range',}"
+                    class="form-control datepickr"
+                    v-model="dates.range"
+                    >
+                    </flat-pickr>
+                    </base-input>
+                  </b-card-text>
+                  <hr>
+                  <span>커리큘럼 설명</span>
+                  <hr>
+                  <b-card-text>
+                   <b-form-input v-model="memotext" placeholder="Enter your memo" ></b-form-input>
+                  </b-card-text>
+                  
+                </b-card>
               </div>
             </div>
           </b-card>
@@ -30,12 +118,18 @@
 
 
 <script>
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+import 'flatpickr/dist/themes/material_blue.css';
+import {Hindi} from 'flatpickr/dist/l10n/hi.js';
+
 // src\views\Roadmap\RoadMap.vue
 // Roadmap 폴더 명 변경을 위한 주석
 // 코드 변환 시작 
 let go = window.go
 let $ = go.GraphObject.make
 let myDiagram;
+let head;
 export default {
   name: '',
   components: {
@@ -51,67 +145,32 @@ export default {
   data() {
     return {
       goToBack: '#/godiagram',
-        test: { "class": "GraphLinksModel",
-  "linkFromPortIdProperty": "fromPort",
-  "linkToPortIdProperty": "toPort",
-  "nodeDataArray": [ 
-{"key":1, "loc":"170 3", "text":"Backend"},
-{"text":"Internet", "key":-2, "loc":"170 65"},
-{"text":"OS and General Knowledge", "key":-3, "loc":"170.44868850708008 158.388037109375"},
-{"text":"Basic \nFrontend \nKnowledge", "key":-4, "loc":"34 65"},
-{"text":"CSS", "key":-5, "loc":"-103 65"},
-{"text":"JavaScript", "key":-6, "loc":"-81 141"},
-{"text":"Terminal Usage", "key":-7, "loc":"338 158"},
-{"text":"Learn a Language", "key":-8, "loc":"170.44868850708008 247.38803710937498"},
-{"text":"Python", "key":-9, "loc":"-48 207"},
-{"text":"Java", "key":-10, "loc":"-47 255"},
-{"text":"JavaScript", "key":-11, "loc":"345 212"},
-{"text":"Ruby", "key":-12, "loc":"346 262"},
-{"text":"C#", "key":-13, "loc":"-47 310"},
-{"text":"PHP", "key":-14, "loc":"348 317"},
-{"category":"Comment", "text":"Comment", "key":-15, "loc":"341 83"},
-{"text":"Version Control\nSystems", "key":-16, "loc":"171.15762499999988 373.94062499999995"},
-{"text":"GitHub", "key":-17, "loc":"-32.42375000000001 373.47287500000004"},
-{"text":"Relational \nDatabases", "key":-18, "loc":"171.3285 474.62625"},
-{"text":"PostgreSQL", "key":-19, "loc":"351.918 434.10937500000006"},
-{"text":"MySQL", "key":-20, "loc":"354.23325000000006 483.88725000000005"},
-{"text":"More about \nDatabases", "key":-21, "loc":"171.32850000000008 584.600625"}
- ],
-  "linkDataArray": [ 
-{"from":1, "to":-2, "fromPort":"B", "toPort":"T", "points":[170,21.61196289062501,170,31.61196289062501,170,34.00000000000001,170,34.00000000000001,170,36.388037109375006,170,46.388037109375006]},
-{"from":-2, "to":-4, "fromPort":"L", "toPort":"R", "points":[133.11070251464844,65,123.11070251464844,65,106.95141220092773,65,106.95141220092773,65,90.79212188720703,65,80.79212188720703,65]},
-{"from":-4, "to":-6, "fromPort":"B", "toPort":"T", "points":[34,101.335888671875,34,111.335888671875,34,111.861962890625,-81,111.861962890625,-81,112.388037109375,-81,122.388037109375]},
-{"from":-4, "to":-5, "fromPort":"L", "toPort":"R", "points":[-12.792121887207031,65,-22.79212188720703,65,-46.63113784790039,65,-46.63113784790039,65,-70.47015380859375,65,-80.47015380859375,65]},
-{"from":-2, "to":-3, "fromPort":"B", "toPort":"T", "points":[170,83.61196289062501,170,93.61196289062501,170,107.263037109375,170.44868850708008,107.263037109375,170.44868850708008,120.91411132812502,170.44868850708008,130.91411132812502]},
-{"from":-3, "to":-7, "fromPort":"R", "toPort":"L", "points":[231.01752090454102,158.38803710937503,241.01752090454102,158.38803710937503,254.5450267791748,158.38803710937503,254.5450267791748,158,268.0725326538086,158,278.0725326538086,158]},
-{"from":-3, "to":-8, "fromPort":"B", "toPort":"T", "points":[170.44868850708008,185.86196289062502,170.44868850708008,195.86196289062502,170.44868850708008,207.3190185546875,170.44868850708008,207.3190185546875,170.44868850708008,218.77607421874995,170.44868850708008,228.77607421874995]},
-{"from":-8, "to":-9, "fromPort":"L", "toPort":"R", "points":[104.1624641418457,238.08205566406247,94.1624641418457,238.08205566406247,44.87113380432129,238.08205566406247,44.87113380432129,207,-4.420196533203125,207,-14.420196533203125,207]},
-{"from":-8, "to":-10, "fromPort":"L", "toPort":"R", "points":[104.1624641418457,247.38803710937495,86.1624641418457,247.38803710937495,36.78439140319824,247.38803710937495,36.78439140319824,254.99999999999997,-12.593681335449219,254.99999999999997,-22.59368133544922,254.99999999999997]},
-{"from":-8, "to":-13, "fromPort":"L", "toPort":"R", "points":[104.1624641418457,256.69401855468743,94.1624641418457,256.69401855468743,38.0393123626709,256.69401855468743,38.0393123626709,310,-18.083839416503906,310,-28.083839416503906,310]},
-{"from":-8, "to":-11, "fromPort":"R", "toPort":"L", "points":[236.73491287231445,238.08205566406247,246.73491287231445,238.08205566406247,268.96854972839355,238.08205566406247,268.96854972839355,211.99999999999997,291.20218658447266,211.99999999999997,301.20218658447266,211.99999999999997]},
-{"from":-8, "to":-12, "fromPort":"R", "toPort":"L", "points":[236.73491287231445,247.38803710937495,254.73491287231445,247.38803710937495,282.0244846343994,247.38803710937495,282.0244846343994,262,309.3140563964844,262,319.3140563964844,262]},
-{"from":-8, "to":-14, "fromPort":"R", "toPort":"L", "points":[236.73491287231445,256.69401855468743,246.73491287231445,256.69401855468743,280.140474319458,256.69401855468743,280.140474319458,317,313.54603576660156,317,323.54603576660156,317]},
-{"from":-8, "to":-16, "fromPort":"B", "toPort":"T", "points":[170.44868850708008,265.99999999999994,170.44868850708008,275.99999999999994,170.44868850708008,306.23334960937495,171.15762499999988,306.23334960937495,171.15762499999988,336.46669921874997,171.15762499999988,346.46669921874997]},
-{"from":-16, "to":-17, "fromPort":"L", "toPort":"R", "points":[109.56991748046863,373.94062499999995,99.56991748046863,373.94062499999995,55.45277581787103,373.94062499999995,55.45277581787103,373.47287500000004,11.335634155273425,373.47287500000004,1.335634155273425,373.47287500000004]},
-{"from":-16, "to":-18, "fromPort":"B", "toPort":"T", "points":[171.15762499999988,401.41455078124994,171.15762499999988,411.41455078124994,171.15762499999988,424.2834375,171.3285,424.2834375,171.3285,437.15232421875004,171.3285,447.15232421875004]},
-{"from":-18, "to":-19, "fromPort":"R", "toPort":"L", "points":[215.40852471923827,474.62625,225.40852471923827,474.62625,259.3051423950195,474.62625,259.3051423950195,434.109375,293.2017600708008,434.109375,303.2017600708008,434.109375]},
-{"from":-18, "to":-20, "fromPort":"R", "toPort":"L", "points":[215.40852471923827,483.7842252604167,225.40852471923827,483.7842252604167,267.79092672729496,483.7842252604167,267.79092672729496,483.88725,310.1733287353516,483.88725,320.1733287353516,483.88725]},
-{"from":-18, "to":-21, "fromPort":"B", "toPort":"T", "points":[171.3285,502.10017578125,171.3285,512.1001757812501,171.3285,529.6134375,171.32850000000008,529.6134375,171.32850000000008,547.12669921875,171.32850000000008,557.12669921875]}
- ]},
-        roadmapname: '',
-        rmorder: '',
+      test: '',
+      roadmapname: '',
+      rmorder: '',
+      headertext: '',
+      dates :{
+        range : ''
+      },
+      memotext : '',
+        // Get more form https://flatpickr.js.org/options/
+      config: {
+        wrap: true, // set wrap to true only when using 'input-group'
+        altFormat: 'M j, Y',
+        altInput: true,
+        dateFormat: 'Y-m-d',
+        locale: Hindi, // locale for this instance only          
+        },
     }
   },
   created(){
    console.log(this.test);
   },
   mounted() {
-    let self = this
     myDiagram = 
         $(go.Diagram, this.$refs.myDiagramDiv,
           {
             initialContentAlignment: go.Spot.Center,      
-            "InitialAnimationStarting": this.animateFadeDown, 
         })
 
       // 페이지에 변화가 있을 때 title 및 save 버튼 활성화
@@ -280,8 +339,7 @@ export default {
       
       // 어떤 커리큘럼을 눌렀는지 체크 => 커리큘럼 추천에 활용할 데이터 추출
       myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
-        console.log(e.subject.part.data.key);
-        console.log(e.subject.part.data.text);
+        head = e.subject.part.data.text;
       });
 
       // LinkingTool 및 RelinkingTool에서 사용하는 임시 링크도 직교합니다.
@@ -364,7 +422,7 @@ export default {
     //이것은 위쪽이 아닌 아래쪽에서 페이드 인 된다는 점을 제외하면 기본 애니메이션을 다시 구현 한 것입니다.
     animateFadeDown(e) {
       var diagram = e.diagram; 
-      var animation = new go.Animation();
+      var animation = new go.Animation(); 
       animation.isViewportUnconstrained = true; // So Diagram positioning rules let the animation start off-screen
       animation.easing = go.Animation.EaseOutExpo;
       animation.duration = 900;
@@ -377,23 +435,29 @@ export default {
     readRoadmap() {
       // 외부 json파일 초기하면에 출력
       if(this.rmid == 0){
-      //   this.test = { "class": "go.GraphLinksModel",
-      //   "linkFromPortIdProperty": "fromPort",
-      //   "linkToPortIdProperty": "toPort",
-      //   "nodeDataArray": [
-      // ],
-      //   "linkDataArray": [
-      // ]}
+        this.test = { "class": "go.GraphLinksModel",
+        "linkFromPortIdProperty": "fromPort",
+        "linkToPortIdProperty": "toPort",
+        "nodeDataArray": [
+      ],
+        "linkDataArray": [
+      ]}
        myDiagram.model = go.Model.fromJson(this.test);
       }else{
       axios.get(`${this.$store.getters.getServer}/roadmap/get/${this.rmid}`)
         .then((res) => {
+          if(res.data.msg == 'success'){
           this.test =  JSON.parse(res.data['roadmaps'].tmp);
           this.roadmapname = res.data['roadmaps'].name;
           this.rmorder = res.data['roadmaps'].rmorder
           // console.log('check', this.roadmapname, this.rmorder)
           myDiagram.model = go.Model.fromJson(this.test);
-      });
+          }else{
+            alert("데이터 로드에 실패했습니다.")
+          }
+        }).catch((e) =>{
+          alert("axois 오류")
+        });
       }
     },
     // update 요청보내기
@@ -411,13 +475,14 @@ export default {
         }
       )
       .then((res) => {
-        console.log(res)
-        console.log('응답')
+        if(res.data.msg == 'success'){
         this.$router.push({ name: 'godiagram' })
-      })
-      .catch((err) =>{
-        console.error(err)
-      })
+          }else{
+            alert("업데이트 실패했습니다.")
+          }
+        }).catch((e) =>{
+          alert("axois 오류")
+        });
     },
     createRoadmap() {
       console.log('실행')
@@ -432,10 +497,19 @@ export default {
         }
       )
       .then((res) => {
+        if(res.data.msg == 'success'){
         console.log(res)
         console.log('응답')
         this.$router.push({ name: 'godiagram' })
-      })
+        }else
+          alert("생성에 실패했습니다.")
+        }).catch((e) =>{
+          alert('axios 오류')
+        });
+    },
+    checkCur(e) {
+      // 차후에 DB에 요청을 보낸다음 DB정보로 반영
+      this.headertext = head
     },
   },
 }
