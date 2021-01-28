@@ -133,12 +133,12 @@
               <FlavourContent class="col align-self-center pl-5 ml-5"/>
             </b-row>
             
-              <b-form-file
+              <!-- <b-form-file
                 v-model="files"
                 show-size
                 label="File input"
               ></b-form-file>
-              <p>File Name : {{ files.name }}</p>
+              <p>File Name : {{ files.name }}</p> -->
               
             
             <hr class="my-4" />
@@ -202,6 +202,7 @@
         email: '',
         modalShow: false,
         file1: null,
+        files: [],
       }
     },
     created() {
