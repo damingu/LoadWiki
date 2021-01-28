@@ -121,8 +121,8 @@
                       </b-container>
                     </b-form-group>
                     <b-container>
-                      <div>1순위 <strong v-if="selected.length > 2">{{ options[selected[0]-1].text }}</strong></div>
-                      <div>2순위 <strong v-if="selected.length > 2">{{ options[selected[1]-1].text }}</strong></div>
+                      <div>1순위 <strong v-if="selected.length > 0">{{ options[selected[0]-1].text }}</strong></div>
+                      <div>2순위 <strong v-if="selected.length > 1">{{ options[selected[1]-1].text }}</strong></div>
                       <div>3순위 <strong v-if="selected.length > 2">{{ options[selected[2]-1].text }}</strong></div>
                     </b-container>
                   </div>
@@ -248,7 +248,17 @@
         }
         if (this.confirmEmail && this.selected.length >= 3) {
           axios.post(`${this.$store.getters.getServer}/user/join`, user)
-          this.$router.replace('/')
+          .then(() => {
+            const userinfo = {
+              email: this.email,
+              password: this.password,
+            }
+            this.$store.dispatch("LOGIN", userinfo)
+            .then(() => {
+              this.$router.push('/dashboard')
+            })
+          })
+          // this.$router.replace('/dashboard')
         } else {
           if (!this.confirmEmail) {
             alert('이메일 인증이 완료되지 않았습니다.')
