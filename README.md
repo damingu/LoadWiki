@@ -1,8 +1,9 @@
 
 
 <center>
-    <img src="README.assets/roadwiki_logo_2.png" height="300">
+    <img src="README.assets/roadwiki_logo.png" height="300">
 </center>
+
 
 
 
@@ -149,6 +150,28 @@ sub02
 
 
 
+---
+
+## 🖌ERD (Entity-Relationship Diagram)
+
+![ERD](README.assets/ERD.png)
+
+
+
+---
+
+## ✨ Swagger
+
+> http://localhost:8085/swagger-ui.html#/
+
+
+
+![swagger_email_validation](README.assets/swagger_email_validation.png)
+
+![swagger_email_send](README.assets/swagger_email_send.png)
+
+![swagger_email_controller_](README.assets/swagger_email_controller_.png)
+
 ## 📜 기능 설명
 
 ### 🎨로드맵 기능
@@ -180,4 +203,8 @@ sub02
 #### 로그아웃
 
 #### 회원탈퇴
+
+
+
+
 
