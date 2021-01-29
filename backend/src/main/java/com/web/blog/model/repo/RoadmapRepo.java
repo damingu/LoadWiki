@@ -10,11 +10,11 @@ public interface RoadmapRepo {
 	public int update(Roadmap map);
 
 	public int selectUidByRmid(int rmid);
-	
-	public Roadmap[] selectMyRoadmapListByUid(int pageSt,int cnt,int uid);
-	public Roadmap[] selectOtherRoadmapListByUid(int pageSt,int cnt,int uid);
+	public Roadmap[] selectOfficialListRoadmap();
+	public Roadmap[] selectMyRoadmapListByUid(int uid);
+	public Roadmap[] selectOtherRoadmapListByUid(int uid);
 	public Roadmap selectMyRoadmap(int rmid);
 	public Roadmap selectOtherRoadmap(int rmid);
-	public Roadmap[] selectRoadmapListByRmorder(int pageSt, int cnt,int rmorder,int uid);
+	public Roadmap[] selectRoadmapListByRmorder(int rmorder,int uid);
 	public int delete(int rmorder, int uid);
 }

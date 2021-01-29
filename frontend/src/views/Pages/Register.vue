@@ -2,14 +2,17 @@
   <div>
     <!-- register -->
     <!-- Header -->
-    <div class="header bg-gradient-success py-7 py-lg-8 pt-lg-9">
+    <div class="header bg-gradient-default py-7 py-lg-8 pt-lg-9">
       <b-container class="container">
         <div class="header-body text-center mb-7">
           <b-row class="justify-content-center">
             <b-col xl="5" lg="6" md="8" class="px-5">
-              <h1 class="text-white">Create an account</h1>
-              <p class="text-lead text-white">Use these awesome forms to login or create new account in your project for
-                free.</p>
+              <b-link href="/#/main">
+                <img src="/img/brand/white_roadwiki.png" alt="roadwiki" width="250rem;">
+              </b-link>
+              <!-- <h1 class="text-white">회원가입</h1> -->
+              <!-- <p class="text-lead text-white">Use these awesome forms to login or create new account in your project for
+                free.</p> -->
             </b-col>
           </b-row>
         </div>
@@ -29,8 +32,8 @@
           <b-card no-body class="bg-secondary border-0">
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <br>
-                <h1>회원가입</h1>
+                <!-- <br> -->
+                <!-- <h1>회원가입</h1> -->
               </div>
               <validation-observer v-slot="{handleSubmit}" ref="formValidator">
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
@@ -119,10 +122,11 @@
 
                       </b-container>
                     </b-form-group>
-
-                    <div>1순위 <strong>{{ selected[0] }}</strong></div>
-                    <div>2순위 <strong>{{ selected[1] }}</strong></div>
-                    <div>3순위 <strong>{{ selected[2] }}</strong></div>
+                    <b-container>
+                      <div>1순위 <strong v-if="selected.length > 0">{{ options[selected[0]-1].text }}</strong></div>
+                      <div>2순위 <strong v-if="selected.length > 1">{{ options[selected[1]-1].text }}</strong></div>
+                      <div>3순위 <strong v-if="selected.length > 2">{{ options[selected[2]-1].text }}</strong></div>
+                    </b-container>
                   </div>
                   <hr class="my-4">
                   <b-row class=" my-4">
@@ -145,12 +149,13 @@
                     </b-col>
                   </b-row>
                   <div class="text-center">
-                    <b-button type="submit" variant="primary" class="mt-4" @click="signUp">회원가입하기</b-button>
+                    <b-button type="submit" variant="primary" class="mt-4" @click="signUp">가입하기</b-button>
                   </div>
                   <div class="text-center">
                     <!-- <b-button v-b-modal.modal-login variant="default" class="mt-4" @click="isLoginModal = true">로그인</b-button> -->
                     <!-- <LoginContent v-if="isLoginModal" @close="isLoginModal = false" /> -->
-                    <LoginContent/>
+                    <!-- <LoginContent/> -->
+                    <!-- <LogoutContent/> -->
                   </div>
                 </b-form>
               </validation-observer>
@@ -165,7 +170,8 @@
 <script>
   import ModalEmailValidation from "@/components/Validation/ModalEmailValidation.vue";
   import ModalPolicy from '@/components/Validation/ModalPolicy.vue';
-  import LoginContent from '@/components/Login/LoginContent.vue';
+  // import LoginContent from '@/components/Login/LoginContent.vue';
+  // import LogoutContent from '@/components/Logout/LogoutContent.vue';
 
   import { extend } from 'vee-validate';
 
@@ -182,7 +188,8 @@
     components: {
       ModalEmailValidation,
       ModalPolicy,
-      LoginContent,
+      // LoginContent,
+      // LogoutContent,
     },
     data() {
       return {
@@ -196,16 +203,16 @@
         agree: false,
         selected: [],
         options: [
-          { text: 'Python', value: 'Python'},
-          { text: 'JAVA', value: 'JAVA'},
-          { text: 'C', value: 'C'},
-          { text: 'Vue', value: 'Vue'},
-          { text: 'Spring', value: 'Spring'},
-          { text: 'Frontend', value: 'Frontend'},
-          { text: 'Backend', value: 'Backend'},
-          { text: 'Database', value: 'Database'},
-          { text: 'AI', value: 'AI'},
-          { text: '기타', value: '기타'},
+          { text: 'Python', value: 1},
+          { text: 'JAVA', value: 2},
+          { text: 'C', value: 3},
+          { text: 'Vue', value: 4},
+          { text: 'Spring', value: 5},
+          { text: 'Frontend', value: 6},
+          { text: 'Backend', value: 7},
+          { text: 'Database', value: 8},
+          { text: 'AI', value: 9},
+          { text: '기타', value: 10},
         ],
         isLoginModal: false,
       }
@@ -226,10 +233,11 @@
       },
       emailNumSend() {
         this.isEmailModal = true
-        axios.get(`${SERVER_URL}/email/${this.email}`)
+        console.log(this.$store.getters.getServer)
+        axios.get(`${this.$store.getters.getServer}/email/${this.email}`)
         .then((res) => {
-          this.$store.dispatch('SETCODE', response.data['code']);
-          this.$store.dispatch('SETEMAIL', response.data['email']);
+          this.$store.dispatch('SETCODE', res.data['code']);
+          this.$store.dispatch('SETEMAIL', res.data['email']);
         });
       },
       signUp() {
@@ -241,7 +249,19 @@
           keyword: this.selected,
         }
         if (this.confirmEmail && this.selected.length >= 3) {
-          axios.post(`${SERVER_URL}/user/join`, user)
+          axios.post(`${this.$store.getters.getServer}/user/join`, user)
+          .then(() => {
+            console.log('잘 가나요오오오오오오오오오오')
+            const userinfo = {
+              email: this.email,
+              password: this.password,
+            }
+            this.$store.dispatch("LOGIN", userinfo)
+            .then(() => {
+              this.$router.push('/dashboard')
+            })
+          })
+          // this.$router.replace('/dashboard')
         } else {
           if (!this.confirmEmail) {
             alert('이메일 인증이 완료되지 않았습니다.')

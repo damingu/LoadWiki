@@ -22,7 +22,7 @@ public class LoginServiceImpl implements LoginService{
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	
 	private String signature = "original ks";
-	private Long expirationMin = 5L * 60 * 1000;
+	private Long expirationMin = 60L * 60 * 1000;
 	
 	public String generate(User user){
 		JwtBuilder jwtBuilder = Jwts.builder();
@@ -65,10 +65,4 @@ public class LoginServiceImpl implements LoginService{
 		}
 		return claims.getBody();
 	}
-	
-	
-	
-
-	
-	
 }

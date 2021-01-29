@@ -1,10 +1,13 @@
 <template>
-    <b-card no-body>
-        <b-card-header class="border-0">
-            <h3 class="mb-0">Light table</h3>
-        </b-card-header>
+  <b-card no-body>
+    <b-card-header class="border-0">
+      <h3 class="mb-0">Light table</h3>
+    </b-card-header>
 
-        <el-table class="table-responsive table"
+    <b-container>
+      <detail-content></detail-content>
+    </b-container>
+    <!-- <el-table class="table-responsive table"
                   header-row-class-name="thead-light"
                   :data="projects">
             <el-table-column label="Project"
@@ -70,27 +73,30 @@
                     </div>
                 </template>
             </el-table-column>
-        </el-table>
+        </el-table> -->
 
-        <b-card-footer class="py-4 d-flex justify-content-end">
+    <!-- <b-card-footer class="py-4 d-flex justify-content-end">
             <base-pagination v-model="currentPage" :per-page="10" :total="50"></base-pagination>
-        </b-card-footer>
-    </b-card>
+        </b-card-footer> -->
+  </b-card>
 </template>
 <script>
-  import projects from './../projects'
-  import { Table, TableColumn} from 'element-ui'
-  export default {
-    name: 'light-table',
-    components: {
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn
-    },
-    data() {
-      return {
-        projects,
-        currentPage: 1
-      };
-    }
+import projects from "./../projects";
+import { Table, TableColumn } from "element-ui";
+import DetailContent from "@/components/Board/DetailContent.vue";
+
+export default {
+  name: "light-table",
+  components: {
+    [Table.name]: Table,
+    [TableColumn.name]: TableColumn,
+    DetailContent,
+  },
+  data() {
+    return {
+      projects,
+      currentPage: 1
+    };
   }
+};
 </script>

@@ -32,8 +32,6 @@
 </template>
 
 <script>
-const SERVER_URL = process.env.VUE_APP_SERVER_URL;
-
 export default {
   data: () => {
     return {
@@ -56,9 +54,9 @@ export default {
       let map = {
         email: this.$store.getters.getEmail,
         code: this.$store.getters.getCode,
-        inputCode: this.inputsNum,
+        inputCode: this.inputNum,
       };
-      axios.post(`${SERVER_URL}/email/`, map)
+      axios.post(`${this.$store.getters.getServer}/email/`, map)
       .then((res) => {
         console.log(res.data)
         if (res.data.msg === 'success') {

@@ -1,130 +1,161 @@
 <template>
+
   <div>
-    <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
+    <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-default">
       <!-- Card stats -->
-      <b-row>
-        <b-col xl="3" md="6">
-          <stats-card title="Total traffic"
-                      type="gradient-red"
-                      sub-title="350,897"
-                      icon="ni ni-active-40"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">3.48%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Total traffic"
-                      type="gradient-orange"
-                      sub-title="2,356"
-                      icon="ni ni-chart-pie-35"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">12.18%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Sales"
-                      type="gradient-green"
-                      sub-title="924"
-                      icon="ni ni-money-coins"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-danger mr-2">5.72%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-
-        </b-col>
-        <b-col xl="3" md="6">
-          <stats-card title="Performance"
-                      type="gradient-info"
-                      sub-title="49,65%"
-                      icon="ni ni-chart-bar-32"
-                      class="mb-4">
-
-            <template slot="footer">
-              <span class="text-success mr-2">54.8%</span>
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </b-col>
-      </b-row>
+      <br>
+        <carousel :per-page="4"   :mouse-drag="true" >
+          <slide v-for="(item, index) in curriculumData" :key="index" >
+            <b-col  @click="previewRoadmap(item.rmorder, item.rmid, index)">
+                  <stats-card type="gradient-red"
+                            :sub-title="item.name"
+                            icon="ni ni-active-40"
+                            class="mb-4 btn" 
+                            :rmid="item.rmid"
+                            :rmorder="item.rmorder"
+                            >
+                  <template slot="footer">
+                    <span class="text-success mr-2">{{ item.createDate }}</span>
+                  </template>
+                </stats-card>
+                </b-col>
+          </slide>
+        </carousel>
     </base-header>
 
+    
+
+    
     <b-container fluid class="mt--7">
       <b-row>
         <b-col>
+          <div style="text-align: right;">
+            <button class="btn" style="background-color: rgb(256, 256, 256);" @click="goToCreate">생성하기</button>
+            <router-link :to="{ name : 'roadmap', params: { rmorder: this.rmorder, rmid: this.rmid, mode : 1 }}" class= "btn" style=" background-color:#F9F8F3" v-if="isSelectCard">수정하기</router-link>
+          </div>
           <b-card no-body class="border-0">
-            <div style="width: 100%;">
-              <div style="width: 100%; display: flex; justify-content: space-between; vertical-align: baseline;">
-                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #ffffff"></div>
+            <div class="inline-block" style="width: 100%;">
+
+              <!--goJS/start-->
+              <div style="width: 100%; display: flex; justify-content: space-between; z-index:1;">
+                <div ref="myDiagramDiv" style="flex-grow: 1; height: 750px; background-color: #F9F8F3;" @click="checkCur">
+                </div>
+
+                 <!-- 커리큘럼 데이터 출력 카드/start -->
+                <b-card
+                  title="Curriculum Information"
+                  style="width: 252px;"
+                >
+                <hr>
+                  <h3>{{ headertext }}</h3>
+                  <hr>
+                  <b-card-text>
+                    <base-input label="시작날짜-종료날짜">
+                    <flat-pickr slot-scope="{focus, blur}"
+                    @on-open="focus"
+                    @on-close="blur"
+                    :config="{allowInput: true, mode: 'range',}"
+                    class="form-control datepickr"
+                    v-model="dates.range"
+                    disabled>
+                    </flat-pickr>
+                    </base-input>
+                  </b-card-text>
+                  <hr>
+                  <span>커리큘럼 설명</span>
+                  <hr>
+                  <b-card-text>
+                   <b-form-input v-model="memotext" placeholder="Enter your memo" readonly ></b-form-input>
+                  </b-card-text>
+                  
+                </b-card>
+                
+                <!-- 커리큘럼 데이터 출력 카드/end -->
+
               </div>
-              <div class="col three" @click="updateRoadMap">				
-			          <a class="btn">로드맵 수정하기</a>			
-              </div>
+              <!--goJs/end-->
+
             </div>
           </b-card>
         </b-col>
       </b-row>
     </b-container>
+   
   </div>
 </template>
-
-
 <script>
 import RoadMap from '@/views/Roadmap/RoadMap'
+import router from '@/routes/router'
+import { Carousel, Slide } from 'vue-carousel';
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+import 'flatpickr/dist/themes/material_blue.css';
+import {Hindi} from 'flatpickr/dist/l10n/hi.js';
 
 // 코드 변환 시작 
 let go = window.go
 let $ = go.GraphObject.make
 let myDiagram;
+// node 속성 체크위한 전역변수(여기서만 사용)
+let head;
 export default {
+  router,
   name: '',
+  componenets: {
+    RoadMap,
+    Carousel,
+    Slide,
+    flatPickr,
+  },
   data() {
     return {
-      test: {
-          class: "go.GraphLinksModel",
-          linkFromPortIdProperty: "fromPort",
-          linkToPortIdProperty: "toPort",
-          nodeDataArray: [
-            {"key":-1, "category":"Start", "loc":"175 0", "text":"웹 개발"},
-            {"key":0, "loc":"-5 75", "text":"front"},
-            {"key":1, "loc":"175 100", "text":"back"},
-            {"key":2, "loc":"175 200", "text":"Gradually beat in 1 cup sugar and 2 cups sifted flour"},
-            {"key":3, "loc":"175 290", "text":"Mix in 6 oz (1 cup) Nestle's Semi-Sweet Chocolate Morsels"},
-            {"key":4, "loc":"175 380", "text":"Press evenly into ungreased 15x10x1 pan"},
-            {"key":5, "loc":"355 85", "text":"Finely chop 1/2 cup of your choice of nuts"},
-            {"key":6, "loc":"175 450", "text":"Sprinkle nuts on top"},
-            {"key":7, "loc":"175 515", "text":"Bake for 25 minutes and let cool"},
-            {"key":8, "loc":"175 585", "text":"Cut into rectangular grid"},
-            {"key":-2, "category":"End", "loc":"175 660", "text":"Enjoy!"}
-            ],
-          linkDataArray: [
-            {"from":1, "to":2, "fromPort":"B", "toPort":"T"},
-            {"from":2, "to":3, "fromPort":"B", "toPort":"T"},
-            {"from":3, "to":4, "fromPort":"B", "toPort":"T"},
-            {"from":4, "to":6, "fromPort":"B", "toPort":"T"},
-            {"from":6, "to":7, "fromPort":"B", "toPort":"T"},
-            {"from":7, "to":8, "fromPort":"B", "toPort":"T"},
-            {"from":8, "to":-2, "fromPort":"B", "toPort":"T"},
-            {"from":-1, "to":0, "fromPort":"B", "toPort":"T"},
-            {"from":-1, "to":1, "fromPort":"B", "toPort":"T"},
-            {"from":-1, "to":5, "fromPort":"B", "toPort":"T"},
-            {"from":5, "to":4, "fromPort":"B", "toPort":"T"},
-            {"from":0, "to":4, "fromPort":"B", "toPort":"T"}
-      ]},
+      test: { "class": "go.GraphLinksModel",
+        "linkFromPortIdProperty": "fromPort",
+        "linkToPortIdProperty": "toPort",
+        "nodeDataArray": [
+      ],
+        "linkDataArray": [
+      ]},  
+      curriculumData: [],
+      rmid: 0,
+      rmorder: 0,
+      ismounted: false,
+      headertext: '',
+      dates :{
+        range : ''
+      },
+      memotext : '',
+        // Get more form https://flatpickr.js.org/options/
+      config: {
+        wrap: true, // set wrap to true only when using 'input-group'
+        altFormat: 'M j, Y',
+        altInput: true,
+        dateFormat: 'Y-m-d',
+        locale: Hindi, // locale for this instance only          
+      },
+      isSelectCard: false,
     }
   },
+  created() {
+      const uid = String(this.$store.getters.getUid)
+      // page => 차후 수정해야됨
+
+      
+      
+      axios.get(`${this.$store.getters.getServer}/roadmap/list/${uid}`)
+        .then((res) => {
+        if(res.data.msg == 'success')
+          this.curriculumData = res.data['roadmaps'];
+          else
+            alert("데이터 로드에 실패했습니다.")
+          
+        }).catch((e) =>{
+          console.log(e);
+          alert("axois 오류")
+        });
+    
+  },
   mounted() {
-    let self = this
     myDiagram = 
         $(go.Diagram, this.$refs.myDiagramDiv,
           {
@@ -149,8 +180,8 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
           $(go.Panel, "Auto",
-            $(go.Shape, "Rectangle",
-              { fill: "#87B0C4", stroke: "#AA8A71", strokeWidth: 2.8 },
+            $(go.Shape, "RoundedRectangle",
+              { fill: "#D4E0DE", stroke: "#307363", strokeWidth:  3.5, strokeJoin: "round", strokeCap: "square" },
               new go.Binding("figure", "figure")),
             $(go.TextBlock, this.textStyle(),
               {
@@ -173,7 +204,7 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           $(go.Panel, "Spot",
             $(go.Shape, "Circle",
-              { desiredSize: new go.Size(70, 70), fill: "#282c34", stroke: "#09d3ac", strokeWidth: 3.5 }),
+              { desiredSize: new go.Size(70, 70), fill: "#ffffff", stroke: "#F04A5E", strokeWidth: 3.5 }),
             $(go.TextBlock, "Start", this.textStyle(),
               new go.Binding("text"))
           ),
@@ -187,7 +218,7 @@ export default {
         $(go.Node, "Table", this.nodeStyle(),
           $(go.Panel, "Spot",
             $(go.Shape, "Circle",
-              { desiredSize: new go.Size(60, 60), fill: "#282c34", stroke: "#DC3C00", strokeWidth: 3.5 }),
+              { desiredSize: new go.Size(60, 60), fill: "#ffffff", stroke: "#8D2040", strokeWidth: 3.5 }),
             $(go.TextBlock, "End", this.textStyle(),
               new go.Binding("text"))
           ),
@@ -215,7 +246,7 @@ export default {
         geo.spot2 = go.Spot.BottomRight;
         return geo;
       });
-
+    // 메모 GUI
     myDiagram.nodeTemplateMap.add("Comment",
       $(go.Node, "Auto", this.nodeStyle(),
         $(go.Shape, "File",
@@ -251,17 +282,17 @@ export default {
         },
         new go.Binding("points").makeTwoWay(),
         $(go.Shape,  // the highlight shape, normally transparent
-          { isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT" }),
+          { isPanelMain: true, strokeWidth: 5, stroke: "transparent", name: "HIGHLIGHT" }),
         $(go.Shape,  // the link path shape
-          { isPanelMain: true, stroke: "gray", strokeWidth: 2 },
-          new go.Binding("stroke", "isSelected", function(sel) { return sel ? "dodgerblue" : "gray"; }).ofObject()),
+          { isPanelMain: true, stroke: "#1B443C", strokeWidth: 2.5 },
+          new go.Binding("stroke", "isSelected", function(sel) { return sel ? "#1B443C" : "#1B443C"; }).ofObject()),
         $(go.Shape,  // the arrowhead
-          { toArrow: "standard", strokeWidth: 0, fill: "gray" }),
+          { toArrow: "Triangle", strokeWidth: 1.5, stroke: "#1B443C", fill: "#307362"}),
         $(go.Panel, "Auto",  // the link label, normally not visible
           { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5 },
           new go.Binding("visible", "visible").makeTwoWay(),
           $(go.Shape, "RoundedRectangle",  // the label shape
-            { fill: "#F8F8F8", strokeWidth: 0 }),
+            { fill: "#F8F8F8", strokeWidth: 0}),
           $(go.TextBlock, "Yes",  // the label
             {
               textAlign: "center",
@@ -279,19 +310,17 @@ export default {
 
       // 수정 없이 읽기 
       myDiagram.isReadOnly = true ;
-
+      
       this.load();
 
       // canvas 내의 node 요소 잡기 
       myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
-      console.log(e.subject.part.data.key);
-      console.log(e.subject.part.data.text);
-});
-
+        head = e.subject.part.data.text;
+       });
   },
-  watch:{},
   computed: {},
   methods: {
+
     nodeStyle() {
       return [
         // The Node.location comes from the "loc" property of the node data,
@@ -305,6 +334,7 @@ export default {
         }
       ];
     },
+    
 
     makePort(name, align, spot, output, input) {
       var horizontal = align.equals(go.Spot.Top) || align.equals(go.Spot.Bottom);
@@ -330,7 +360,7 @@ export default {
     textStyle() {
       return {
         font: "bold 11pt Lato, Helvetica, Arial, sans-serif",
-        stroke: "#F8F8F8"
+        stroke: "#000000"
       }
     },
     
@@ -351,16 +381,35 @@ export default {
       animation.add(diagram, 'opacity', 0, 1);
       animation.start();
     },
-
-    // 외부 json파일 초기하면에 출력
+    // 리스트
+    previewRoadmap(clickrmorder,clickrmid, index) {
+      this.isSelectCard = true;
+      this.rmid = clickrmid;
+      this.rmorder = clickrmorder;
+        axios.get(`${this.$store.getters.getServer}/roadmap/get/${clickrmid}`)
+        .then((res) => {
+          if(res.data.msg == 'success'){
+          this.test = JSON.parse(res.data['roadmaps'].tmp);
+          this.load();
+          }else{
+            alert("데이터 로드에 실패했습니다.")
+          }
+        }).catch((e) =>{
+          alert("axois 오류")
+        });
+    },
+    // 외부 json파일 초기화면에 출력
     load() {
       myDiagram.model = go.Model.fromJson(this.test);
+      this.ismounted = true
     },
-    // 로드맵 수정버튼 
-    updateRoadMap() {
-      this.$router.push({ name: 'roadmap' })
+    checkCur(e) {
+      // 차후에 DB에 요청을 보낸다음 DB정보로 반영
+      this.headertext = head
     },
-    
+    goToCreate() {
+      this.$router.push({ name : 'roadmap', params: { rmid: 0, mode : 0 } })
+    }
   },
 }
 </script>

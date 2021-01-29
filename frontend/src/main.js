@@ -19,14 +19,19 @@ import DashboardPlugin from './plugins/dashboard-plugin';
 import App from './App.vue';
 import VueMindmap from 'vue-mindmap'
 import 'vue-mindmap/dist/vue-mindmap.css'
-
+import VueCarousel from 'vue-carousel'
 import "./plugins/axios"
 
 // router setup
 import router from './routes/router';
 
 import store from './store'
+
+import { mapGetters } from 'vuex'
+
+
 // plugin setup
+Vue.use(VueCarousel)
 Vue.use(DashboardPlugin);
 Vue.use(VueMindmap)
 

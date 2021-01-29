@@ -1,16 +1,23 @@
 import DashboardLayout from '@/views/Layout/DashboardLayout.vue';
 import AuthLayout from '@/views/Pages/AuthLayout.vue';
+import NothingMain from '@/views/NothingMain.vue';
 
 import NotFound from '@/views/NotFoundPage.vue';
 
 const routes = [
   {
+    path: '/main',
+    name: 'main',
+    component: NothingMain,
+  },
+  {
     path: '/',
-    redirect: 'dashboard',
+    redirect: 'main',
     component: DashboardLayout,
     children: [
       {
         path: '/dashboard',
+        redirect: '/godiagram',
         name: 'dashboard',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -28,14 +35,20 @@ const routes = [
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/UserProfile.vue')
       },
       {
+        path: '/profile-update',
+        name: 'profile-update',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/ProfileUpdate.vue')
+      },
+              
+      {
         path: '/maps',
         name: 'maps',
         component: () => import(/* webpackChunkName: "demo" */ '../views/GoogleMaps.vue')
       },
       {
-        path: '/tables',
-        name: 'tables',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue')
+        path: '/detail-contents',
+        name: 'Detail Content',
+        component: () => import(/* webpackChunkName: "demo" */ '../components/Board/DetailContent.vue')
       },
       {
         path: '/godiagram',
@@ -45,13 +58,25 @@ const routes = [
       {
         path: '/roadmap',
         name: 'roadmap',
-        component: () => import('../views/Roadmap/RoadMap.vue')
+        component: () => import('../views/Roadmap/RoadMap.vue'),
+        props: true
+      },
+      {
+        path: '/tmp_board',
+        name: 'tmp_board',
+        component: () => import('../views/Board/Board.vue')
+      },
+      {
+        path: '/officialRoadmap',
+        name: 'officialRoadmap',
+        component: () => import('../views/officialRoadmap.vue'),
+        props: true
       },
     ]
   },
   {
     path: '/',
-    redirect: 'login',
+    // redirect: 'login',
     component: AuthLayout,
     children: [
       {
@@ -64,9 +89,9 @@ const routes = [
         name: 'register',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Register.vue')
       },
-      { path: '*', component: NotFound }
+      { path: '*', component: NotFound },
     ]
-  }
+  },
 ];
 
 export default routes;
