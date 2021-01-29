@@ -47,7 +47,7 @@ npm i
 npm run serve
 ```
 
-<span style="color: red;">(주의)</span> `$ npm i`는 frontend 디렉토리에서 수행해야 합니다.
+<span style="color: red;">(주의)</span> `$ npm run serve`는 frontend 디렉토리에서 수행해야 합니다.
 
 
 
@@ -170,6 +170,12 @@ sub02
 ![swagger_email_send](documents/swagger_email_send.png)
 
 ![swagger_email_controller_](documents/swagger_email_controller_.png)
+
+
+
+---
+
+
 
 ## 📜 기능 설명
 
