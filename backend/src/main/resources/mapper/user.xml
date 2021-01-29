@@ -14,10 +14,24 @@
 		where email=#{email}
 	</select>
 	
+	<select id="selectkeyword" parameterType="int" resultType="String">
+		select word
+		from keyword
+		where kwid in (select kwid 
+						from userkeyword
+						where uid = #{uid});
+	</select>
+	
 	<insert id="insert" parameterType="User">
 		insert 
 		into user(email, password, name)
 		values(#{email}, #{password}, #{name})
+	</insert>
+	
+	<insert id="insertkeyword" parameterType="map">
+		insert
+		into userkeyword(uid, kwid, priority)
+		values(#{uid}, #{kwid}, #{priority})
 	</insert>
 	
 	<update id="update" parameterType="User">
@@ -31,6 +45,12 @@
 		from user 
 		where email=#{email}
 	</delete>
+	
+	<select id="getName" parameterType="Integer" resultType="String">
+		select name 
+		from user 
+		where uid=#{uid}
+	</select>
 
 </mapper>
 	

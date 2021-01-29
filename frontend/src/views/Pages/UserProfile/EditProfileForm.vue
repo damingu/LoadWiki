@@ -33,7 +33,8 @@
             </base-input>
           </b-col>
         </b-row>
-        <b-row >
+        <!-- 이름 입력 부분 -->
+        <!-- <b-row >
           <b-col lg="6">
             <base-input
               type="text"
@@ -52,12 +53,13 @@
             >
             </base-input>
           </b-col>
-        </b-row>
+        </b-row> -->
       </div>
-      <hr class="my-4">
 
-      <!-- Address -->
-      <h6 class="heading-small text-muted mb-4">Contact information</h6>
+      <!-- <hr class="my-4"> -->
+
+      <!-- 집주소관련 -->
+      <!-- <h6 class="heading-small text-muted mb-4">Contact information</h6>
 
       <div class="pl-lg-4">
         <b-row>
@@ -99,7 +101,7 @@
             </base-input>
           </b-col>
         </b-row>
-      </div>
+      </div> -->
 
       <hr class="my-4">
       <!-- Description -->

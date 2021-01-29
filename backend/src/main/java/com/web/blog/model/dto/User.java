@@ -1,21 +1,25 @@
 package com.web.blog.model.dto;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class User {
 	private int uid;
 	private String password;
 	private String email;
 	private String name;
 	private String createDate;
-	private String image;
-	private Keyword keyword;
-
+	private List<FileInfoDto> image;
+	private List<FileInfoDto> bgImage;
+	private String address;
+	private String keyword[];
 	
 	public User() {
 		super();
 	}
 
-	public User(String uid, String password, String email, String name, String createDate, String image,
-			Keyword keyword) {
+	public User(int uid, String password, String email, String name, String createDate, List<FileInfoDto> image,
+			List<FileInfoDto> bgImage, String address, String[] keyword) {
 		super();
 		this.uid = uid;
 		this.password = password;
@@ -23,14 +27,16 @@ public class User {
 		this.name = name;
 		this.createDate = createDate;
 		this.image = image;
+		this.bgImage = bgImage;
+		this.address = address;
 		this.keyword = keyword;
 	}
 
-	public String getUid() {
+	public int getUid() {
 		return uid;
 	}
 
-	public void setUid(String uid) {
+	public void setUid(int uid) {
 		this.uid = uid;
 	}
 
@@ -66,26 +72,42 @@ public class User {
 		this.createDate = createDate;
 	}
 
-	public String getImage() {
+	public List<FileInfoDto> getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(List<FileInfoDto> image) {
 		this.image = image;
 	}
 
-	public Keyword getKeyword() {
+	public List<FileInfoDto> getBgImage() {
+		return bgImage;
+	}
+
+	public void setBgImage(List<FileInfoDto> bgImage) {
+		this.bgImage = bgImage;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String[] getKeyword() {
 		return keyword;
 	}
 
-	public void setKeyword(Keyword keyword) {
+	public void setKeyword(String[] keyword) {
 		this.keyword = keyword;
 	}
 
 	@Override
 	public String toString() {
 		return "User [uid=" + uid + ", password=" + password + ", email=" + email + ", name=" + name + ", createDate="
-				+ createDate + ", image=" + image + ", keyword=" + keyword + "]";
+				+ createDate + ", image=" + image + ", bgImage=" + bgImage + ", address=" + address + ", keyword="
+				+ Arrays.toString(keyword) + "]";
 	}
-	
 }
