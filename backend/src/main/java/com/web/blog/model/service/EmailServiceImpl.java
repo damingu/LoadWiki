@@ -69,6 +69,7 @@ public class EmailServiceImpl implements EmailService {
 		String decryptText = new String(tmp);
 		
 		logger.info("email : " + email);
+		
 		logger.info("user input : " + inputCode);
 		logger.info("encrypt text : " + code);
 		logger.info("decrypt text : " + decryptText);
