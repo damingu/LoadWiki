@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,7 +100,6 @@ public class UserController {
 	@PostMapping("/join")
 	public Object join(@RequestBody User user) {
 		logger.trace("join");
-		System.out.println(user);
 		try {
 			logger.info(user.toString());
 			Map<String, Object> result = (Map<String, Object>) userServ.join(user);
@@ -166,7 +167,9 @@ public class UserController {
 		// System.out.println(dto.toString());
 
 		// parent directory를 찾는다.
-		Path directory = Paths.get(".\\src\\main\\resources\\statics\\upload\\" + uid + "\\").toAbsolutePath()
+//		Path directory = Paths.get(".\\src\\main\\java\\com\\web\\blog\\controller" + uid + "\\").toAbsolutePath()
+//				.normalize();
+		Path directory = Paths.get(".\\src\\main\\java\\com\\web\\blog\\controller\\").toAbsolutePath()
 				.normalize();
 
 		// directory 해당 경로까지 디렉토리를 모두 만든다.
@@ -186,41 +189,63 @@ public class UserController {
 
 		return "good";
 	}
-
-	@GetMapping(value = "image")
-	public Object userSearch() throws IOException {
-		Path file = Paths.get(".\\src\\main\\resources\\statics\\upload\\" + 1 + "\\").resolve("1.jpg");
-		Resource resource = new UrlResource(file.toUri());
-		if (resource.exists() || resource.isReadable()) {
-	        System.out.println("파일 리소스 나오긴 함 @@@@@@@@@@@@@@@@@@");
-	    }
-		
-		InputStream imageStream = new FileInputStream(".\\src\\main\\resources\\statics\\upload\\" + 1 + "\\" + "1.jpg");
-		System.out.println("File null? : " + imageStream);
-		byte[] imageByteArray = IOUtils.toByteArray(imageStream);
-		imageStream.close();
-		
-		
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("image", imageByteArray);
-		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+	
+	@GetMapping("/get-text")
+	public @ResponseBody String getText() {
+	    return "Hello world";
 	}
+	
+	@GetMapping(value = "/image")
+	public @ResponseBody byte[] getImage() throws IOException {
+		System.out.println("이미지 실행");
+		
+	    InputStream in = getClass()
+//		  	      .getResourceAsStream("../../../../../../main/resources/statics/upload/1/1.jpg");
+	    		.getResourceAsStream("1.jpg");
+	    if(in == null) {
+	    	System.out.println("여기들어와?");
+	    	in = getClass()
+	    		      .getResourceAsStream("default.png");
+	    }
+	    return IOUtils.toByteArray(in);
+	}
+
+//	@GetMapping(value = "image")
+//	public Object userSearch() throws IOException {
+//		Path file = Paths.get(".\\src\\main\\resources\\statics\\upload\\" + 1 + "\\").resolve("1.jpg");
+//		Resource resource = new UrlResource(file.toUri());
+//		if (resource.exists() || resource.isReadable()) {
+//			System.out.println("파일 리소스 나오긴 함 @@@@@@@@@@@@@@@@@@");
+//		}
+//
+//		InputStream imageStream = new FileInputStream(
+//				".\\src\\main\\resources\\statics\\upload\\" + 1 + "\\" + "1.jpg");
+//		System.out.println("File null? : " + imageStream);
+//		byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+//		imageStream.close();
+//
+//		Map<String, Object> result = new HashMap<String, Object>();
+//		result.put("image", imageByteArray);
+//		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+//	}
 
 	@GetMapping("/name/{uid}")
 	public Object getName(@PathVariable String uid) {
 		logger.trace("getName");
 		try {
-			Map<String, Object> result = (Map<String, Object>)userServ.getName(uid);
+			Map<String, Object> result = (Map<String, Object>) userServ.getName(uid);
 			result.put("msg", SUCCESS);
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return new ResponseEntity<Map<String, Object>>(new HashMap<String, Object>(){{
-				put("errorMsg", e.getMessage());
-				put("msg", FAIL);
-			}}, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<Map<String, Object>>(new HashMap<String, Object>() {
+				{
+					put("errorMsg", e.getMessage());
+					put("msg", FAIL);
+				}
+			}, HttpStatus.NO_CONTENT);
 		}
-		
+
 	}
 
 }

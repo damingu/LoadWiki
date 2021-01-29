@@ -17,6 +17,7 @@ const routes = [
     children: [
       {
         path: '/dashboard',
+        redirect: '/godiagram',
         name: 'dashboard',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route

@@ -151,6 +151,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 			logger.error("input data type error");
 			result.put("msg", "fail");
 		} catch(Exception e) {
+			e.printStackTrace();
 			logger.error("i dont know");
 			result.put("msg", "fail");
 		}

@@ -7,7 +7,9 @@
         <div class="header-body text-center mb-7">
           <b-row class="justify-content-center">
             <b-col xl="5" lg="6" md="8" class="px-5">
-              <img src="/img/brand/white_roadwiki.png" alt="roadwiki" width="250rem;">
+              <b-link href="/#/main">
+                <img src="/img/brand/white_roadwiki.png" alt="roadwiki" width="250rem;">
+              </b-link>
               <!-- <h1 class="text-white">회원가입</h1> -->
               <!-- <p class="text-lead text-white">Use these awesome forms to login or create new account in your project for
                 free.</p> -->
@@ -249,6 +251,7 @@
         if (this.confirmEmail && this.selected.length >= 3) {
           axios.post(`${this.$store.getters.getServer}/user/join`, user)
           .then(() => {
+            console.log('잘 가나요오오오오오오오오오오')
             const userinfo = {
               email: this.email,
               password: this.password,
