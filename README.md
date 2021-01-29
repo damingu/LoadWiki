@@ -12,9 +12,7 @@
 
 개발자를 위한 개발자 로드맵 제시 및 개인 커스터마이징 로드맵 제공 웹 페이지
 
-![main_page](README.assets/main_page-1611834098597.PNG)
-
-
+![main_page](README.assets/main_page.PNG)
 
 ## 🚀 Getting Started
 
